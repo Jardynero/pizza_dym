@@ -1,7 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:pizza_dym/screens/menu_screen/widgets/item-list_screen.dart';
-// about us backdrop test
+
 class CardCategories extends StatefulWidget {
   CardCategories({Key? key}) : super(key: key);
 
@@ -85,7 +85,7 @@ class _CardCategoriesState extends State<CardCategories> {
 
   Widget aboutUs() {
     return GestureDetector(
-      onTap: () {},
+      onTap: () => Navigator.pushNamed(context, '/about-pizza'),
       child: Container(
         width: MediaQuery.of(context).size.width,
         height: 200,
