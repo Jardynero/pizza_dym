@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:pizza_dym/global_widgets/appBar-actions.dart';
+import 'package:pizza_dym/global_widgets/appBar.dart';
 
 class ItemListScreen extends StatelessWidget {
   final String categorieName;
@@ -15,10 +16,7 @@ class ItemListScreen extends StatelessWidget {
     int _counter = 1;
     Map _menuItemsSorted = {};
     return Scaffold(
-      appBar: AppBar(
-        title: Text(categorieName),
-        actions: [profileAppBarAction(context)],
-      ),
+      appBar: MainAppBar(categorieName),
       body: StreamBuilder(
         stream: _menuItems,
         builder:
