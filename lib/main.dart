@@ -6,6 +6,7 @@ import 'package:pizza_dym/screens/contacts_screen.dart';
 import 'package:pizza_dym/screens/index_screen/index_screen.dart';
 import 'package:pizza_dym/screens/login_screen/login-code-screen/login-code_screen.dart';
 import 'package:pizza_dym/screens/login_screen/login-phone-screen/login-phone_screen.dart';
+import 'package:pizza_dym/screens/profile_screen.dart';
 import 'package:pizza_dym/screens/single-product_screen.dart';
 
 // Import models
@@ -57,6 +58,7 @@ class _PizzadymState extends State<Pizzadym> {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+      debugShowCheckedModeBanner: false,
       title: context.read<CustomerData>().name,
       initialRoute: '/',
       routes: {
@@ -68,6 +70,7 @@ class _PizzadymState extends State<Pizzadym> {
         '/single-product': (context) => SingleProductScreen(),
         '/cart': (context) => CartScreen(),
         '/checkout': (context) => CheckoutScreen(),
+        '/profile': (context) => ProfileScreen(),
       },
       theme: MainColorTheme().mainTheme,
     );
