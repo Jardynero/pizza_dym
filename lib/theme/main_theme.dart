@@ -7,7 +7,7 @@ class MainColorTheme {
     appBarTheme: AppBarTheme(
       iconTheme: IconThemeData(color: Colors.grey, size: 30),
       backgroundColor: Color(0xffffffff),
-      titleTextStyle: TextStyle(color: Colors.black, fontWeight: FontWeight.w500, fontSize: 20),
+      titleTextStyle: TextStyle(color: Colors.black, fontWeight: FontWeight.w500, fontSize: 16),
       elevation: 4,
     ),
     bottomNavigationBarTheme: BottomNavigationBarThemeData(
