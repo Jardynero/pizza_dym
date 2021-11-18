@@ -156,7 +156,7 @@ class _LoginCodeFormState extends State<LoginCodeForm> {
       setState(() {
         activityIndicator = false;
       });
-      Navigator.pushReplacementNamed(context, '/');
+      Navigator.pushNamedAndRemoveUntil(context, '/', (_) => false);
     } else {
       print('error');
     }
@@ -188,7 +188,7 @@ class _LoginCodeFormState extends State<LoginCodeForm> {
             activityIndicator = false;
           });
           print('Android auth done!');
-          Navigator.pushReplacementNamed(context, '/');
+          Navigator.pushNamedAndRemoveUntil(context, '/', (_) => false);
         }
       },
       verificationFailed: (FirebaseAuthException e) {

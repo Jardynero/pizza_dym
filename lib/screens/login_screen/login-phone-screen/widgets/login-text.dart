@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:pizza_dym/theme/main_theme.dart';
 
 class LoginText extends StatelessWidget {
   const LoginText({Key? key}) : super(key: key);
@@ -17,7 +16,8 @@ class LoginText extends StatelessWidget {
           child: Text(
             'Вход',
             style: TextStyle(
-              fontSize: MainColorTheme().paragraphFontSize,
+              fontSize: 20,
+              fontWeight: FontWeight.w500
             ),
           ),
         ),
@@ -30,9 +30,6 @@ class LoginText extends StatelessWidget {
           ),
           child: Text(
             'Введите номер телефона, чтобы войти или зарегистрироваться',
-            style: TextStyle(
-              fontSize: MainColorTheme().secondaryFontSize,
-            ),
           ),
         ),
       ],
