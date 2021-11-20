@@ -4,7 +4,6 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
 
 // request permission for notifications
 Future initFirebaseMessaging(firebaseMessagingInstance) async {
@@ -51,6 +50,7 @@ class FirebaseAuthInstance extends ChangeNotifier {
   void obtainUserPhoneNumber(userPhoneNumber) {
     _userPhoneNumber = userPhoneNumber;
   }
+
 }
 
 class CloudFirestore extends ChangeNotifier {
