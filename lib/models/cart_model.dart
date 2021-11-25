@@ -4,11 +4,6 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter_cart/flutter_cart.dart';
 
 class CartModel extends ChangeNotifier {
-  // Переменная содержить все позиции закаха
-  // _orderList[[0]] = Название позиции
-  // _orderList[[1]] = количество данного товара
-  // _orderList[[2]] = стоимость товара
-  // _orderList[[3]] = фото товара
   
   var cart = FlutterCart();
 
@@ -28,6 +23,27 @@ class CartModel extends ChangeNotifier {
 
   void decrementItemFromCart(itemId) {
     cart.decrementItemFromCart(cart.findItemIndexFromCart(itemId)!);
+
+    notifyListeners();
+  }
+
+  void addProductToCartQnt(itemId, unitPrice, productName, quantity) {
+    cart.addToCart(productId: itemId, unitPrice: unitPrice, productName: productName, quantity: quantity);
+
+    notifyListeners();
+  }
+
+  // Количество кокнертного товара в корзине
+  int _singleProductQntInCart = 0;
+
+  int get singleProductQntInCart => _singleProductQntInCart;
+
+  void obtainQntOfProduct(itemId) {
+    try {
+      _singleProductQntInCart =  cart.getSpecificItemFromCart(itemId)!.quantity;
+    } catch (e) {
+      debugPrint('$e');
+    }
 
     notifyListeners();
   }
