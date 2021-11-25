@@ -13,7 +13,7 @@ class FloatingActionBtn extends StatelessWidget {
     return Visibility(
       visible: _totalItemsPrice == 0? false : true,
       child: Container(
-        margin: EdgeInsets.only(bottom: MediaQuery.of(context).size.height / 100 * 8),
+        margin: EdgeInsets.only(bottom: MediaQuery.of(context).size.height / 100 * 3),
         child: FloatingActionButton.extended(
           onPressed: () => Navigator.pushNamed(context, '/cart'),
           icon: Icon(Icons.shopping_bag_outlined),
