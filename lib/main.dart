@@ -52,6 +52,7 @@ class _PizzadymState extends State<Pizzadym> {
   void initState() {
     initFirebaseMessaging(messaging);
     FirebaseMessaging.onBackgroundMessage(firebaseMessagingBackgroundHandler);
+    Provider.of<CloudFirestore>(context, listen: false).obtainRestautantSettings();
     super.initState();
   }
 
@@ -67,7 +68,6 @@ class _PizzadymState extends State<Pizzadym> {
         '/login-code': (context) => LoginCodeScreen(),
         '/about-pizza': (context) => AboutPizzaScreen(),
         '/contacts': (context) => ContactsScreen(),
-        '/single-product': (context) => SingleProductScreen(),
         '/cart': (context) => CartScreen(),
         '/checkout': (context) => CheckoutScreen(),
         '/profile': (context) => ProfileScreen(),
