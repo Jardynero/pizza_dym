@@ -4,6 +4,7 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:pizza_dym/global_widgets/snackbar.dart';
 
 // request permission for notifications
 Future initFirebaseMessaging(firebaseMessagingInstance) async {
@@ -50,10 +51,93 @@ class FirebaseAuthInstance extends ChangeNotifier {
   void obtainUserPhoneNumber(userPhoneNumber) {
     _userPhoneNumber = userPhoneNumber;
   }
-
 }
 
 class CloudFirestore extends ChangeNotifier {
   // Cloud Firestore instance
   FirebaseFirestore firestore = FirebaseFirestore.instance;
+
+  // Время открытия
+  int _openingTime = 0;
+  int get openingTime => _openingTime;
+
+  // Время закрытия
+  int _closingTime = 0;
+  int get closingTime => _closingTime;
+
+  // Принимаем ли сейчас заказы
+  bool _isOpen = true;
+  bool get isOpen => _isOpen;
+
+  // Дни недели
+  Map _workingDays = {};
+  Map get workingDays => _workingDays;
+
+  Future<void> obtainRestautantSettings() async {
+    DocumentReference docReference =
+        firestore.collection('restaurant').doc('settings');
+
+    var docInstance = await docReference.get();
+
+
+    int openTime = docInstance.get('openingTime');
+    _openingTime = openTime;
+
+    int closingTime = docInstance.get('closingTime');
+    _closingTime = closingTime;
+
+    bool isOpen = docInstance.get('isOpen');
+    _isOpen = isOpen;
+
+    Map workingDays = docInstance.get('workingDays');
+    _workingDays = workingDays;
+
+    notifyListeners();
+  }
+
+  Future isRestaurantOpen(context) async {
+    DocumentReference docReference =
+        firestore.collection('restaurant').doc('settings');
+
+    var docInstance = await docReference.get();
+    bool isOpen = docInstance.get('isOpen');
+    Map<String, dynamic> workingDays = docInstance.get('workingDays');
+    int openingTime = docInstance.get('openingTime');
+    int closingTime = docInstance.get('closingTime');
+    int timeNowHour = DateTime.now().hour;
+    int weekdayToday = DateTime.now().weekday;
+
+    workingDays.forEach((key, value) {
+      if (weekdayToday.toString() == key && value == false) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          reUsableSnackBar(
+            'Извините, сегодня мы не работаем, у нас выходной',
+            context,
+          ),
+        );
+      }
+    });
+    if (isOpen == false) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        reUsableSnackBar(
+          'Извините, сегодня мы больше не принимаем заказы!',
+          context,
+        ),
+      );
+    } else if (timeNowHour < openingTime) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        reUsableSnackBar(
+          'Сейчас очень рано, мы работаем с $openingTime часов',
+          context,
+        ),
+      );
+    } else if (timeNowHour >= closingTime) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        reUsableSnackBar(
+          'Уже очень поздно:( Мы принимаем заказы до $closingTime',
+          context,
+        ),
+      );
+    }
+  }
 }
