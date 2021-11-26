@@ -7,7 +7,6 @@ import 'package:pizza_dym/screens/index_screen/index_screen.dart';
 import 'package:pizza_dym/screens/login_screen/login-code-screen/login-code_screen.dart';
 import 'package:pizza_dym/screens/login_screen/login-phone-screen/login-phone_screen.dart';
 import 'package:pizza_dym/screens/profile_screen.dart';
-import 'package:pizza_dym/screens/single-product_screen.dart';
 
 // Import models
 import 'package:pizza_dym/models/cart_model.dart';

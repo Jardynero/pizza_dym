@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:pizza_dym/functions/firebase_functions.dart';
 import 'package:pizza_dym/screens/menu_screen/widgets/cardCategories.dart';
-import 'package:provider/provider.dart';
 
 class MenuScreen extends StatefulWidget {
   const MenuScreen({Key? key}) : super(key: key);
