@@ -127,6 +127,7 @@ class _ItemCardState extends State<ItemCard> {
                                         itemName,
                                         itemCost,
                                         itemName,
+                                        itemPhotoUrl,
                                       );
                                     },
                               style: ElevatedButton.styleFrom(
