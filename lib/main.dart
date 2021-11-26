@@ -1,6 +1,7 @@
 // Import screens
 import 'package:pizza_dym/screens/about-pizza_screen.dart';
-import 'package:pizza_dym/screens/cart_screen.dart';
+import 'package:pizza_dym/screens/cart_screen/cart_screen.dart';
+
 import 'package:pizza_dym/screens/ckeckout_screen.dart';
 import 'package:pizza_dym/screens/contacts_screen.dart';
 import 'package:pizza_dym/screens/index_screen/index_screen.dart';
