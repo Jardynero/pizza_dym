@@ -224,7 +224,8 @@ class _SingleProductScreenState extends State<SingleProductScreen> {
                   widget.data[0],
                   widget.data[2],
                   widget.data[0],
-                  productQnt + singleProductQntInCart);
+                  productQnt + singleProductQntInCart,
+                  widget.data[4].toString());
               
               Navigator.pop(context);
             },
