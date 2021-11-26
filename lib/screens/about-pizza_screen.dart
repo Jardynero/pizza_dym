@@ -1,5 +1,6 @@
 // About pizza page
 
+import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:flutter/material.dart';
 import 'package:pizza_dym/global_widgets/appBar.dart';
 
@@ -23,6 +24,7 @@ class AboutUs extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    FirebaseAnalytics().setCurrentScreen(screenName: 'О нас');
     return ListView(
       children: [
         logo(),
