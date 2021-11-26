@@ -1,3 +1,4 @@
+import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:pizza_dym/functions/firebase_functions.dart';
@@ -156,6 +157,7 @@ class _LoginCodeFormState extends State<LoginCodeForm> {
       setState(() {
         activityIndicator = false;
       });
+      FirebaseAnalytics().logSignUp(signUpMethod: 'Phone Number');
       Navigator.pushNamedAndRemoveUntil(context, '/', (_) => false);
     } else {
       print('error');
