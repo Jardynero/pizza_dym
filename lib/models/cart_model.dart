@@ -9,8 +9,8 @@ class CartModel extends ChangeNotifier {
 
   double get getTotalItemsPrice => cart.getTotalAmount();
 
-  void addProductToCart(productId, unitPrice, productName,) {
-    cart.addToCart(productId: productId, unitPrice: unitPrice, productName: productName);
+  void addProductToCart(productId, unitPrice, productName, String imageUrl) {
+    cart.addToCart(productId: productId, unitPrice: unitPrice, productName: productName, productDetailsObject: imageUrl);
 
     notifyListeners();
   }
@@ -27,8 +27,8 @@ class CartModel extends ChangeNotifier {
     notifyListeners();
   }
 
-  void addProductToCartQnt(itemId, unitPrice, productName, quantity) {
-    cart.addToCart(productId: itemId, unitPrice: unitPrice, productName: productName, quantity: quantity);
+  void addProductToCartQnt(itemId, unitPrice, productName, quantity, String imageUrl) {
+    cart.addToCart(productId: itemId, unitPrice: unitPrice, productName: productName, quantity: quantity, productDetailsObject: imageUrl);
 
     notifyListeners();
   }
