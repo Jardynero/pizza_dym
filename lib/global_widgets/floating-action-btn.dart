@@ -15,7 +15,10 @@ class FloatingActionBtn extends StatelessWidget {
       child: Container(
         margin: EdgeInsets.only(bottom: MediaQuery.of(context).size.height / 100 * 3),
         child: FloatingActionButton.extended(
-          onPressed: () => Navigator.pushNamed(context, '/cart'),
+          onPressed: () {
+            Provider.of<CartModel>(context, listen: false).checkRestaurantStatus(context);
+            Navigator.pushNamed(context, '/cart');
+          },
           icon: Icon(Icons.shopping_bag_outlined),
           label: Text('${Provider.of<CartModel>(context, listen: true).getTotalItemsPrice.toInt()}₽', style: TextStyle(fontSize: 18,)),
           shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(15)),
