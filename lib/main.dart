@@ -2,7 +2,7 @@
 import 'package:pizza_dym/screens/about-pizza_screen.dart';
 import 'package:pizza_dym/screens/cart_screen/cart_screen.dart';
 
-import 'package:pizza_dym/screens/ckeckout_screen.dart';
+import 'package:pizza_dym/screens/cart_screen/ckeckout_screen.dart';
 import 'package:pizza_dym/screens/contacts_screen.dart';
 import 'package:pizza_dym/screens/index_screen/index_screen.dart';
 import 'package:pizza_dym/screens/login_screen/login-code-screen/login-code_screen.dart';
