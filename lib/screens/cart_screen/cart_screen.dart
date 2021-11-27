@@ -23,6 +23,12 @@ class _CartScreenState extends State<CartScreen> {
     double totalAmount =
         Provider.of<CartModel>(context, listen: true).cart.getTotalAmount();
     var cart = Provider.of<CartModel>(context, listen: true).cart;
+
+    bool restaurantStatus = Provider.of<CartModel>(context, listen: true).restaurantStatus;
+
+    String restaurantStatusMessage = Provider.of<CartModel>(context, listen: true).restaurantStatusMessage;
+
+
     return Scaffold(
       appBar: MainAppBar('Корзина'),
       body: Column(
@@ -37,7 +43,7 @@ class _CartScreenState extends State<CartScreen> {
                   return itemList(cart, index);
                 }),
           ),
-          bottomBar(totalAmount),
+          bottomBar(totalAmount, restaurantStatus, restaurantStatusMessage),
         ],
       ),
     );
@@ -47,7 +53,6 @@ class _CartScreenState extends State<CartScreen> {
     return Card(
       elevation: 3,
       child: Container(
-        // color: Colors.amberAccent,
         width: MediaQuery.of(context).size.width,
         padding: EdgeInsets.symmetric(
           horizontal: MediaQuery.of(context).size.width / 100 * 3,
@@ -65,9 +70,14 @@ class _CartScreenState extends State<CartScreen> {
             Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text(
-                  '${cart.message.cartItemList[index].productName}',
-                  style: TextStyle(fontSize: 18),
+                SizedBox(
+                  width: MediaQuery.of(context).size.width / 100 * 40,
+                  child: Text(
+                    '${cart.message.cartItemList[index].productName}',
+                    style: TextStyle(fontSize: 18),
+                    maxLines: 2,
+                    overflow: TextOverflow.ellipsis,
+                  ),
                 ),
                 Container(
                   margin: EdgeInsets.only(
@@ -129,7 +139,8 @@ class _CartScreenState extends State<CartScreen> {
     );
   }
 
-  Widget bottomBar(double totalAmount) {
+  Widget bottomBar(
+      double totalAmount, restaurantStatus, restaurantStatusMessage) {
     return SafeArea(
       child: Container(
         width: MediaQuery.of(context).size.width,
@@ -165,7 +176,9 @@ class _CartScreenState extends State<CartScreen> {
                 height: 50,
                 child: ElevatedButton(
                   child: Text(
-                    'Далее',
+                    restaurantStatus == false
+                        ? restaurantStatusMessage
+                        : 'Далее',
                     style: TextStyle(fontSize: 18),
                   ),
                   style: ElevatedButton.styleFrom(
@@ -174,7 +187,11 @@ class _CartScreenState extends State<CartScreen> {
                       borderRadius: BorderRadius.circular(10),
                     ),
                   ),
-                  onPressed: () {},
+                  onPressed: restaurantStatus == false
+                      ? null
+                      : () {
+                          Navigator.pushNamed(context, '/checkout');
+                        },
                 ),
               ),
             ),
