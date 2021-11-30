@@ -23,11 +23,36 @@ class _DeliveryMethodeState extends State<DeliveryMethode> {
     return Scaffold(
       appBar: MainAppBar('Способ доставки'),
       body: Column(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
           deliveryMethodes(),
           btn(),
         ],
       ),
+    );
+  }
+
+  Widget title() {
+    return Column(
+      children: [
+        Container(
+          margin: EdgeInsets.only(top: 20, bottom: 10),
+          child: Text(
+            'Данные о заказе',
+            style: TextStyle(
+              fontSize: 24,
+              fontWeight: FontWeight.bold,
+            ),
+          ),
+        ),
+        Container(
+          margin: EdgeInsets.only(bottom: 30),
+          child: Text(
+            'Выберите способ доставки',
+            style: TextStyle(fontSize: 18),
+          ),
+        ),
+      ],
     );
   }
 
@@ -75,6 +100,7 @@ class _DeliveryMethodeState extends State<DeliveryMethode> {
   Widget deliveryMethodes() {
     return Column(
       children: [
+        title(),
         deliveryMethode('Доставка на дом', _delivery, _takeAvayIcon),
         deliveryMethode('Самовывоз', _pickup, _pickupIcon),
       ],
