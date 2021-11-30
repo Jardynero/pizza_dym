@@ -27,9 +27,8 @@ class _PickupScreenState extends State<PickupScreen> {
     return Scaffold(
       appBar: MainAppBar('Самовывоз'),
       body: Column(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
-          title(),
-          soonTime(),
           dateTimePicker(),
           btn(),
         ],
@@ -38,7 +37,22 @@ class _PickupScreenState extends State<PickupScreen> {
   }
 
   Widget title() {
-    return Text('Выберите время самовывоза');
+    return Column(
+      children: [
+        Container(
+          margin: EdgeInsets.only(top: 20, bottom: 10),
+          child: Text(
+            'Данные о заказе',
+            style: TextStyle(
+              fontSize: 24,
+              fontWeight: FontWeight.bold,
+            ),
+          ),
+        ),
+        Text('Выберите время самовывоза'),
+        soonTime(),
+      ],
+    );
   }
 
   Widget soonTime() {
@@ -46,12 +60,13 @@ class _PickupScreenState extends State<PickupScreen> {
         Provider.of<CloudFirestore>(context, listen: true).closingTime;
     int openingTime =
         Provider.of<CloudFirestore>(context, listen: true).openingTime;
-    return Text('Забрать заказ можно с $openingTime:$interval до $closingTime:$interval');
+    return Text(
+        'Забрать заказ можно с $openingTime:$interval до $closingTime:$interval');
   }
 
   Widget dateTimePicker() {
-    return Row(
-      children: [dateTimeWidget()],
+    return Column(
+      children: [title(), dateTimeWidget()],
     );
   }
 
@@ -61,7 +76,8 @@ class _PickupScreenState extends State<PickupScreen> {
     int openingTime =
         Provider.of<CloudFirestore>(context, listen: true).openingTime;
     bool isOpen = Provider.of<CloudFirestore>(context, listen: true).isOpen;
-    Map workingDays = Provider.of<CloudFirestore>(context, listen: true).workingDays;
+    Map workingDays =
+        Provider.of<CloudFirestore>(context, listen: true).workingDays;
 
     DateTime initialDateTime = DateTime.now().add(
       Duration(minutes: interval),
@@ -86,7 +102,7 @@ class _PickupScreenState extends State<PickupScreen> {
     });
 
     return SizedBox(
-      height: 300,
+      height: 250,
       width: MediaQuery.of(context).size.width,
       child: CupertinoDatePicker(
         mode: CupertinoDatePickerMode.dateAndTime,
@@ -141,29 +157,42 @@ class _PickupScreenState extends State<PickupScreen> {
   }
 
   Widget btn() {
-    return ElevatedButton(
-      child: Text('Оформить заказ'),
-      onPressed: () {
-        if (onChangedTime == false) {
-          ScaffoldMessenger.of(context).showSnackBar(
-            reUsableSnackBar('Пожалуйста, выберите время самовывоза', context),
-          );
-        }
-        else if (isChoseTimeOk == false) {
-          ScaffoldMessenger.of(context).showSnackBar(
-            reUsableSnackBar(message, context),
-          );
-        } else {
-          print('OK!');
-          // Оформить заказ
-          // Отправить в телегу заказ
-          // отправить смс клиенту
-          // очистить корзину
-          // сохранить закмз в историю заказов
-          // попап об успешном заказе
-          // переход на главную
-        }
-      },
+    return Container(
+      margin:
+          EdgeInsets.only(bottom: MediaQuery.of(context).size.height / 100 * 5),
+      child: ElevatedButton(
+        child: Text('Оформить заказ', style: TextStyle(fontSize: 20)),
+        onPressed: () {
+          if (onChangedTime == false) {
+            ScaffoldMessenger.of(context).showSnackBar(
+              reUsableSnackBar('Пожалуйста, выберите время самовывоза', context),
+            );
+          } else if (isChoseTimeOk == false) {
+            ScaffoldMessenger.of(context).showSnackBar(
+              reUsableSnackBar(message, context),
+            );
+          } else {
+            print('OK!');
+            // Оформить заказ
+            // Отправить в телегу заказ
+            // отправить смс клиенту
+            // очистить корзину
+            // сохранить закмз в историю заказов
+            // попап об успешном заказе
+            // переход на главную
+          }
+        },
+        style: ElevatedButton.styleFrom(
+            primary: Color(0xff27282A),
+            fixedSize: Size(
+              MediaQuery.of(context).size.width / 100 * 60,
+              MediaQuery.of(context).size.height / 100 * 6,
+            ),
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(10),
+            ),
+          ),
+      ),
     );
   }
 }
