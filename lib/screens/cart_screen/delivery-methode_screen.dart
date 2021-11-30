@@ -49,17 +49,24 @@ class _DeliveryMethodeState extends State<DeliveryMethode> {
 
   Widget btn() {
     return ElevatedButton(
-      child: Text('Далее'),
+      child: Text('Далее', style: TextStyle(fontSize: 20)),
       onPressed: () {
-        Provider.of<CartModel>(context, listen: false).checkDeliveryMethode(_groupValue!);
+        Provider.of<CartModel>(context, listen: false)
+            .checkDeliveryMethode(_groupValue!);
         if (_groupValue == 1) {
           Navigator.pushNamed(context, '/adress');
-        }
-        else if (_groupValue == 2) {
+        } else if (_groupValue == 2) {
           Navigator.pushNamed(context, '/pickup');
         }
       },
+      style: ElevatedButton.styleFrom(
+        primary: Color(0xff27282A),
+        fixedSize: Size(
+          MediaQuery.of(context).size.width / 100 * 50,
+          MediaQuery.of(context).size.height / 100 * 6,
+        ),
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10))
+      ),
     );
   }
 }
-
