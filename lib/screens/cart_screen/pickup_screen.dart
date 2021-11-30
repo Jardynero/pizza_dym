@@ -23,7 +23,7 @@ class _PickupScreenState extends State<PickupScreen> {
   String soonTimeMessage = '';
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, {locale: const Locale('ru', 'RU')}) {
     return Scaffold(
       appBar: MainAppBar('Самовывоз'),
       body: Column(
