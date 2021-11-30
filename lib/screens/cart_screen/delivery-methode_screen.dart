@@ -13,6 +13,8 @@ class DeliveryMethode extends StatefulWidget {
 }
 
 class _DeliveryMethodeState extends State<DeliveryMethode> {
+  String _pickupIcon = 'assets/icons/pickup.png';
+  String _takeAvayIcon = 'assets/icons/take-away.png';
   int? _groupValue = 1;
   int _delivery = 1;
   int _pickup = 2;
@@ -22,26 +24,50 @@ class _DeliveryMethodeState extends State<DeliveryMethode> {
       appBar: MainAppBar('Способ доставки'),
       body: Column(
         children: [
-          deliveryMethode('Доставка на дом', _delivery),
-          deliveryMethode('Самовывоз', _pickup),
+          deliveryMethode('Доставка на дом', _delivery, _takeAvayIcon),
+          deliveryMethode('Самовывоз', _pickup, _pickupIcon),
           btn(),
         ],
       ),
     );
   }
 
-  Widget deliveryMethode(title, int value) {
-    return Card(
-      child: ListTile(
-        title: Text(title),
-        leading: Radio(
-          value: value,
-          groupValue: _groupValue,
-          onChanged: (int? value) {
-            setState(() {
-              _groupValue = value;
-            });
-          },
+  Widget deliveryMethode(title, int value, String iconPath) {
+    return GestureDetector(
+      onTap: () {
+        setState(() {
+          _groupValue = value;
+        });
+      },
+      child: Container(
+        height: 80,
+        child: Card(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              ListTile(
+                title: Text(
+                  title,
+                  style: TextStyle(
+                    color: Color(0xff27282A),
+                    fontSize: 18,
+                  ),
+                ),
+                horizontalTitleGap: 32,
+                leading: Image.asset('$iconPath', width: 40, height: 40),
+                trailing: Radio(
+                  value: value,
+                  groupValue: _groupValue,
+                  onChanged: (int? value) {
+                    setState(() {
+                      _groupValue = value;
+                    });
+                  },
+                  activeColor: Color(0xffFF9F38),
+                ),
+              ),
+            ],
+          ),
         ),
       ),
     );
@@ -60,13 +86,13 @@ class _DeliveryMethodeState extends State<DeliveryMethode> {
         }
       },
       style: ElevatedButton.styleFrom(
-        primary: Color(0xff27282A),
-        fixedSize: Size(
-          MediaQuery.of(context).size.width / 100 * 50,
-          MediaQuery.of(context).size.height / 100 * 6,
-        ),
-        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10))
-      ),
+          primary: Color(0xff27282A),
+          fixedSize: Size(
+            MediaQuery.of(context).size.width / 100 * 50,
+            MediaQuery.of(context).size.height / 100 * 6,
+          ),
+          shape:
+              RoundedRectangleBorder(borderRadius: BorderRadius.circular(10))),
     );
   }
 }
