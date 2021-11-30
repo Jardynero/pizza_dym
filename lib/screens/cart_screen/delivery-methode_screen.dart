@@ -109,7 +109,8 @@ class _DeliveryMethodeState extends State<DeliveryMethode> {
 
   Widget btn() {
     return Container(
-      margin: EdgeInsets.only(bottom: MediaQuery.of(context).size.height / 100 * 5),
+      margin:
+          EdgeInsets.only(bottom: MediaQuery.of(context).size.height / 100 * 5),
       child: ElevatedButton(
         child: Text('Далее', style: TextStyle(fontSize: 20)),
         onPressed: () {
@@ -122,13 +123,15 @@ class _DeliveryMethodeState extends State<DeliveryMethode> {
           }
         },
         style: ElevatedButton.styleFrom(
-            primary: Color(0xff27282A),
-            fixedSize: Size(
-              MediaQuery.of(context).size.width / 100 * 60,
-              MediaQuery.of(context).size.height / 100 * 6,
-            ),
-            shape:
-                RoundedRectangleBorder(borderRadius: BorderRadius.circular(10))),
+          primary: Color(0xff27282A),
+          fixedSize: Size(
+            MediaQuery.of(context).size.width / 100 * 60,
+            MediaQuery.of(context).size.height / 100 * 6,
+          ),
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(10),
+          ),
+        ),
       ),
     );
   }
