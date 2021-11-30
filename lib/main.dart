@@ -1,13 +1,14 @@
 // Import screens
 import 'package:pizza_dym/screens/about-pizza_screen.dart';
+import 'package:pizza_dym/screens/cart_screen/adress_screen.dart';
 import 'package:pizza_dym/screens/cart_screen/cart_screen.dart';
 
-import 'package:pizza_dym/screens/cart_screen/ckeckout_screen.dart';
-import 'package:pizza_dym/screens/contacts_screen.dart';
+import 'package:pizza_dym/screens/cart_screen/delivery-methode_screen.dart';
+import 'package:pizza_dym/screens/cart_screen/pickup_screen.dart';
+import 'package:pizza_dym/screens/profile/contacts_screen.dart';
 import 'package:pizza_dym/screens/index_screen/index_screen.dart';
 import 'package:pizza_dym/screens/login_screen/login-code-screen/login-code_screen.dart';
 import 'package:pizza_dym/screens/login_screen/login-phone-screen/login-phone_screen.dart';
-import 'package:pizza_dym/screens/profile_screen.dart';
 
 // Import models
 import 'package:pizza_dym/models/cart_model.dart';
@@ -16,6 +17,8 @@ import 'package:pizza_dym/models/customer-data_model.dart';
 // Import libraries
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
+import 'package:pizza_dym/screens/profile/main_screen.dart';
+import 'package:pizza_dym/screens/profile/user-adress_screen.dart';
 import 'package:pizza_dym/theme/main_theme.dart';
 import 'package:provider/provider.dart';
 import 'package:flutter/material.dart';
@@ -71,8 +74,11 @@ class _PizzadymState extends State<Pizzadym> {
         '/about-pizza': (context) => AboutPizzaScreen(),
         '/contacts': (context) => ContactsScreen(),
         '/cart': (context) => CartScreen(),
-        '/checkout': (context) => CheckoutScreen(),
+        '/delivery-methode': (context) => DeliveryMethode(),
+        '/pickup' : (context) => PickupScreen(),
+        '/adress' : (context) => AdressScreen(),
         '/profile': (context) => ProfileScreen(),
+        '/profile/useradress': (context) => ProfileUserAdressScreen(),
       },
       theme: MainColorTheme().mainTheme,
     );
