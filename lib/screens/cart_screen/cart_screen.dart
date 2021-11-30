@@ -24,10 +24,11 @@ class _CartScreenState extends State<CartScreen> {
         Provider.of<CartModel>(context, listen: true).cart.getTotalAmount();
     var cart = Provider.of<CartModel>(context, listen: true).cart;
 
-    bool restaurantStatus = Provider.of<CartModel>(context, listen: true).restaurantStatus;
+    bool restaurantStatus =
+        Provider.of<CartModel>(context, listen: true).restaurantStatus;
 
-    String restaurantStatusMessage = Provider.of<CartModel>(context, listen: true).restaurantStatusMessage;
-
+    String restaurantStatusMessage =
+        Provider.of<CartModel>(context, listen: true).restaurantStatusMessage;
 
     return Scaffold(
       appBar: MainAppBar('Корзина'),
@@ -43,7 +44,7 @@ class _CartScreenState extends State<CartScreen> {
                   return itemList(cart, index);
                 }),
           ),
-          bottomBar(totalAmount, restaurantStatus, restaurantStatusMessage),
+          bottomBar(totalAmount),
         ],
       ),
     );
@@ -140,7 +141,8 @@ class _CartScreenState extends State<CartScreen> {
   }
 
   Widget bottomBar(
-      double totalAmount, restaurantStatus, restaurantStatusMessage) {
+    double totalAmount,
+  ) {
     return SafeArea(
       child: Container(
         width: MediaQuery.of(context).size.width,
@@ -176,9 +178,7 @@ class _CartScreenState extends State<CartScreen> {
                 height: 50,
                 child: ElevatedButton(
                   child: Text(
-                    restaurantStatus == false
-                        ? restaurantStatusMessage
-                        : 'Далее',
+                    'Далее',
                     style: TextStyle(fontSize: 18),
                   ),
                   style: ElevatedButton.styleFrom(
@@ -187,11 +187,9 @@ class _CartScreenState extends State<CartScreen> {
                       borderRadius: BorderRadius.circular(10),
                     ),
                   ),
-                  onPressed: restaurantStatus == false
-                      ? null
-                      : () {
-                          Navigator.pushNamed(context, '/checkout');
-                        },
+                  onPressed: () {
+                    Navigator.pushNamed(context, '/delivery-methode');
+                  },
                 ),
               ),
             ),
