@@ -23,6 +23,7 @@ import 'package:pizza_dym/theme/main_theme.dart';
 import 'package:provider/provider.dart';
 import 'package:flutter/material.dart';
 import 'package:app_tracking_transparency/app_tracking_transparency.dart';
+import 'package:flutter_localizations/flutter_localizations.dart';
 
 // Import functions
 import 'package:pizza_dym/functions/firebase_functions.dart';
@@ -56,7 +57,8 @@ class _PizzadymState extends State<Pizzadym> {
   void initState() {
     initFirebaseMessaging(messaging);
     FirebaseMessaging.onBackgroundMessage(firebaseMessagingBackgroundHandler);
-    Provider.of<CloudFirestore>(context, listen: false).obtainRestautantSettings();
+    Provider.of<CloudFirestore>(context, listen: false)
+        .obtainRestautantSettings();
     AppTrackingTransparency.requestTrackingAuthorization();
     super.initState();
   }
@@ -75,12 +77,16 @@ class _PizzadymState extends State<Pizzadym> {
         '/contacts': (context) => ContactsScreen(),
         '/cart': (context) => CartScreen(),
         '/delivery-methode': (context) => DeliveryMethode(),
-        '/pickup' : (context) => PickupScreen(),
-        '/adress' : (context) => AdressScreen(),
+        '/pickup': (context) => PickupScreen(),
+        '/adress': (context) => AdressScreen(),
         '/profile': (context) => ProfileScreen(),
         '/profile/useradress': (context) => ProfileUserAdressScreen(),
       },
       theme: MainColorTheme().mainTheme,
+      localizationsDelegates: [
+        GlobalMaterialLocalizations.delegate
+      ],
+      supportedLocales: [Locale('ru', 'RU')],
     );
   }
 }
