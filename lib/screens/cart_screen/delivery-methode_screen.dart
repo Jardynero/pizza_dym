@@ -24,8 +24,7 @@ class _DeliveryMethodeState extends State<DeliveryMethode> {
       appBar: MainAppBar('Способ доставки'),
       body: Column(
         children: [
-          deliveryMethode('Доставка на дом', _delivery, _takeAvayIcon),
-          deliveryMethode('Самовывоз', _pickup, _pickupIcon),
+          deliveryMethodes(),
           btn(),
         ],
       ),
@@ -70,6 +69,15 @@ class _DeliveryMethodeState extends State<DeliveryMethode> {
           ),
         ),
       ),
+    );
+  }
+
+  Widget deliveryMethodes() {
+    return Column(
+      children: [
+        deliveryMethode('Доставка на дом', _delivery, _takeAvayIcon),
+        deliveryMethode('Самовывоз', _pickup, _pickupIcon),
+      ],
     );
   }
 
