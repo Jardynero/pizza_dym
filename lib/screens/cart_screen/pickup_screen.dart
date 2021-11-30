@@ -165,7 +165,8 @@ class _PickupScreenState extends State<PickupScreen> {
         onPressed: () {
           if (onChangedTime == false) {
             ScaffoldMessenger.of(context).showSnackBar(
-              reUsableSnackBar('Пожалуйста, выберите время самовывоза', context),
+              reUsableSnackBar(
+                  'Пожалуйста, выберите время самовывоза', context),
             );
           } else if (isChoseTimeOk == false) {
             ScaffoldMessenger.of(context).showSnackBar(
@@ -183,15 +184,15 @@ class _PickupScreenState extends State<PickupScreen> {
           }
         },
         style: ElevatedButton.styleFrom(
-            primary: Color(0xff27282A),
-            fixedSize: Size(
-              MediaQuery.of(context).size.width / 100 * 60,
-              MediaQuery.of(context).size.height / 100 * 6,
-            ),
-            shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(10),
-            ),
+          primary: Color(0xff27282A),
+          fixedSize: Size(
+            MediaQuery.of(context).size.width / 100 * 60,
+            MediaQuery.of(context).size.height / 100 * 6,
           ),
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(10),
+          ),
+        ),
       ),
     );
   }
