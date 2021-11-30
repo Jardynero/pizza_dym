@@ -44,7 +44,7 @@ class CartModel extends ChangeNotifier {
     notifyListeners();
   }
 
-  // Количество кокнертного товара в корзине
+  // Количество конкретного товара в корзине
   int _singleProductQntInCart = 0;
 
   int get singleProductQntInCart => _singleProductQntInCart;
@@ -97,4 +97,15 @@ class CartModel extends ChangeNotifier {
 
     notifyListeners();
   }
+
+
+  // var == 1 ? доставка на дом
+  // var == 2 ? самовывоз из ресторана
+  int _deliveryMethode = 0;
+  int get deliveryMethode => _deliveryMethode;
+
+  void checkDeliveryMethode(int deliveryMethode) {
+    _deliveryMethode = deliveryMethode;
+  }
 }
+
