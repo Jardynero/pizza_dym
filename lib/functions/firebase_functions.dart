@@ -112,7 +112,7 @@ class CloudFirestore extends ChangeNotifier {
       if (weekdayToday.toString() == key && value == false) {
         ScaffoldMessenger.of(context).showSnackBar(
           reUsableSnackBar(
-            'Извините, сегодня мы не работаем, у нас выходной',
+            'Извините, сегодня у нас выходной, но можно заказать на другой день!',
             context,
           ),
         );
@@ -121,21 +121,21 @@ class CloudFirestore extends ChangeNotifier {
     if (isOpen == false) {
       ScaffoldMessenger.of(context).showSnackBar(
         reUsableSnackBar(
-          'Извините, сегодня мы больше не принимаем заказы!',
+          'Сегодня мы больше не принимаем заказы, но можно заказать на другой день!',
           context,
         ),
       );
     } else if (timeNowHour < openingTime) {
       ScaffoldMessenger.of(context).showSnackBar(
         reUsableSnackBar(
-          'Сейчас очень рано, мы работаем с $openingTime часов',
+          'Сейчас мы еще закрыты, но оформить заказ можно!',
           context,
         ),
       );
     } else if (timeNowHour >= closingTime) {
       ScaffoldMessenger.of(context).showSnackBar(
         reUsableSnackBar(
-          'Уже очень поздно:( Мы принимаем заказы до $closingTime',
+          'Сейчас мы уже закрыты, но можно оформить заказ на другой день!',
           context,
         ),
       );
