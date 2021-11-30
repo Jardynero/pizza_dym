@@ -23,7 +23,11 @@ class _ProfileUserAdressScreenState extends State<ProfileUserAdressScreen> {
 
   @override
   Widget build(BuildContext context) {
-    String? _userPhoneNumber = Provider.of<FirebaseAuthInstance>(context, listen: false).auth.currentUser!.phoneNumber;
+    String? _userPhoneNumber =
+        Provider.of<FirebaseAuthInstance>(context, listen: false)
+            .auth
+            .currentUser!
+            .phoneNumber;
     return Scaffold(
       appBar: MainAppBar('Адрес доставки'),
       body: Padding(
@@ -147,26 +151,43 @@ class _ProfileUserAdressScreenState extends State<ProfileUserAdressScreen> {
   }
 
   Widget btn(_userPhoneNumber) {
-    return ElevatedButton(
-      child: Text('Сохранить'),
-      onPressed: () {
-        if (_formKey.currentState!.validate()) {
-          print('Saved!');
-          print(Provider.of<FirebaseAuthInstance>(context, listen: false).auth.currentUser!.phoneNumber);
-          updateUserDeliveryAdress(_userPhoneNumber);
-        }
-      },
+    return Container(
+      margin:
+          EdgeInsets.only(bottom: MediaQuery.of(context).size.height / 100 * 5),
+      child: ElevatedButton(
+        child: Text('Сохранить адрес', style: TextStyle(fontSize: 20)),
+        onPressed: () {
+          if (_formKey.currentState!.validate()) {
+            print('Saved!');
+            print(Provider.of<FirebaseAuthInstance>(context, listen: false)
+                .auth
+                .currentUser!
+                .phoneNumber);
+            updateUserDeliveryAdress(_userPhoneNumber);
+          }
+        },
+        style: ElevatedButton.styleFrom(
+          primary: Color(0xff27282A),
+          fixedSize: Size(
+            MediaQuery.of(context).size.width / 100 * 60,
+            MediaQuery.of(context).size.height / 100 * 6,
+          ),
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(10),
+          ),
+        ),
+      ),
     );
   }
+
   Future updateUserDeliveryAdress(_userPhoneNumber) async {
     FirebaseFirestore.instance.collection('users').doc('+79175334077').set({
-      'Удица дом корпус':'${_streetController.text}',
-      'Подъезд':'${_entranceController.text}',
-      'Кв/Офис':'${_appartmentController.text}',
-      'Этаж':'${_floorController.text}',
-      'Домофон':'${_intercomController.text}',
-      'Комментарий':'${_commentController.text}',
+      'Удица дом корпус': '${_streetController.text}',
+      'Подъезд': '${_entranceController.text}',
+      'Кв/Офис': '${_appartmentController.text}',
+      'Этаж': '${_floorController.text}',
+      'Домофон': '${_intercomController.text}',
+      'Комментарий': '${_commentController.text}',
     });
-
   }
 }
