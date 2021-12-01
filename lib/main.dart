@@ -18,7 +18,7 @@ import 'package:pizza_dym/models/customer-data_model.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:pizza_dym/screens/profile/main_screen.dart';
-import 'package:pizza_dym/screens/profile/user-adress_screen.dart';
+import 'package:pizza_dym/screens/profile/user%20adress/user-adress_screen.dart';
 import 'package:pizza_dym/theme/main_theme.dart';
 import 'package:provider/provider.dart';
 import 'package:flutter/material.dart';
@@ -81,7 +81,6 @@ class _PizzadymState extends State<Pizzadym> {
         '/pickup': (context) => PickupScreen(),
         '/adress': (context) => AdressScreen(),
         '/profile': (context) => ProfileScreen(),
-        '/profile/useradress': (context) => ProfileUserAdressScreen(),
       },
       theme: MainColorTheme().mainTheme,
       localizationsDelegates: [
