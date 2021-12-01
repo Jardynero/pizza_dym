@@ -42,6 +42,10 @@ dependencies:
   flutter_cart: ^0.0.6
   app_tracking_transparency: ^2.0.2+1
   flutter_cupertino_localizations: ^1.0.1
+  dadata_suggestions:
+    git:
+      url: https://github.com/illabo/dadata_suggestions.git
+  flutter_typeahead: ^3.2.3
 
 dev_dependencies:
   flutter_test:
