@@ -4,6 +4,8 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:pizza_dym/functions/firebase_functions.dart';
 import 'package:pizza_dym/global_widgets/appBar.dart';
+import 'package:pizza_dym/models/cart_model.dart';
+import 'package:pizza_dym/screens/profile/user%20adress/user-adress_screen.dart';
 import 'package:provider/provider.dart';
 
 class ProfileScreen extends StatelessWidget {
@@ -29,11 +31,21 @@ class ProfileScreen extends StatelessWidget {
               child: Text("Контакты"),
             ),
             ElevatedButton(
-              onPressed: () => Navigator.pushNamed(context, '/delivery-methode'),
+              onPressed: () =>
+                  Navigator.pushNamed(context, '/delivery-methode'),
               child: Text("Данные о заказе"),
             ),
             ElevatedButton(
-              onPressed: () => Navigator.pushNamed(context, '/profile/useradress'),
+              onPressed: () {
+                getUserAdress(context);
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (BuildContext context) =>
+                        ProfileUserAdressScreen(),
+                  ),
+                );
+              },
               child: Text("Адрес доставки"),
             ),
           ],
