@@ -1,6 +1,7 @@
 // Checkout page
 
 import 'package:flutter/material.dart';
+import 'package:pizza_dym/functions/firebase_functions.dart';
 import 'package:pizza_dym/global_widgets/appBar.dart';
 import 'package:pizza_dym/models/cart_model.dart';
 import 'package:provider/provider.dart';
@@ -117,6 +118,7 @@ class _DeliveryMethodeState extends State<DeliveryMethode> {
           Provider.of<CartModel>(context, listen: false)
               .checkDeliveryMethode(_groupValue!);
           if (_groupValue == 1) {
+            getUserAdress(context);
             Navigator.pushNamed(context, '/adress');
           } else if (_groupValue == 2) {
             Navigator.pushNamed(context, '/pickup');
@@ -125,7 +127,7 @@ class _DeliveryMethodeState extends State<DeliveryMethode> {
         style: ElevatedButton.styleFrom(
           primary: Color(0xff27282A),
           fixedSize: Size(
-            MediaQuery.of(context).size.width / 100 * 60,
+            MediaQuery.of(context).size.width / 100 * 54,
             MediaQuery.of(context).size.height / 100 * 6,
           ),
           shape: RoundedRectangleBorder(
