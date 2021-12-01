@@ -89,7 +89,7 @@ class _PaymentMethodeScreenState extends State<PaymentMethodeScreen> {
               if (value == null || value.isEmpty) {
                 return 'Укажите с какой суммы нужна сдача!';
               }
-              int _inputValue = int.parse(value!);
+              int _inputValue = int.parse(value);
               if (_inputValue < totalAmount.toInt()) {
                 return 'Число не может быть меньше ${totalAmount.toInt()}';
               }
