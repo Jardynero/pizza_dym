@@ -356,6 +356,7 @@ class _AdressScreenState extends State<AdressScreen> {
           if (_formKey.currentState!.validate()) {
             print('Saved!');
             updateUserDeliveryAdress(_userPhoneNumber);
+            Navigator.pushNamed(context, '/cart/select-delivery-time');
           }
         },
         style: ElevatedButton.styleFrom(
