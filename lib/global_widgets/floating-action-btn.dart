@@ -20,7 +20,7 @@ class FloatingActionBtn extends StatelessWidget {
             Navigator.pushNamed(context, '/cart');
           },
           icon: Icon(Icons.shopping_bag_outlined),
-          label: Text('${Provider.of<CartModel>(context, listen: true).getTotalItemsPrice.toInt()}₽', style: TextStyle(fontSize: 18,)),
+          label: Text('${Provider.of<CartModel>(context, listen: true).getTotalItemsPrice.toInt()}₽', style: TextStyle(fontSize: 14, fontWeight:FontWeight.w500)),
           shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(15)),
           elevation: 10,
           backgroundColor: Color(0xff27282A),
