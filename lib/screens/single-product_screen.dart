@@ -62,7 +62,7 @@ class _SingleProductScreenState extends State<SingleProductScreen> {
           child: Text(
             '${widget.data[0]}',
             style: TextStyle(
-              fontSize: 24,
+              fontSize: 20,
               fontWeight: FontWeight.bold,
               color: Colors.black,
             ),
@@ -78,7 +78,7 @@ class _SingleProductScreenState extends State<SingleProductScreen> {
                 ? '${widget.data[6]}'
                 : '${widget.data[6]}, ${widget.data[7]}',
             style: TextStyle(
-              fontSize: 18,
+              fontSize: 16,
               fontWeight: FontWeight.w500,
               color: Colors.black,
             ),
@@ -231,7 +231,7 @@ class _SingleProductScreenState extends State<SingleProductScreen> {
             },
             child: Text('${widget.data[2] * productQnt}₽',
                 style: TextStyle(
-                  fontSize: 20,
+                  fontSize: 15,
                 )),
           ),
         ],
