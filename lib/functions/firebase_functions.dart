@@ -6,6 +6,8 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:pizza_dym/global_widgets/snackbar.dart';
 import 'package:firebase_analytics/firebase_analytics.dart';
+import 'package:pizza_dym/models/cart_model.dart';
+import 'package:provider/provider.dart';
 
 // request permission for notifications
 Future initFirebaseMessaging(firebaseMessagingInstance) async {
@@ -80,7 +82,6 @@ class CloudFirestore extends ChangeNotifier {
 
     var docInstance = await docReference.get();
 
-
     int openTime = docInstance.get('openingTime');
     _openingTime = openTime;
 
@@ -141,4 +142,34 @@ class CloudFirestore extends ChangeNotifier {
       );
     }
   }
+}
+
+Future<void> getUserAdress(context) async {
+  DocumentReference _currentUser = FirebaseFirestore.instance
+      .collection('users')
+      .doc(
+          '${Provider.of<FirebaseAuthInstance>(context, listen: false).auth.currentUser!.phoneNumber}');
+  _currentUser.get().then((value) {
+    if (value.exists) {
+      try {
+        String userStreet = value.get('Улица');
+        String userHouse = value.get('Дом');
+        String userBlock = value.get('Корпус');
+        String userEntrance = value.get('Подъезд');
+        String userAppartment = value.get('Квартира');
+        String userIntercom = value.get('Домофон');
+        String userFloor = value.get('Этаж');
+        Provider.of<CartModel>(context, listen: false).getUserAdressData(
+            userStreet,
+            userHouse,
+            userBlock,
+            userEntrance,
+            userAppartment,
+            userIntercom,
+            userFloor);
+      } catch (e) {
+        print(e);
+      }
+    }
+  });
 }
