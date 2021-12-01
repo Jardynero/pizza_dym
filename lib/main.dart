@@ -4,6 +4,7 @@ import 'package:pizza_dym/screens/cart_screen/adress_screen.dart';
 import 'package:pizza_dym/screens/cart_screen/cart_screen.dart';
 
 import 'package:pizza_dym/screens/cart_screen/delivery-methode_screen.dart';
+import 'package:pizza_dym/screens/cart_screen/payment-methode_screen.dart';
 import 'package:pizza_dym/screens/cart_screen/pickup_screen.dart';
 import 'package:pizza_dym/screens/cart_screen/select-delivery-time.dart';
 import 'package:pizza_dym/screens/profile/contacts_screen.dart';
@@ -81,6 +82,7 @@ class _PizzadymState extends State<Pizzadym> {
         '/delivery-methode': (context) => DeliveryMethode(),
         '/pickup': (context) => PickupScreen(),
         '/cart/select-delivery-time': (context) => SelectDeliveryTimeScreen(),
+        '/cart/payment': (context) => PaymentMethodeScreen(),
         '/adress': (context) => AdressScreen(),
         '/profile': (context) => ProfileScreen(),
       },
