@@ -98,7 +98,6 @@ class CartModel extends ChangeNotifier {
     notifyListeners();
   }
 
-
   // var == 1 ? доставка на дом
   // var == 2 ? самовывоз из ресторана
   int _deliveryMethode = 0;
@@ -107,5 +106,86 @@ class CartModel extends ChangeNotifier {
   void checkDeliveryMethode(int deliveryMethode) {
     _deliveryMethode = deliveryMethode;
   }
-}
 
+  String _userStreet = '';
+  String _userHouse = '';
+  String _userBlock = '';
+  String _userEntrance = '';
+  String _userAppartment = '';
+  String _userIntercom = '';
+  String _userFloor = '';
+  String get userStreet => _userStreet;
+  String get userHouse => _userHouse;
+  String get userBlock => _userBlock;
+  String get userEntrance => _userEntrance;
+  String get userAppartment => _userAppartment;
+  String get userIntercom => _userIntercom;
+  String get userFloor => _userFloor;
+
+  void getUserAdressData(
+    userStreet,
+    userHouse,
+    userBlock,
+    userEntrance,
+    userAppartment,
+    userIntercom,
+    userFloor,
+  ) {
+    _userStreet = userStreet;
+    _userHouse = userHouse;
+    _userBlock = userBlock;
+    _userEntrance = userEntrance;
+    _userAppartment = userAppartment;
+    _userIntercom = userIntercom;
+    _userFloor = userFloor;
+
+    notifyListeners();
+  }
+
+  void changeStreetAdress(newValue) {
+    _userStreet = newValue;
+
+    notifyListeners();
+  }
+
+  void changeHouseAdress(newValue) {
+    _userHouse = newValue;
+
+    notifyListeners();
+  }
+
+  void changeBlockAdress(newValue) {
+    _userBlock = newValue;
+
+    notifyListeners();
+  }
+  void changeEntranceAdress(newValue) {
+    _userEntrance = newValue;
+
+    notifyListeners();
+  }
+  void changeAppartmentAdress(newValue) {
+    _userAppartment = newValue;
+
+    notifyListeners();
+  }
+  void changeIntercomAdress(newValue) {
+    _userIntercom = newValue;
+
+    notifyListeners();
+  }
+  void changeFloorAdress(newValue) {
+    _userFloor = newValue;
+
+    notifyListeners();
+  }
+
+  double _appBarMaxHeight = 0.0;
+  double get appBarMaxHeight => _appBarMaxHeight;
+
+  void getAppBarMaxHeight(appBarMaxHeight) {
+    _appBarMaxHeight = appBarMaxHeight;
+
+    notifyListeners();
+  }
+}
