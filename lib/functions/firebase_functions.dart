@@ -76,6 +76,9 @@ class CloudFirestore extends ChangeNotifier {
   Map _workingDays = {};
   Map get workingDays => _workingDays;
 
+  int _minDeliveryOrderPrice = 0;
+  int get minDeliveryOrderPrice => _minDeliveryOrderPrice;
+
   Future<void> obtainRestautantSettings() async {
     DocumentReference docReference =
         firestore.collection('restaurant').doc('settings');
@@ -93,6 +96,9 @@ class CloudFirestore extends ChangeNotifier {
 
     Map workingDays = docInstance.get('workingDays');
     _workingDays = workingDays;
+
+    int minDeliveryOrderPrice = docInstance.get('minDeliveryOrderPrice');
+    _minDeliveryOrderPrice = minDeliveryOrderPrice;
 
     notifyListeners();
   }
