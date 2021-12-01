@@ -58,9 +58,12 @@ class _AdressScreenState extends State<AdressScreen> {
             .auth
             .currentUser!
             .phoneNumber;
-    return Scaffold(
-      appBar: MainAppBar('Доставка на дом'),
-      body: _main(_userPhoneNumber),
+    return GestureDetector(
+      onTap: () {FocusScope.of(context).unfocus();},
+      child: Scaffold(
+        appBar: MainAppBar('Адрес доставки'),
+        body: _main(_userPhoneNumber),
+      ),
     );
   }
 
@@ -314,7 +317,6 @@ class _AdressScreenState extends State<AdressScreen> {
       key: _formKey,
       child: Column(
         children: [
-          title(),
           Container(margin: EdgeInsets.only(top: 10), child: streetField()),
           Container(
             margin: EdgeInsets.symmetric(vertical: 15),
@@ -351,7 +353,7 @@ class _AdressScreenState extends State<AdressScreen> {
       margin: EdgeInsets.only(
           bottom: MediaQuery.of(context).size.height / 100 * 2.8, top: 30),
       child: ElevatedButton(
-        child: Text('Продолжить', style: TextStyle(fontSize: 20)),
+        child: Text('ПРОДОЛЖИТЬ', style: TextStyle(fontSize: 14, fontWeight:FontWeight.w600)),
         onPressed: () {
           if (_formKey.currentState!.validate()) {
             print('Saved!');
@@ -362,8 +364,8 @@ class _AdressScreenState extends State<AdressScreen> {
         style: ElevatedButton.styleFrom(
           primary: Color(0xff27282A),
           fixedSize: Size(
-            MediaQuery.of(context).size.width / 100 * 54,
-            MediaQuery.of(context).size.height / 100 * 6,
+            MediaQuery.of(context).size.width / 100 * 80,
+            MediaQuery.of(context).size.height / 100 * 8,
           ),
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(10),
