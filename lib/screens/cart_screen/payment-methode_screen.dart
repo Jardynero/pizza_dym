@@ -168,6 +168,7 @@ class _PaymentMethodeScreenState extends State<PaymentMethodeScreen> {
       onTap: () {
         setState(() {
           _groupValue = value;
+          _cashController.text = '';
         });
       },
       child: Container(
