@@ -39,17 +39,19 @@ class _PickupScreenState extends State<PickupScreen> {
   Widget title() {
     return Column(
       children: [
+        // Container(
+        //   margin: EdgeInsets.only(top: 20, bottom: 10),
+        //   child: Text(
+        //     'Данные о заказе',
+        //     style: TextStyle(
+        //       fontSize: 24,
+        //       fontWeight: FontWeight.bold,
+        //     ),
+        //   ),
+        // ),
         Container(
-          margin: EdgeInsets.only(top: 20, bottom: 10),
-          child: Text(
-            'Данные о заказе',
-            style: TextStyle(
-              fontSize: 24,
-              fontWeight: FontWeight.bold,
-            ),
-          ),
-        ),
-        Text('Выберите время самовывоза'),
+            margin: EdgeInsets.only(top: 20),
+            child: Text('Выберите время самовывоза')),
         soonTime(),
       ],
     );
@@ -161,7 +163,7 @@ class _PickupScreenState extends State<PickupScreen> {
       margin:
           EdgeInsets.only(bottom: MediaQuery.of(context).size.height / 100 * 5),
       child: ElevatedButton(
-        child: Text('Оформить заказ', style: TextStyle(fontSize: 20)),
+        child: Text('ОФОРМИТЬ ЗАКАЗ', style: TextStyle(fontSize: 14, fontWeight:FontWeight.w600)),
         onPressed: () {
           if (onChangedTime == false) {
             ScaffoldMessenger.of(context).showSnackBar(
@@ -186,8 +188,8 @@ class _PickupScreenState extends State<PickupScreen> {
         style: ElevatedButton.styleFrom(
           primary: Color(0xff27282A),
           fixedSize: Size(
-            MediaQuery.of(context).size.width / 100 * 60,
-            MediaQuery.of(context).size.height / 100 * 6,
+            MediaQuery.of(context).size.width / 100 * 80,
+            MediaQuery.of(context).size.height / 100 * 8,
           ),
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(10),

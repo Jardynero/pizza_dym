@@ -61,9 +61,12 @@ class _ProfileUserAdressScreenState extends State<ProfileUserAdressScreen> {
             .auth
             .currentUser!
             .phoneNumber;
-    return Scaffold(
-      appBar: MainAppBar('Адрес доставки'),
-      body: _main(_userPhoneNumber),
+    return GestureDetector(
+      onTap: () {FocusScope.of(context).unfocus();},
+      child: Scaffold(
+        appBar: MainAppBar('Адрес доставки'),
+        body: _main(_userPhoneNumber),
+      ),
     );
   }
 
@@ -309,7 +312,13 @@ class _ProfileUserAdressScreenState extends State<ProfileUserAdressScreen> {
       margin: EdgeInsets.only(
           bottom: MediaQuery.of(context).size.height / 100 * 2.8, top: 30),
       child: ElevatedButton(
-        child: Text('Сохранить адрес', style: TextStyle(fontSize: 20)),
+        child: Text(
+          'СОХРАНИТЬ АДРЕС',
+          style: TextStyle(
+            fontSize: 15,
+            fontWeight: FontWeight.w600,
+          ),
+        ),
         onPressed: () {
           if (_formKey.currentState!.validate()) {
             print('Saved!');
@@ -322,8 +331,8 @@ class _ProfileUserAdressScreenState extends State<ProfileUserAdressScreen> {
         style: ElevatedButton.styleFrom(
           primary: Color(0xff27282A),
           fixedSize: Size(
-            MediaQuery.of(context).size.width / 100 * 60,
-            MediaQuery.of(context).size.height / 100 * 6,
+            MediaQuery.of(context).size.width / 100 * 80,
+            MediaQuery.of(context).size.height / 100 * 8,
           ),
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(10),

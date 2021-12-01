@@ -75,10 +75,10 @@ class _DeliveryMethodeState extends State<DeliveryMethode> {
                   title,
                   style: TextStyle(
                     color: Color(0xff27282A),
-                    fontSize: 18,
+                    fontSize: 16,
                   ),
                 ),
-                horizontalTitleGap: 32,
+                horizontalTitleGap: 50,
                 leading: Image.asset('$iconPath', width: 40, height: 40),
                 trailing: Radio(
                   value: value,
@@ -101,7 +101,6 @@ class _DeliveryMethodeState extends State<DeliveryMethode> {
   Widget deliveryMethodes() {
     return Column(
       children: [
-        title(),
         deliveryMethode('Доставка на дом', _delivery, _takeAvayIcon),
         deliveryMethode('Самовывоз', _pickup, _pickupIcon),
       ],
@@ -109,12 +108,25 @@ class _DeliveryMethodeState extends State<DeliveryMethode> {
   }
 
   Widget btn() {
+    int minDeliveryOrderPrice =
+        Provider.of<CloudFirestore>(context, listen: false)
+            .minDeliveryOrderPrice;
+    double totalOrderPrice =
+        Provider.of<CartModel>(context, listen: false).cart.getTotalAmount();
     return Container(
       margin:
           EdgeInsets.only(bottom: MediaQuery.of(context).size.height / 100 * 5),
       child: ElevatedButton(
-        child: Text('Далее', style: TextStyle(fontSize: 20)),
-        onPressed: () {
+        child: Text(
+          _groupValue == 1 && totalOrderPrice.toInt() < minDeliveryOrderPrice
+              ? 'МИНИМАЛЬНЫЙ ЗАКАЗ 1000₽'
+              : 'ПРОДОЛЖИТЬ',
+          style: TextStyle(
+            fontSize: 14,
+            fontWeight: FontWeight.w600,
+          ),
+        ),
+        onPressed: _groupValue == 1 && totalOrderPrice.toInt() < minDeliveryOrderPrice ? null : () {
           Provider.of<CartModel>(context, listen: false)
               .checkDeliveryMethode(_groupValue!);
           if (_groupValue == 1) {
@@ -127,8 +139,8 @@ class _DeliveryMethodeState extends State<DeliveryMethode> {
         style: ElevatedButton.styleFrom(
           primary: Color(0xff27282A),
           fixedSize: Size(
-            MediaQuery.of(context).size.width / 100 * 54,
-            MediaQuery.of(context).size.height / 100 * 6,
+            MediaQuery.of(context).size.width / 100 * 80,
+            MediaQuery.of(context).size.height / 100 * 8,
           ),
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(10),
