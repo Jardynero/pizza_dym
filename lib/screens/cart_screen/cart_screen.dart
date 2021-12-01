@@ -178,8 +178,11 @@ class _CartScreenState extends State<CartScreen> {
                 height: 50,
                 child: ElevatedButton(
                   child: Text(
-                    'Далее',
-                    style: TextStyle(fontSize: 18),
+                    'ПРОДОЛЖИТЬ',
+                    style: TextStyle(
+                      fontSize: 14,
+                      fontWeight: FontWeight.w500,
+                    ),
                   ),
                   style: ElevatedButton.styleFrom(
                     primary: Color(0xff27282A),
