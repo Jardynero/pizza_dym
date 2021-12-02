@@ -216,9 +216,19 @@ class _SingleProductScreenState extends State<SingleProductScreen> {
             onPressed: () {
               Provider.of<CartModel>(context, listen: false)
                   .obtainQntOfProduct(widget.data[0]);
-              int singleProductQntInCart =
-                  Provider.of<CartModel>(context, listen: false)
-                      .singleProductQntInCart;
+              int singleProductQntInCart = 0;
+
+              try {
+                singleProductQntInCart = Provider.of<CartModel>(context, listen: false).cart.getSpecificItemFromCart(widget.data[0])!.quantity;
+              } catch (e) {
+                setState(() {
+                  singleProductQntInCart = 0;
+                });
+              }
+
+              
+              
+              print(singleProductQntInCart);
     
               Provider.of<CartModel>(context, listen: false).addProductToCartQnt(
                   widget.data[0],
@@ -226,6 +236,7 @@ class _SingleProductScreenState extends State<SingleProductScreen> {
                   widget.data[0],
                   productQnt + singleProductQntInCart,
                   widget.data[4].toString());
+              
               
               Navigator.pop(context);
             },
