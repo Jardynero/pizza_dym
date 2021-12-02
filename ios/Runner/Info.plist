@@ -61,5 +61,10 @@
 	<false/>
 	<key>NSUserTrackingUsageDescription</key>
 	<string>Нам необходимо это, для дальнейшего улучшения приложения:)</string>
+	<key>LSApplicationQueriesSchemes</key>
+	<array>
+  		<string>https</string>
+  		<string>http</string>
+	</array>
 </dict>
 </plist>
