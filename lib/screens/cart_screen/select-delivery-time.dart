@@ -25,6 +25,7 @@ class _SelectDeliveryTimeScreenState extends State<SelectDeliveryTimeScreen> {
   int interval = 60;
   String message = '';
   String soonTimeMessage = '';
+  DateTime _selectedDateTime = DateTime.now();
   @override
   void initState() {
     super.initState();
@@ -66,7 +67,7 @@ class _SelectDeliveryTimeScreenState extends State<SelectDeliveryTimeScreen> {
     );
   }
 
-  Widget deliveryMethode(title, int value, Icon iconPath, subtitle) {
+  Widget deliveryMethode(title, int value, String iconPath, subtitle) {
     return GestureDetector(
       onTap: () {
         setState(() {
@@ -90,8 +91,11 @@ class _SelectDeliveryTimeScreenState extends State<SelectDeliveryTimeScreen> {
                     ),
                   ),
                   horizontalTitleGap: 16,
-                  // leading: Image.asset('$iconPath', width: 40, height: 40),
-                  leading: iconPath,
+                  leading: Image.asset(
+                    '$iconPath',
+                    width: 35,
+                    height: 35,
+                  ),
                   subtitle: Text('$subtitle'),
                   trailing: Radio(
                     value: value,
@@ -201,6 +205,9 @@ class _SelectDeliveryTimeScreenState extends State<SelectDeliveryTimeScreen> {
         initialDateTime: initialDateTime,
         use24hFormat: true,
         onDateTimeChanged: (DateTime dt) {
+          setState(() {
+            _selectedDateTime = dt;
+          });
           if (dt.weekday.toString() == dayOf) {
             setState(() {
               message =
@@ -247,22 +254,58 @@ class _SelectDeliveryTimeScreenState extends State<SelectDeliveryTimeScreen> {
     );
   }
 
+  Widget dateTimeFull() {
+    return Column(
+      children: [
+        dateTimeWidget(),
+        Container(
+          margin: EdgeInsets.only(top: 30),
+          child: Visibility(
+              visible: onChangedTime == false ? false : true,
+              child: subtitle()),
+        ),
+      ],
+    );
+  }
+
+  Widget subtitle() {
+    int _intervalStartHour = _selectedDateTime.hour;
+    int _intervalEndHour = _selectedDateTime.add(Duration(minutes: 30)).hour;
+    dynamic _intervalStartMinute = _selectedDateTime.minute;
+    dynamic _intervalEndMinute = _selectedDateTime.add(Duration(minutes: 30)).minute;
+    if (_intervalStartMinute == 0) {
+      setState(() {
+        _intervalStartMinute = '0$_intervalStartMinute';
+      });
+    }
+    if (_intervalEndMinute == 0) {
+      setState(() {
+        _intervalEndMinute = '0$_intervalEndMinute';
+      });
+    }
+    return Align(
+      alignment: Alignment.center,
+      child: Text(
+          'Заказ приедет с $_intervalStartHour:$_intervalStartMinute до $_intervalEndHour:$_intervalEndMinute'),
+    );
+  }
+
   Widget _main() {
     return Column(
       children: [
         deliveryMethode(
             'Как можно скорее',
             _asSoonAsPossible,
-            Icon(Icons.sixty_fps_outlined, size: 40),
+            'assets/icons/asSoonAsPossible.png',
             'Привезем в течение 60 минут. Точнее время пришлем в смс'),
         deliveryMethode(
             'Доставка ко времени',
             _onTime,
-            Icon(Icons.schedule_outlined, size: 40),
+            'assets/icons/deliveryOnTime.png',
             'Привезем ко времени с интервалом в 30 минут'),
         Visibility(
           visible: _groupValue == _onTime ? true : false,
-          child: dateTimeWidget(),
+          child: dateTimeFull(),
         )
       ],
     );

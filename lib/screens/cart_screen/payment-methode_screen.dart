@@ -220,8 +220,12 @@ class _PaymentMethodeScreenState extends State<PaymentMethodeScreen> {
           style: TextStyle(fontSize: 14, fontWeight: FontWeight.w600),
         ),
         onPressed: () {
-          if (_formKey.currentState!.validate()) {
-            print('Заказ оформлен');
+          if (_groupValue == 1) {
+            print('Заказ оформлен!'); 
+          } else if (_groupValue == 2) {
+            if (_formKey.currentState!.validate()) {
+              print('Заказ оформлен');
+            }
           }
         },
         style: ElevatedButton.styleFrom(
