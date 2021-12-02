@@ -27,7 +27,13 @@ class CartModel extends ChangeNotifier {
   }
 
   void decrementItemFromCart(itemId) {
-    cart.decrementItemFromCart(cart.findItemIndexFromCart(itemId)!);
+    if (cart.getSpecificItemFromCart(itemId)!.quantity == 1) {
+      cart.deleteItemFromCart(cart.findItemIndexFromCart(itemId)!);
+      print('here');
+    }
+    else {
+      cart.decrementItemFromCart(cart.findItemIndexFromCart(itemId)!);
+    }
 
     notifyListeners();
   }
