@@ -20,6 +20,7 @@ import 'package:pizza_dym/models/customer-data_model.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:pizza_dym/screens/profile/main_screen.dart';
+import 'package:pizza_dym/screens/profile/order-history_screen.dart';
 import 'package:pizza_dym/screens/profile/user%20adress/user-adress_screen.dart';
 import 'package:pizza_dym/theme/main_theme.dart';
 import 'package:provider/provider.dart';
@@ -85,6 +86,8 @@ class _PizzadymState extends State<Pizzadym> {
         '/cart/payment': (context) => PaymentMethodeScreen(),
         '/adress': (context) => AdressScreen(),
         '/profile': (context) => ProfileScreen(),
+        '/order-history': (context) => OrderHistoryScreen(),
+        '/profile/adress': (context) => ProfileUserAdressScreen(),
       },
       theme: MainColorTheme().mainTheme,
       localizationsDelegates: [
