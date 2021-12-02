@@ -225,10 +225,6 @@ class _SingleProductScreenState extends State<SingleProductScreen> {
                   singleProductQntInCart = 0;
                 });
               }
-
-              
-              
-              print(singleProductQntInCart);
     
               Provider.of<CartModel>(context, listen: false).addProductToCartQnt(
                   widget.data[0],
