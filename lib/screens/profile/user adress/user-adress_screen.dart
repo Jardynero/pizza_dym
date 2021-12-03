@@ -371,7 +371,7 @@ class _ProfileUserAdressScreenState extends State<ProfileUserAdressScreen> {
               longitude: lon,
             ),
           );
-          if (resp != null && resp.suggestions.isNotEmpty) {
+          if (resp.suggestions.isNotEmpty) {
             return resp.suggestions;
           }
         } catch (e) {
@@ -385,7 +385,7 @@ class _ProfileUserAdressScreenState extends State<ProfileUserAdressScreen> {
           text,
         ),
       );
-      if (resp != null && resp.suggestions.isNotEmpty) {
+      if (resp.suggestions.isNotEmpty) {
         return resp.suggestions;
       }
     } catch (e) {

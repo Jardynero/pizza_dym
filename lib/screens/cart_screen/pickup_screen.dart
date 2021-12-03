@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:pizza_dym/functions/firebase_functions.dart';
 import 'package:pizza_dym/global_widgets/appBar.dart';
 import 'package:pizza_dym/global_widgets/snackbar.dart';
-import 'package:pizza_dym/models/cart_model.dart';
 import 'package:provider/provider.dart';
 import 'package:flutter/cupertino.dart';
 

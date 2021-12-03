@@ -5,7 +5,6 @@ import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:pizza_dym/global_widgets/snackbar.dart';
-import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:pizza_dym/models/cart_model.dart';
 import 'package:provider/provider.dart';
 

@@ -24,12 +24,6 @@ class _CartScreenState extends State<CartScreen> {
         Provider.of<CartModel>(context, listen: true).cart.getTotalAmount();
     var cart = Provider.of<CartModel>(context, listen: true).cart;
 
-    bool restaurantStatus =
-        Provider.of<CartModel>(context, listen: true).restaurantStatus;
-
-    String restaurantStatusMessage =
-        Provider.of<CartModel>(context, listen: true).restaurantStatusMessage;
-
     return Scaffold(
       appBar: MainAppBar('Корзина'),
       body: Column(

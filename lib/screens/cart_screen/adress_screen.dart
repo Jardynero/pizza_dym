@@ -404,7 +404,7 @@ class _AdressScreenState extends State<AdressScreen> {
               longitude: lon,
             ),
           );
-          if (resp != null && resp.suggestions.isNotEmpty) {
+          if (resp.suggestions.isNotEmpty) {
             return resp.suggestions;
           }
         } catch (e) {
@@ -418,7 +418,7 @@ class _AdressScreenState extends State<AdressScreen> {
           text,
         ),
       );
-      if (resp != null && resp.suggestions.isNotEmpty) {
+      if (resp.suggestions.isNotEmpty) {
         return resp.suggestions;
       }
     } catch (e) {

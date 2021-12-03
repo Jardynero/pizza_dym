@@ -13,7 +13,6 @@ class ContactsScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     var heightSize = MediaQuery.of(context).size.height;
     print(heightSize);
-    double height25 = heightSize / 100 * 25;
     return Scaffold(
       appBar: MainAppBar('Контакты'),
       body: Contacts(),
@@ -26,9 +25,6 @@ class Contacts extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    double appBarMaxHeight = Scaffold.of(context).appBarMaxHeight!;
-    double height25 =
-        (MediaQuery.of(context).size.height - appBarMaxHeight) / 100 * 25;
     return Column(children: [
       Center(
         child: Text(
