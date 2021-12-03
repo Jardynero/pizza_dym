@@ -76,7 +76,7 @@ class _CardCategoriesState extends State<CardCategories> {
           ),
         ),
         child: Container(
-          padding: EdgeInsets.only(left: 30, top: 20, right: 150),
+          padding: EdgeInsets.only(left: 30, top: 20, right: 180),
           child: Text('${categorie[0]}', style: _categoriesTitleStyle),
         ),
       ),
