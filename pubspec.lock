@@ -94,6 +94,13 @@ packages:
       url: "https://github.com/illabo/dadata_suggestions.git"
     source: git
     version: "0.1.2"
+  dart_telegram_bot:
+    dependency: "direct main"
+    description:
+      name: dart_telegram_bot
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "0.6.1"
   fake_async:
     dependency: transitive
     description:
@@ -303,6 +310,13 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "3.1.1"
+  logging:
+    dependency: transitive
+    description:
+      name: logging
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "1.0.2"
   matcher:
     dependency: transitive
     description:
