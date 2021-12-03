@@ -14,32 +14,31 @@ class ItemListScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final Stream<DocumentSnapshot> _menuItems =
-        _firestore.collection('restaurant').doc('menu').snapshots();
-    int _counter = 1;
-    Map _menuItemsSorted = {};
-    List<List> _menuItemsSortedList = [];
+    final Stream<QuerySnapshot> _menu =
+        _firestore.collection('newMenu').orderBy('порядок').snapshots();
+    // int _counter = 1;
+    // Map _menuItemsSorted = {};
+    // List<List> _menuItemsSortedList = [];
     return Scaffold(
       appBar: MainAppBar(categorieName),
       floatingActionButton: FloatingActionBtn(),
-      body: StreamBuilder(
-        stream: _menuItems,
+      body: StreamBuilder<QuerySnapshot>(
+        stream: _menu,
         builder:
-            (BuildContext context, AsyncSnapshot<DocumentSnapshot> snapshot) {
+            (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
           if (snapshot.connectionState == ConnectionState.waiting) {
             return Center(child: CircularProgressIndicator());
           }
-          sortMenuItems(
-              _counter, snapshot, _menuItemsSorted, _menuItemsSortedList);
-          return ListView.builder(
-            itemCount: _menuItemsSortedList.length,
-            itemBuilder: (BuildContext context, index) {
-              if (_menuItemsSortedList[index][3] == categorieName) {
-                return ItemCard(_menuItemsSortedList[index]);
-              } else {
-                return SizedBox.shrink();
+          // sortMenuItems(
+          //     _counter, snapshot, _menuItemsSorted, _menuItemsSortedList);
+          return ListView(
+            children: snapshot.data!.docs.map((DocumentSnapshot document) {
+              Map<String, dynamic> data = document.data()! as Map<String, dynamic>;
+              if (data['категория'] == categorieName) {
+                return ItemCard(data); 
               }
-            },
+              return SizedBox.shrink();
+            }).toList(),
           );
         },
       ),
@@ -69,10 +68,10 @@ class ItemCard extends StatefulWidget {
 class _ItemCardState extends State<ItemCard> {
   @override
   Widget build(BuildContext context) {
-    final String itemName = widget._itemData[0];
-    final String itemPhotoUrl = widget._itemData[4];
-    final int itemCost = widget._itemData[2];
-    final bool availableToBuy = widget._itemData[5];
+    final String itemName = widget._itemData['название'];
+    final String itemPhotoUrl = widget._itemData['фото'];
+    final int itemCost = widget._itemData['цена'];
+    final bool availableToBuy = widget._itemData['доступность товара'];
     var cart = Provider.of<CartModel>(context, listen: true).cart;
     return GestureDetector(
       onTap: () => Navigator.push(

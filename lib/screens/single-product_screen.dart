@@ -6,7 +6,7 @@ import 'package:pizza_dym/models/cart_model.dart';
 import 'package:provider/provider.dart';
 
 class SingleProductScreen extends StatefulWidget {
-  final List data;
+  final data;
   SingleProductScreen(this.data, {Key? key}) : super(key: key);
 
   @override
@@ -19,7 +19,7 @@ class _SingleProductScreenState extends State<SingleProductScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: MainAppBar('${widget.data[0]}'),
+      appBar: MainAppBar('${widget.data['название']}'),
       body: Container(
         height: MediaQuery.of(context).size.height,
         width: MediaQuery.of(context).size.width,
@@ -43,7 +43,7 @@ class _SingleProductScreenState extends State<SingleProductScreen> {
         child: SizedBox(
           width: MediaQuery.of(context).size.width / 100 * 80,
           height: MediaQuery.of(context).size.height / 100 * 30,
-          child: Image.network('${widget.data[4]}'),
+          child: Image.network('${widget.data['фото']}'),
         ),
       ),
     );
@@ -60,7 +60,7 @@ class _SingleProductScreenState extends State<SingleProductScreen> {
           ),
           padding: EdgeInsets.only(right: 100),
           child: Text(
-            '${widget.data[0]}',
+            '${widget.data['название']}',
             style: TextStyle(
               fontSize: 20,
               fontWeight: FontWeight.bold,
@@ -74,9 +74,9 @@ class _SingleProductScreenState extends State<SingleProductScreen> {
             top: MediaQuery.of(context).size.height / 100 * 1,
           ),
           child: Text(
-            widget.data[7] == ' '
-                ? '${widget.data[6]}'
-                : '${widget.data[6]}, ${widget.data[7]}',
+            widget.data['размер'] == ' '
+                ? '${widget.data['категория товара']}'
+                : '${widget.data['категория товара']}, ${widget.data['размер']}',
             style: TextStyle(
               fontSize: 16,
               fontWeight: FontWeight.w500,
@@ -91,7 +91,7 @@ class _SingleProductScreenState extends State<SingleProductScreen> {
           ),
           padding: EdgeInsets.only(right: 70),
           child: Text(
-            '${widget.data[1]}',
+            '${widget.data['описание']}',
             style: TextStyle(
               fontSize: 14,
               fontWeight: FontWeight.normal,
@@ -100,7 +100,7 @@ class _SingleProductScreenState extends State<SingleProductScreen> {
           ),
         ),
         Visibility(
-          visible: widget.data[9] == ' ' ? false : true,
+          visible: widget.data['бжу'] == ' ' ? false : true,
           child: Container(
             margin: EdgeInsets.only(
               left: MediaQuery.of(context).size.width / 100 * 10,
@@ -120,7 +120,7 @@ class _SingleProductScreenState extends State<SingleProductScreen> {
                     Container(
                       margin: EdgeInsets.only(top: 10),
                       child: Text(
-                        '${widget.data[8]}',
+                        '${widget.data['вес']}',
                         style: descriptionStyle,
                       ),
                     ),
@@ -136,7 +136,7 @@ class _SingleProductScreenState extends State<SingleProductScreen> {
                     Container(
                       margin: EdgeInsets.only(top: 10),
                       child: Text(
-                        '${widget.data[9]}',
+                        '${widget.data['бжу']}',
                         style: descriptionStyle,
                       ),
                     ),
@@ -152,7 +152,7 @@ class _SingleProductScreenState extends State<SingleProductScreen> {
                     Container(
                       margin: EdgeInsets.only(top: 10),
                       child: Text(
-                        '${widget.data[10]}',
+                        '${widget.data['калорийность']}',
                         style: descriptionStyle,
                       ),
                     ),
@@ -168,7 +168,7 @@ class _SingleProductScreenState extends State<SingleProductScreen> {
 
   Widget btn() {
     return Visibility(
-      visible: widget.data[5] == false ? false : true,
+      visible: widget.data['доступность товара'] == false ? false : true,
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
         crossAxisAlignment: CrossAxisAlignment.center,
@@ -219,7 +219,7 @@ class _SingleProductScreenState extends State<SingleProductScreen> {
               int singleProductQntInCart = 0;
 
               try {
-                singleProductQntInCart = Provider.of<CartModel>(context, listen: false).cart.getSpecificItemFromCart(widget.data[0])!.quantity;
+                singleProductQntInCart = Provider.of<CartModel>(context, listen: false).cart.getSpecificItemFromCart(widget.data['название'])!.quantity;
               } catch (e) {
                 setState(() {
                   singleProductQntInCart = 0;
@@ -227,16 +227,16 @@ class _SingleProductScreenState extends State<SingleProductScreen> {
               }
     
               Provider.of<CartModel>(context, listen: false).addProductToCartQnt(
-                  widget.data[0],
-                  widget.data[2],
-                  widget.data[0],
+                  widget.data['название'],
+                  widget.data['цена'],
+                  widget.data['название'],
                   productQnt + singleProductQntInCart,
                   widget.data[4].toString());
               
               
               Navigator.pop(context);
             },
-            child: Text('${widget.data[2] * productQnt}₽',
+            child: Text('${widget.data['цена'] * productQnt}₽',
                 style: TextStyle(
                   fontSize: 15,
                 )),
