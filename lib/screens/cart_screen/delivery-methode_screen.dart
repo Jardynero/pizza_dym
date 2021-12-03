@@ -119,23 +119,26 @@ class _DeliveryMethodeState extends State<DeliveryMethode> {
       child: ElevatedButton(
         child: Text(
           _groupValue == 1 && totalOrderPrice.toInt() < minDeliveryOrderPrice
-              ? 'МИНИМАЛЬНЫЙ ЗАКАЗ 1000₽'
+              ? 'МИНИМАЛЬНЫЙ ЗАКАЗ $minDeliveryOrderPrice₽'
               : 'ПРОДОЛЖИТЬ',
           style: TextStyle(
             fontSize: 14,
             fontWeight: FontWeight.w600,
           ),
         ),
-        onPressed: _groupValue == 1 && totalOrderPrice.toInt() < minDeliveryOrderPrice ? null : () {
-          Provider.of<CartModel>(context, listen: false)
-              .checkDeliveryMethode(_groupValue!);
-          if (_groupValue == 1) {
-            getUserAdress(context);
-            Navigator.pushNamed(context, '/adress');
-          } else if (_groupValue == 2) {
-            Navigator.pushNamed(context, '/pickup');
-          }
-        },
+        onPressed:
+            _groupValue == 1 && totalOrderPrice.toInt() < minDeliveryOrderPrice
+                ? null
+                : () {
+                    Provider.of<CartModel>(context, listen: false)
+                        .checkDeliveryMethode(_groupValue!);
+                    if (_groupValue == 1) {
+                      getUserAdress(context);
+                      Navigator.pushNamed(context, '/adress');
+                    } else if (_groupValue == 2) {
+                      Navigator.pushNamed(context, '/pickup');
+                    }
+                  },
         style: ElevatedButton.styleFrom(
           primary: Color(0xff27282A),
           fixedSize: Size(

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:pizza_dym/global_widgets/appBar.dart';
 import 'package:pizza_dym/models/cart_model.dart';
+import 'package:pizza_dym/screens/cart_screen/order_func.dart';
 import 'package:provider/provider.dart';
 
 class PaymentMethodeScreen extends StatefulWidget {
@@ -211,6 +212,7 @@ class _PaymentMethodeScreenState extends State<PaymentMethodeScreen> {
   }
 
   Widget btn() {
+    var cartModel = Provider.of<CartModel>(context, listen: false);
     return Container(
       margin:
           EdgeInsets.only(bottom: MediaQuery.of(context).size.height / 100 * 5),
@@ -220,11 +222,15 @@ class _PaymentMethodeScreenState extends State<PaymentMethodeScreen> {
           style: TextStyle(fontSize: 14, fontWeight: FontWeight.w600),
         ),
         onPressed: () {
+          cartModel.getPaymentMethode(_groupValue!);
           if (_groupValue == 1) {
-            print('Заказ оформлен!'); 
+            debugPrint('Оплата банковской картой при получение!'); 
+            sendOrderToTelegram(sendOrder(context));
           } else if (_groupValue == 2) {
             if (_formKey.currentState!.validate()) {
-              print('Заказ оформлен');
+              debugPrint('Оплата наличными');
+              cartModel.getChangeFrom(_cashController.text);
+              sendOrderToTelegram(sendOrder(context));
             }
           }
         },

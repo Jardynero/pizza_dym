@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:pizza_dym/functions/firebase_functions.dart';
 import 'package:pizza_dym/global_widgets/appBar.dart';
 import 'package:pizza_dym/global_widgets/snackbar.dart';
+import 'package:pizza_dym/models/cart_model.dart';
 import 'package:provider/provider.dart';
 import 'package:flutter/cupertino.dart';
 
@@ -68,10 +69,13 @@ class _SelectDeliveryTimeScreenState extends State<SelectDeliveryTimeScreen> {
   }
 
   Widget deliveryMethode(title, int value, String iconPath, subtitle) {
+    var cartModel = Provider.of<CartModel>(context, listen: false);
+
     return GestureDetector(
       onTap: () {
         setState(() {
           _groupValue = value;
+          cartModel.getDeliveryTimeType(_groupValue);
         });
       },
       child: Container(
@@ -103,6 +107,7 @@ class _SelectDeliveryTimeScreenState extends State<SelectDeliveryTimeScreen> {
                     onChanged: (int? value) {
                       setState(() {
                         _groupValue = value;
+                        cartModel.getDeliveryTimeType(_groupValue);
                       });
                     },
                     activeColor: Color(0xffFF9F38),
@@ -165,6 +170,7 @@ class _SelectDeliveryTimeScreenState extends State<SelectDeliveryTimeScreen> {
   }
 
   Widget dateTimeWidget() {
+    var cartModel = Provider.of<CartModel>(context, listen: false);
     int closingTime =
         Provider.of<CloudFirestore>(context, listen: true).closingTime;
     int openingTime =
@@ -207,6 +213,7 @@ class _SelectDeliveryTimeScreenState extends State<SelectDeliveryTimeScreen> {
         onDateTimeChanged: (DateTime dt) {
           setState(() {
             _selectedDateTime = dt;
+            cartModel.getdeliveryChosenTime(dt);
           });
           if (dt.weekday.toString() == dayOf) {
             setState(() {

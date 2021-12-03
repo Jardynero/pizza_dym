@@ -28,6 +28,9 @@ class _AdressScreenState extends State<AdressScreen> {
   late TextEditingController _intercomController = TextEditingController();
   late TextEditingController _commentController = TextEditingController();
   late DadataSuggestions _suggestions;
+  String fullAdress = '';
+  String deliveryGeo = '';
+  bool isAdressChanged = false;
 
   @override
   void initState() {
@@ -59,7 +62,9 @@ class _AdressScreenState extends State<AdressScreen> {
             .currentUser!
             .phoneNumber;
     return GestureDetector(
-      onTap: () {FocusScope.of(context).unfocus();},
+      onTap: () {
+        FocusScope.of(context).unfocus();
+      },
       child: Scaffold(
         appBar: MainAppBar('Адрес доставки'),
         body: _main(_userPhoneNumber),
@@ -147,7 +152,10 @@ class _AdressScreenState extends State<AdressScreen> {
       },
       onSuggestionSelected: (AddressSuggestion a) {
         setState(() {
-          _streetController.text = '${a.data.street}';
+          fullAdress = a.value;
+          isAdressChanged = true;
+          deliveryGeo = '${a.data.geoLat}.${a.data.geoLon}';
+          _streetController.text = '${a.value}';
           if (a.data.house != null) {
             _houseController.text = a.data.house;
           }
@@ -349,15 +357,31 @@ class _AdressScreenState extends State<AdressScreen> {
   }
 
   Widget btn(_userPhoneNumber) {
+    var cartModel = Provider.of<CartModel>(context, listen: false);
     return Container(
       margin: EdgeInsets.only(
           bottom: MediaQuery.of(context).size.height / 100 * 2.8, top: 30),
       child: ElevatedButton(
-        child: Text('ПРОДОЛЖИТЬ', style: TextStyle(fontSize: 14, fontWeight:FontWeight.w600)),
+        child: Text('ПРОДОЛЖИТЬ',
+            style: TextStyle(fontSize: 14, fontWeight: FontWeight.w600)),
         onPressed: () {
+          cartModel.getUserComment(_commentController.text);
           if (_formKey.currentState!.validate()) {
-            print('Saved!');
-            updateUserDeliveryAdress(_userPhoneNumber);
+            if (isAdressChanged == true) {
+              updateUserDeliveryAdress(_userPhoneNumber);
+              cartModel.getUserAdressData(
+                _streetController.text,
+                _houseController.text,
+                _blockController.text,
+                _entranceController.text,
+                _appartmentController.text,
+                _intercomController.text,
+                _floorController.text,
+                fullAdress,
+                deliveryGeo,
+              );
+            }
+
             Navigator.pushNamed(context, '/cart/select-delivery-time');
           }
         },
@@ -387,6 +411,8 @@ class _AdressScreenState extends State<AdressScreen> {
       'Квартира': '${_appartmentController.text}',
       'Этаж': '${_floorController.text}',
       'Домофон': '${_intercomController.text}',
+      'Полный адрес': '$fullAdress',
+      'Координаты доставки': '$deliveryGeo',
     });
   }
 

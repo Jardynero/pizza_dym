@@ -215,7 +215,7 @@ class _SingleProductScreenState extends State<SingleProductScreen> {
             ),
             onPressed: () {
               Provider.of<CartModel>(context, listen: false)
-                  .obtainQntOfProduct(widget.data[0]);
+                  .obtainQntOfProduct(widget.data['название']);
               int singleProductQntInCart = 0;
 
               try {
@@ -231,7 +231,7 @@ class _SingleProductScreenState extends State<SingleProductScreen> {
                   widget.data['цена'],
                   widget.data['название'],
                   productQnt + singleProductQntInCart,
-                  widget.data[4].toString());
+                  widget.data['фото'].toString());
               
               
               Navigator.pop(context);

@@ -31,6 +31,9 @@ class _ProfileUserAdressScreenState extends State<ProfileUserAdressScreen> {
   late TextEditingController _commentController = TextEditingController();
 
   late DadataSuggestions _suggestions;
+  String fullAdress = '';
+  String geoLat = '';
+  String geoLon = '';
 
   @override
   void initState() {
@@ -119,7 +122,10 @@ class _ProfileUserAdressScreenState extends State<ProfileUserAdressScreen> {
       },
       onSuggestionSelected: (AddressSuggestion a) {
         setState(() {
-          _streetController.text = '${a.data.street}';
+          fullAdress = a.value;
+          geoLat = a.data.geoLat;
+          geoLon = a.data.geoLon;
+          _streetController.text = '${a.value}';
           if (a.data.house != null) {
             _houseController.text = a.data.house;
           }
@@ -354,6 +360,8 @@ class _ProfileUserAdressScreenState extends State<ProfileUserAdressScreen> {
       'Квартира': '${_appartmentController.text}',
       'Этаж': '${_floorController.text}',
       'Домофон': '${_intercomController.text}',
+      'Полный адрес': '$fullAdress',
+      'Координаты доставки': '$geoLat.$geoLon',
     });
   }
 

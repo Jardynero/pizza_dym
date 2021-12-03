@@ -113,6 +113,52 @@ class CartModel extends ChangeNotifier {
     _deliveryMethode = deliveryMethode;
   }
 
+  // var == 1 ? Оплата картой
+  // var == 2 ? Оплата наличкой
+  int _paymentMethode = 0;
+  int get paymentMethode => _paymentMethode;
+
+  void getPaymentMethode(int paymentMethode) {
+    _paymentMethode = paymentMethode;
+  }
+
+  // С какой купюры нужна сдача
+  String _changeFrom = '';
+  String get changeFrom => _changeFrom;
+
+  void getChangeFrom(changeFrom) {
+    _changeFrom = changeFrom;
+  }
+
+  // Время самовывоза
+  DateTime _pickupChosenTime = DateTime.now();
+  DateTime get pickupChosenTime => _pickupChosenTime;
+
+  void getPickupChosenTime(chosenTime) {
+    _pickupChosenTime = chosenTime;
+  }
+
+  // Время доставки
+  //Вариант времени доставки на дом (сейчас или ко времени)
+  // int == 1 ? Как можно скорее
+  // int == 2 ? Доставка ко времени
+  int _deliveryTimeType = 0;
+  int get deliveryTimeType => _deliveryTimeType;
+
+  void getDeliveryTimeType(deliveryTimeType) {
+    _deliveryTimeType = deliveryTimeType;
+  }
+
+  // Выбранное время доставки
+  DateTime _deliveryChosenTime = DateTime.now();
+  DateTime get deliveryChosenTime => _deliveryChosenTime;
+
+  void getdeliveryChosenTime(chosenTime) {
+    _deliveryChosenTime = chosenTime;
+  }
+
+  
+
   String _userStreet = '';
   String _userHouse = '';
   String _userBlock = '';
@@ -120,6 +166,9 @@ class CartModel extends ChangeNotifier {
   String _userAppartment = '';
   String _userIntercom = '';
   String _userFloor = '';
+  String _userFullAdress = '';
+  String _deliveryGeo = '';
+  String _userComment = '';
   String get userStreet => _userStreet;
   String get userHouse => _userHouse;
   String get userBlock => _userBlock;
@@ -127,6 +176,13 @@ class CartModel extends ChangeNotifier {
   String get userAppartment => _userAppartment;
   String get userIntercom => _userIntercom;
   String get userFloor => _userFloor;
+  String get userFullAdress => _userFullAdress;
+  String get deliveryGeo => _deliveryGeo;
+  String get userComment => _userComment;
+
+  void getUserComment(userComment) {
+    _userComment = userComment;
+  }
 
   void getUserAdressData(
     userStreet,
@@ -136,6 +192,8 @@ class CartModel extends ChangeNotifier {
     userAppartment,
     userIntercom,
     userFloor,
+    userFullAdress,
+    deliveryGeo,
   ) {
     _userStreet = userStreet;
     _userHouse = userHouse;
@@ -144,6 +202,8 @@ class CartModel extends ChangeNotifier {
     _userAppartment = userAppartment;
     _userIntercom = userIntercom;
     _userFloor = userFloor;
+    _userFullAdress = userFullAdress;
+    _deliveryGeo = deliveryGeo;
 
     notifyListeners();
   }
@@ -182,6 +242,17 @@ class CartModel extends ChangeNotifier {
   }
   void changeFloorAdress(newValue) {
     _userFloor = newValue;
+
+    notifyListeners();
+  }
+
+  void changeFullAdress(newValue) {
+    _userFullAdress = newValue;
+
+    notifyListeners();
+  }
+  void changeDeliveryGeo(newValue) {
+    _deliveryGeo = newValue;
 
     notifyListeners();
   }

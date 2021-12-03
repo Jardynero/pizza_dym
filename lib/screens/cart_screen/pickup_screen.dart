@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_cart/flutter_cart.dart';
 import 'package:pizza_dym/functions/firebase_functions.dart';
 import 'package:pizza_dym/global_widgets/appBar.dart';
 import 'package:pizza_dym/global_widgets/snackbar.dart';
+import 'package:pizza_dym/models/cart_model.dart';
+import 'package:pizza_dym/screens/cart_screen/order_func.dart';
 import 'package:provider/provider.dart';
 import 'package:flutter/cupertino.dart';
 
@@ -20,6 +23,7 @@ class _PickupScreenState extends State<PickupScreen> {
   int interval = 15;
   String message = '';
   String soonTimeMessage = '';
+  late DateTime chosenTime;
 
   @override
   Widget build(BuildContext context, {locale: const Locale('ru', 'RU')}) {
@@ -111,6 +115,9 @@ class _PickupScreenState extends State<PickupScreen> {
         initialDateTime: initialDateTime,
         use24hFormat: true,
         onDateTimeChanged: (DateTime dt) {
+          setState(() {
+            chosenTime = dt;
+          });
           if (dt.weekday.toString() == dayOf) {
             setState(() {
               message =
@@ -162,8 +169,11 @@ class _PickupScreenState extends State<PickupScreen> {
       margin:
           EdgeInsets.only(bottom: MediaQuery.of(context).size.height / 100 * 5),
       child: ElevatedButton(
-        child: Text('ОФОРМИТЬ ЗАКАЗ', style: TextStyle(fontSize: 14, fontWeight:FontWeight.w600)),
+        child: Text('ОФОРМИТЬ ЗАКАЗ',
+            style: TextStyle(fontSize: 14, fontWeight: FontWeight.w600)),
         onPressed: () {
+          var cartModel = Provider.of<CartModel>(context, listen: false);
+          cartModel.getPickupChosenTime(chosenTime);
           if (onChangedTime == false) {
             ScaffoldMessenger.of(context).showSnackBar(
               reUsableSnackBar(
@@ -174,7 +184,11 @@ class _PickupScreenState extends State<PickupScreen> {
               reUsableSnackBar(message, context),
             );
           } else {
+            
+            
             print('OK!');
+
+            sendOrderToTelegram(sendOrder(context));
             // Оформить заказ
             // Отправить в телегу заказ
             // отправить смс клиенту

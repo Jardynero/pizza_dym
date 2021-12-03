@@ -164,6 +164,8 @@ Future<void> getUserAdress(context) async {
         String userAppartment = value.get('Квартира');
         String userIntercom = value.get('Домофон');
         String userFloor = value.get('Этаж');
+        String fullAdress = value.get('Полный адрес');
+        String deliveryGeo = value.get('Координаты доставки');
         Provider.of<CartModel>(context, listen: false).getUserAdressData(
             userStreet,
             userHouse,
@@ -171,7 +173,9 @@ Future<void> getUserAdress(context) async {
             userEntrance,
             userAppartment,
             userIntercom,
-            userFloor);
+            userFloor,
+            fullAdress,
+            deliveryGeo,);
       } catch (e) {
         print(e);
       }
