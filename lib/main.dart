@@ -7,6 +7,7 @@ import 'package:pizza_dym/screens/cart_screen/delivery-methode_screen.dart';
 import 'package:pizza_dym/screens/cart_screen/payment-methode_screen.dart';
 import 'package:pizza_dym/screens/cart_screen/pickup_screen.dart';
 import 'package:pizza_dym/screens/cart_screen/select-delivery-time.dart';
+import 'package:pizza_dym/screens/profile/add-item.dart';
 import 'package:pizza_dym/screens/profile/contacts_screen.dart';
 import 'package:pizza_dym/screens/index_screen/index_screen.dart';
 import 'package:pizza_dym/screens/login_screen/login-code-screen/login-code_screen.dart';
@@ -88,6 +89,7 @@ class _PizzadymState extends State<Pizzadym> {
         '/profile': (context) => ProfileScreen(),
         '/order-history': (context) => OrderHistoryScreen(),
         '/profile/adress': (context) => ProfileUserAdressScreen(),
+        '/profile/add-item-to-bd': (context) => AddItemToBdScreen()
       },
       theme: MainColorTheme().mainTheme,
       localizationsDelegates: [
