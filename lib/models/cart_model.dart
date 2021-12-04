@@ -1,5 +1,6 @@
 // cart model
 
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_cart/flutter_cart.dart';
 import 'package:pizza_dym/functions/firebase_functions.dart';
@@ -30,8 +31,7 @@ class CartModel extends ChangeNotifier {
     if (cart.getSpecificItemFromCart(itemId)!.quantity == 1) {
       cart.deleteItemFromCart(cart.findItemIndexFromCart(itemId)!);
       print('here');
-    }
-    else {
+    } else {
       cart.decrementItemFromCart(cart.findItemIndexFromCart(itemId)!);
     }
 
@@ -157,7 +157,63 @@ class CartModel extends ChangeNotifier {
     _deliveryChosenTime = chosenTime;
   }
 
-  
+  // Текущий номер заказа
+  int _orderNumber = 0;
+  int get orderNumber => _orderNumber;
+
+  void getOrderNumber() {
+    DocumentReference order =
+        FirebaseFirestore.instance.collection('restaurant').doc('order');
+
+    order.get().then((value) => value.get('Номер заказа')).then((value) {
+      _orderNumber = value;
+    }).catchError((error) {
+      debugPrint('$error');
+    });
+
+    notifyListeners();
+  }
+
+  void sendNewOrderNumber() {
+    int currentOrderNumber = _orderNumber + 1;
+    FirebaseFirestore.instance
+        .collection('restaurant')
+        .doc('order')
+        .update({'Номер заказа': currentOrderNumber})
+        .then((value) => debugPrint(
+            'Номер заказа обновлен с $_orderNumber на $currentOrderNumber'))
+        .catchError((error) => debugPrint('Возникла ошибка: $error'));
+  }
+
+  void saveOrderToHistory(context) {
+    DateTime timeNow = DateTime.now();
+    double totalOrderAmount = cart.getTotalAmount();
+    int totalOrderAmountInt = totalOrderAmount.toInt();
+    int currentOrderNumber = _orderNumber + 1;
+    String userPhoneNumber =
+        Provider.of<FirebaseAuthInstance>(context, listen: false)
+            .auth
+            .currentUser!
+            .phoneNumber!;
+    var userOrders = FirebaseFirestore.instance
+        .collection('users')
+        .doc('$userPhoneNumber')
+        .collection('orders');
+
+    userOrders
+        .doc('Заказ от $timeNow')
+        .set(
+          {
+            'Номер заказа': currentOrderNumber,
+            'Дата заказа': timeNow,
+            'Сумма заказа': totalOrderAmountInt,
+          },
+        )
+        .then((value) => debugPrint(
+            'Заказ от $timeNow под номером $currentOrderNumber, Был успешно записан в Бд'))
+        .catchError((error) => debugPrint(
+            'Произошла ошибки во время сохранения заказа в БД: $error'));
+  }
 
   String _userStreet = '';
   String _userHouse = '';
@@ -225,21 +281,25 @@ class CartModel extends ChangeNotifier {
 
     notifyListeners();
   }
+
   void changeEntranceAdress(newValue) {
     _userEntrance = newValue;
 
     notifyListeners();
   }
+
   void changeAppartmentAdress(newValue) {
     _userAppartment = newValue;
 
     notifyListeners();
   }
+
   void changeIntercomAdress(newValue) {
     _userIntercom = newValue;
 
     notifyListeners();
   }
+
   void changeFloorAdress(newValue) {
     _userFloor = newValue;
 
@@ -251,6 +311,7 @@ class CartModel extends ChangeNotifier {
 
     notifyListeners();
   }
+
   void changeDeliveryGeo(newValue) {
     _deliveryGeo = newValue;
 
