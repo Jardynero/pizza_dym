@@ -1,5 +1,6 @@
 // Profile page
 
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:pizza_dym/functions/firebase_functions.dart';
@@ -34,6 +35,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
   }
 
   Widget _main() {
+    String currentUserPhoneNumber = Provider.of<FirebaseAuthInstance>(context, listen: false).auth.currentUser!.phoneNumber!;
     return SizedBox(
       height: MediaQuery.of(context).size.height / 100 * 70,
       child: ListView(
@@ -54,6 +56,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
               'https://instagram.com/pizzadym'),
           menuItemUrl('Мы на Я.Картах', 'assets/icons/icons8-маркер-96.png',
               'https://yandex.ru/maps/-/CCUujWtlsA'),
+          if (currentUserPhoneNumber == '+79164164179')
+            menuItem('Добавить товар', 'assets/icons/add.png', '/profile/add-item-to-bd',)
           
         ],
       ),

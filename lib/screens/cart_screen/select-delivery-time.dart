@@ -122,6 +122,7 @@ class _SelectDeliveryTimeScreenState extends State<SelectDeliveryTimeScreen> {
   }
 
   Widget btn() {
+    var cartModel = Provider.of<CartModel>(context, listen: false);
     return Container(
       margin:
           EdgeInsets.only(bottom: MediaQuery.of(context).size.height / 100 * 5),
@@ -137,6 +138,7 @@ class _SelectDeliveryTimeScreenState extends State<SelectDeliveryTimeScreen> {
                 _asSoonAsPossibleAvailable == false
             ? null
             : () {
+                cartModel.getDeliveryTimeType(_groupValue);
                 if (_groupValue == _asSoonAsPossible) {
                   Navigator.pushNamed(context, '/cart/payment');
                 } else if (_groupValue == _onTime) {

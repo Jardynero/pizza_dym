@@ -187,15 +187,19 @@ class _PickupScreenState extends State<PickupScreen> {
             
             
             print('OK!');
-
+            cartModel.saveOrderToHistory(context);
             sendOrderToTelegram(sendOrder(context));
+            cartModel.sendNewOrderNumber();
+            cartModel.cart.deleteAllCart();
+            Navigator.pushNamed(context, '/');
+            
             // Оформить заказ
-            // Отправить в телегу заказ
+            // Отправить в телегу заказ (готово)
             // отправить смс клиенту
-            // очистить корзину
-            // сохранить закмз в историю заказов
+            // очистить корзину (готово)
+            // сохранить заказ в историю заказов (готово)
             // попап об успешном заказе
-            // переход на главную
+            // переход на главную (готово)
           }
         },
         style: ElevatedButton.styleFrom(

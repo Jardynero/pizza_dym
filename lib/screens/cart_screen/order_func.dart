@@ -8,11 +8,14 @@ import 'package:pizza_dym/functions/firebase_functions.dart';
 import 'package:pizza_dym/models/cart_model.dart';
 import 'package:provider/provider.dart';
 
-String header(FlutterCart cart) {
-  double totalAmountDouble = cart.getTotalAmount();
+String header(context) {
+  var cartModel = Provider.of<CartModel>(context, listen: false);
+  double totalAmountDouble = cartModel.cart.getTotalAmount();
   int totalAmount = totalAmountDouble.toInt();
+  int lastOrderNumber = cartModel.orderNumber;
+  int currentOrderNumber = lastOrderNumber + 1;
 
-  return 'Новый заказ \nна сумму $totalAmount р.\n----';
+  return 'Новый заказ #$currentOrderNumber \nна сумму $totalAmount р.\n----';
 }
 
 String itemList(FlutterCart cart) {
@@ -122,7 +125,7 @@ String paymentMethode(context) {
 }
 
 String deliveryTime(context) {
-  late String result;
+  String result = '';
   var cartModel = Provider.of<CartModel>(context, listen: false);
   int deliveryMethode = cartModel.deliveryMethode;
   int deliveryTimeType = cartModel.deliveryTimeType;
@@ -166,7 +169,7 @@ String sendOrder(context) {
   FirebaseAuth auth =
       Provider.of<FirebaseAuthInstance>(context, listen: false).auth;
   String order =
-      '${header(cart)}\n${itemList(cart)}\n${userName()}\n${userPhoneNumber(auth)}\n${userAdress(context)}\n${deliveryCoordinate(context)}\n${deliveryMethode(context)}\n${paymentMethode(context)}\n${deliveryTime(context)}\n${comment(context)}';
+      '${header(context)}\n${itemList(cart)}\n${userName()}\n${userPhoneNumber(auth)}\n${userAdress(context)}\n${deliveryCoordinate(context)}\n${deliveryMethode(context)}\n${paymentMethode(context)}\n${deliveryTime(context)}\n${comment(context)}';
 
   return order;
 }

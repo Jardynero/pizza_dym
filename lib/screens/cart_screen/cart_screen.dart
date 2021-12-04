@@ -134,9 +134,8 @@ class _CartScreenState extends State<CartScreen> {
     );
   }
 
-  Widget bottomBar(
-    double totalAmount,
-  ) {
+  Widget bottomBar(double totalAmount) {
+    var cartModel = Provider.of<CartModel>(context, listen: false);
     return SafeArea(
       child: Container(
         width: MediaQuery.of(context).size.width,
@@ -185,6 +184,7 @@ class _CartScreenState extends State<CartScreen> {
                     ),
                   ),
                   onPressed: () {
+                    cartModel.getOrderNumber();
                     Navigator.pushNamed(context, '/delivery-methode');
                   },
                 ),
