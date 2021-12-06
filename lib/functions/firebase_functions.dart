@@ -22,18 +22,13 @@ Future initFirebaseMessaging(firebaseMessagingInstance) async {
     sound: true,
   );
 
-  if (settings.authorizationStatus == AuthorizationStatus.authorized) {
-    print('User granted permission');
-  } else if (settings.authorizationStatus == AuthorizationStatus.provisional) {
-    print('User granted provisional permission');
-  } else {
-    print('User declined or has not accepted permission');
-  }
+  debugPrint('User granted permission: ${settings.authorizationStatus}');
 }
 
 // cloud messaging
 Future<void> firebaseMessagingBackgroundHandler(RemoteMessage message) async {
   await Firebase.initializeApp();
+  debugPrint("Handling a background message: ${message.messageId}");
 }
 
 // Firebase AUTH
@@ -166,6 +161,7 @@ Future<void> getUserAdress(context) async {
         String userFloor = value.get('Этаж');
         String fullAdress = value.get('Полный адрес');
         String deliveryGeo = value.get('Координаты доставки');
+        String userName = value.get('Имя');
         Provider.of<CartModel>(context, listen: false).getUserAdressData(
             userStreet,
             userHouse,
@@ -176,8 +172,9 @@ Future<void> getUserAdress(context) async {
             userFloor,
             fullAdress,
             deliveryGeo,);
+        Provider.of<CartModel>(context, listen:false).getUserName(userName);
       } catch (e) {
-        print(e);
+        debugPrint('$e');
       }
     }
   });

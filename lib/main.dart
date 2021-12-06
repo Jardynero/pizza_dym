@@ -60,11 +60,8 @@ class _PizzadymState extends State<Pizzadym> {
 
   @override
   void initState() {
-    initFirebaseMessaging(messaging);
+    messaging.requestPermission();
     FirebaseMessaging.onBackgroundMessage(firebaseMessagingBackgroundHandler);
-    Provider.of<CloudFirestore>(context, listen: false)
-        .obtainRestautantSettings();
-    AppTrackingTransparency.requestTrackingAuthorization();
     super.initState();
   }
 

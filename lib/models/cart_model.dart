@@ -30,7 +30,6 @@ class CartModel extends ChangeNotifier {
   void decrementItemFromCart(itemId) {
     if (cart.getSpecificItemFromCart(itemId)!.quantity == 1) {
       cart.deleteItemFromCart(cart.findItemIndexFromCart(itemId)!);
-      print('here');
     } else {
       cart.decrementItemFromCart(cart.findItemIndexFromCart(itemId)!);
     }
@@ -185,6 +184,15 @@ class CartModel extends ChangeNotifier {
         .catchError((error) => debugPrint('Возникла ошибка: $error'));
   }
 
+  Map<String, List> orderList() {
+    int counter = 1;
+    Map<String, List> result = {};
+    cart.cartItem.forEach((element) {
+      result['$counter'] = [element.productName, element.quantity, element.subTotal, element.productDetails];
+      counter ++;
+    });
+    return result;
+  }
   void saveOrderToHistory(context) {
     DateTime timeNow = DateTime.now();
     double totalOrderAmount = cart.getTotalAmount();
@@ -207,6 +215,7 @@ class CartModel extends ChangeNotifier {
             'Номер заказа': currentOrderNumber,
             'Дата заказа': timeNow,
             'Сумма заказа': totalOrderAmountInt,
+            'Состав заказа': orderList(),
           },
         )
         .then((value) => debugPrint(
@@ -225,6 +234,7 @@ class CartModel extends ChangeNotifier {
   String _userFullAdress = '';
   String _deliveryGeo = '';
   String _userComment = '';
+  String _userName = '';
   String get userStreet => _userStreet;
   String get userHouse => _userHouse;
   String get userBlock => _userBlock;
@@ -235,11 +245,16 @@ class CartModel extends ChangeNotifier {
   String get userFullAdress => _userFullAdress;
   String get deliveryGeo => _deliveryGeo;
   String get userComment => _userComment;
+  String get userName => _userName;
 
   void getUserComment(userComment) {
     _userComment = userComment;
   }
+  void getUserName(userName) {
+    _userName = userName;
 
+    notifyListeners();
+  }
   void getUserAdressData(
     userStreet,
     userHouse,

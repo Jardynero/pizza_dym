@@ -413,7 +413,7 @@ class _AdressScreenState extends State<AdressScreen> {
       'Домофон': '${_intercomController.text}',
       'Полный адрес': '$fullAdress',
       'Координаты доставки': '$deliveryGeo',
-    });
+    }, SetOptions(merge: true));
   }
 
   Future<List<AddressSuggestion>> _startSuggesting(String text) async {

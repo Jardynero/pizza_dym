@@ -119,7 +119,7 @@ class _DeliveryMethodeState extends State<DeliveryMethode> {
       child: ElevatedButton(
         child: Text(
           _groupValue == 1 && totalOrderPrice.toInt() < minDeliveryOrderPrice
-              ? 'МИНИМАЛЬНЫЙ ЗАКАЗ $minDeliveryOrderPrice₽'
+              ? 'МИН. ЗАКАЗ НА ДОСТАВКУ $minDeliveryOrderPrice₽'
               : 'ПРОДОЛЖИТЬ',
           style: TextStyle(
             fontSize: 14,

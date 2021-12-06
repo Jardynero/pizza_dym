@@ -224,21 +224,25 @@ class _PaymentMethodeScreenState extends State<PaymentMethodeScreen> {
         onPressed: () {
           cartModel.getPaymentMethode(_groupValue!);
           if (_groupValue == 1) {
-            debugPrint('Оплата банковской картой при получение!'); 
+            debugPrint('Оплата банковской картой при получение!');
             cartModel.saveOrderToHistory(context);
             sendOrderToTelegram(sendOrder(context));
+            sendGeoToTelegram(geo(context));
             cartModel.sendNewOrderNumber();
-            cartModel.cart.deleteAllCart();
-            Navigator.pushNamed(context, '/');
+            Navigator.pushNamedAndRemoveUntil(context, '/', (route) => false);
+            showOrderConfirmation(context)
+                .then((value) => cartModel.cart.deleteAllCart());
           } else if (_groupValue == 2) {
             if (_formKey.currentState!.validate()) {
               debugPrint('Оплата наличными');
               cartModel.getChangeFrom(_cashController.text);
               cartModel.saveOrderToHistory(context);
               sendOrderToTelegram(sendOrder(context));
+              sendGeoToTelegram(geo(context));
               cartModel.sendNewOrderNumber();
-              cartModel.cart.deleteAllCart();
-              Navigator.pushNamed(context, '/');
+              Navigator.pushNamedAndRemoveUntil(context, '/', (route) => false);
+              showOrderConfirmation(context)
+                  .then((value) => cartModel.cart.deleteAllCart());
             }
           }
         },

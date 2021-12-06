@@ -158,7 +158,7 @@ class _LoginCodeFormState extends State<LoginCodeForm> {
         activityIndicator = false;
       });
       FirebaseAnalytics().logSignUp(signUpMethod: 'Phone Number');
-      Navigator.pushNamedAndRemoveUntil(context, '/', (_) => false);
+      Navigator.pushNamedAndRemoveUntil(context, '/', (route) => false);
     } else {
       print('error');
     }
@@ -190,7 +190,7 @@ class _LoginCodeFormState extends State<LoginCodeForm> {
             activityIndicator = false;
           });
           print('Android auth done!');
-          Navigator.pushNamedAndRemoveUntil(context, '/', (_) => false);
+          Navigator.pushNamedAndRemoveUntil(context, '/', (route) => false);
         }
       },
       verificationFailed: (FirebaseAuthException e) {

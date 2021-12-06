@@ -23,7 +23,7 @@ class _PickupScreenState extends State<PickupScreen> {
   int interval = 15;
   String message = '';
   String soonTimeMessage = '';
-  late DateTime chosenTime;
+  DateTime chosenTime = DateTime.now();
 
   @override
   Widget build(BuildContext context, {locale: const Locale('ru', 'RU')}) {
@@ -184,21 +184,20 @@ class _PickupScreenState extends State<PickupScreen> {
               reUsableSnackBar(message, context),
             );
           } else {
-            
-            
-            print('OK!');
             cartModel.saveOrderToHistory(context);
             sendOrderToTelegram(sendOrder(context));
+            sendGeoToTelegram(geo(context));
             cartModel.sendNewOrderNumber();
-            cartModel.cart.deleteAllCart();
-            Navigator.pushNamed(context, '/');
+            Navigator.pushNamedAndRemoveUntil(context, '/', (route) => false);
+            showOrderConfirmation(context).then((value) => cartModel.cart.deleteAllCart());
+            debugPrint('Заказ на самовывоз оформлен');
             
             // Оформить заказ
             // Отправить в телегу заказ (готово)
             // отправить смс клиенту
             // очистить корзину (готово)
             // сохранить заказ в историю заказов (готово)
-            // попап об успешном заказе
+            // попап об успешном заказе (готово)
             // переход на главную (готово)
           }
         },

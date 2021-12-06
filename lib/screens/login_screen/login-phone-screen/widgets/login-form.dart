@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:pizza_dym/functions/firebase_functions.dart';
@@ -12,7 +13,8 @@ class LoginForm extends StatefulWidget {
 }
 
 class _LoginFormState extends State<LoginForm> {
-  TextEditingController _phone = TextEditingController(text: '+7');
+  TextEditingController _phone = TextEditingController(text: '');
+  TextEditingController _name = TextEditingController(text: '');
   bool activityIndicator = false;
 
   final _formKey = GlobalKey<FormState>();
@@ -21,6 +23,7 @@ class _LoginFormState extends State<LoginForm> {
   Widget build(BuildContext context) {
     final _auth =
         Provider.of<FirebaseAuthInstance>(context, listen: false).auth;
+    double horizontalmargin = MediaQuery.of(context).size.width / 100 * 7;
 
     return activityIndicator == true
         ? CircularProgressIndicator()
@@ -31,26 +34,38 @@ class _LoginFormState extends State<LoginForm> {
             child: Column(
               children: [
                 Container(
+                  margin: EdgeInsets.only(
+                      left: horizontalmargin,
+                      right: horizontalmargin,
+                      bottom: 20),
+                  child: TextFormField(
+                    controller: _name,
+                    keyboardType: TextInputType.name,
+                    validator: (value) {
+                      if (value == null || value.isEmpty) {
+                        return 'Пожалуйста, введите ваше имя';
+                      }
+                    },
+                    decoration: LoginPhoneFormTheme().fieldTheme('Имя'),
+                  ),
+                ),
+                Container(
                   margin: EdgeInsets.symmetric(
                       horizontal: MediaQuery.of(context).size.width / 100 * 7),
-                  child: SizedBox(
-                    height: 60.0,
-                    child: TextFormField(
-                      controller: _phone,
-                      keyboardType: TextInputType.phone,
-                      maxLength: 12,
-                      validator: (value) {
-                        if (value == null ||
-                            value.isEmpty ||
-                            value.length < 12) {
-                          return 'Пожалуйста, введите номер телефона';
-                        }
-                        if (value.startsWith('+7') != true) {
-                          return 'Номер телефона должен начинаться с +7';
-                        }
-                      },
-                      decoration: LoginPhoneFormTheme().formDecoration,
-                    ),
+                  child: TextFormField(
+                    controller: _phone,
+                    keyboardType: TextInputType.phone,
+                    maxLength: 12,
+                    validator: (value) {
+                      if (value == null || value.isEmpty || value.length < 12) {
+                        return 'Пожалуйста, введите номер телефона';
+                      }
+                      if (value.startsWith('+7') != true) {
+                        return 'Номер телефона должен начинаться с +7';
+                      }
+                    },
+                    decoration:
+                        LoginPhoneFormTheme().fieldTheme('Номер телефона'),
                   ),
                 ),
                 // Кнопка продолжить
@@ -113,10 +128,28 @@ class _LoginFormState extends State<LoginForm> {
         setState(() {
           activityIndicator = false;
         });
-        Navigator.pushNamed(context, '/login-code');
+        sendUserNameToFirebase().then((value) {
+          Navigator.pushNamed(context, '/login-code');
+        });
+        // Navigator.pushNamed(context, '/login-code');
       },
       timeout: Duration(seconds: 60),
       codeAutoRetrievalTimeout: (String verificationId) {},
     );
+  }
+
+  Future sendUserNameToFirebase() async{
+    String phoneNumber = _phone.text;
+    String userName = _name.text;
+    FirebaseFirestore.instance
+        .collection('users')
+        .doc('$phoneNumber')
+        .set({
+          'Имя': userName,
+        }, SetOptions(merge: true))
+        .then((value) =>
+            debugPrint('Имя: $userName, добавлено в бд к номеру $phoneNumber'))
+        .catchError((error) =>
+            debugPrint('Произошла ошибка записи имени в БД: $error'));
   }
 }

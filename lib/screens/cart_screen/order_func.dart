@@ -1,4 +1,5 @@
 // order function
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:dart_telegram_bot/dart_telegram_bot.dart';
 import 'package:dart_telegram_bot/telegram_entities.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -6,6 +7,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_cart/flutter_cart.dart';
 import 'package:pizza_dym/functions/firebase_functions.dart';
 import 'package:pizza_dym/models/cart_model.dart';
+import 'package:pizza_dym/screens/profile/order-history_screen.dart';
 import 'package:provider/provider.dart';
 
 String header(context) {
@@ -36,8 +38,9 @@ String userPhoneNumber(FirebaseAuth auth) {
   return 'Телефон: $phoneNumber';
 }
 
-String userName() {
-  return 'Имя:';
+String userName(context) {
+  String userName = Provider.of<CartModel>(context, listen: false).userName;
+  return 'Имя: $userName';
 }
 
 String userAdress(context) {
@@ -58,7 +61,7 @@ String userAdress(context) {
     adress = adress +
         '$userFullAdress' +
         '\n' +
-        'Детали: дом: $userHouse/корпус: $userBlock/подъезд: $userEntrance/этаж: $userFloor/кв: $userAppartment/домофон: $userIntercom';
+        'Детали: дом: $userHouse/корпус: $userBlock/$userEntrance/$userIntercom/$userFloor/$userAppartment';
   }
   // Если самовывоз
   else if (deliveryMethode == 2) {
@@ -80,6 +83,20 @@ String deliveryCoordinate(context) {
     result = 'Координаты доставки:';
   }
   return '$result';
+}
+
+String geo(context) {
+  String result = '';
+  var cartModel = Provider.of<CartModel>(context, listen: false);
+  int deliveryMethode = cartModel.deliveryMethode;
+  String deliveryGeo = cartModel.deliveryGeo;
+  if (deliveryMethode == 1) {
+    result = deliveryGeo;
+  } else if (deliveryMethode == 2) {
+    result = 'Координаты не требуются';
+  }
+
+  return result;
 }
 
 String deliveryMethode(context) {
@@ -131,8 +148,10 @@ String deliveryTime(context) {
   int deliveryTimeType = cartModel.deliveryTimeType;
   DateTime deliveryChosenTime = cartModel.deliveryChosenTime;
   DateTime chosenTimeInterval = deliveryChosenTime.add(Duration(minutes: 30));
+  dynamic deliveryTimeMinute = fixMinuteTime(deliveryChosenTime.minute);
+  dynamic deliveryTimeMinuteInterval = fixMinuteTime(chosenTimeInterval.minute);
   DateTime pickupChosenTime = cartModel.pickupChosenTime;
-
+  dynamic pickupTimeMinute = fixMinuteTime(pickupChosenTime.minute);
   // Если доставка на дом
   if (deliveryMethode == 1) {
     // Если доставка как можно скоррее
@@ -142,15 +161,15 @@ String deliveryTime(context) {
     // Если доставка ко времени
     else if (deliveryTimeType == 2) {
       result = 'Время доставки; ' +
-          '${deliveryChosenTime.hour}:${deliveryChosenTime.minute}' +
+          '${deliveryChosenTime.hour}:$deliveryTimeMinute' +
           ' - ' +
-          '${chosenTimeInterval.hour}:${chosenTimeInterval.minute}';
+          '${chosenTimeInterval.hour}:$deliveryTimeMinuteInterval';
     }
   }
   // Если самовывоз
   else if (deliveryMethode == 2) {
     result =
-        'Время самовывоза: ${pickupChosenTime.day}.${pickupChosenTime.month} в ${pickupChosenTime.hour}:${pickupChosenTime.minute}';
+        'Время самовывоза: ${pickupChosenTime.day}.${pickupChosenTime.month} в ${pickupChosenTime.hour}:$pickupTimeMinute';
   }
 
   return result;
@@ -169,7 +188,7 @@ String sendOrder(context) {
   FirebaseAuth auth =
       Provider.of<FirebaseAuthInstance>(context, listen: false).auth;
   String order =
-      '${header(context)}\n${itemList(cart)}\n${userName()}\n${userPhoneNumber(auth)}\n${userAdress(context)}\n${deliveryCoordinate(context)}\n${deliveryMethode(context)}\n${paymentMethode(context)}\n${deliveryTime(context)}\n${comment(context)}';
+      '${header(context)}\n${itemList(cart)}\n${userName(context)}\n${userPhoneNumber(auth)}\n${userAdress(context)}\n${deliveryCoordinate(context)}\n${deliveryMethode(context)}\n${paymentMethode(context)}\n${deliveryTime(context)}\n${comment(context)}';
 
   return order;
 }
@@ -184,4 +203,136 @@ void sendOrderToTelegram(String message) {
   ).sendMessage(ChatID(chatID), message).catchError((error) {
     print('Возникла ошбика: $error');
   });
+}
+
+void sendGeoToTelegram(String geo) {
+  final String token = '5041704631:AAFvDqd2YzP_u5dwXGoF_Vi-HL0jpYmt1EU';
+  final int chatID = -1001644242694;
+  Bot(
+    token: token,
+    onReady: (bot) => bot.start(),
+  ).sendMessage(ChatID(chatID), geo).catchError((error) {
+    debugPrint(
+        'Во время отправки геолокации в телеграм возникла ошибка: $error');
+  });
+}
+
+String fixMinuteTime(timeMinute) {
+  String result = '';
+  if (timeMinute < 10) {
+    result = '0$timeMinute';
+  } else {
+    result = timeMinute.toString();
+  }
+
+  return result;
+}
+
+Future showOrderConfirmation(context) {
+  return showModalBottomSheet(
+      isScrollControlled: true,
+      context: context,
+      builder: (BuildContext context) {
+        return Container(
+          width: MediaQuery.of(context).size.width,
+          height: MediaQuery.of(context).size.height / 100 * 70,
+          child: orderInfo(context),
+        );
+      });
+}
+
+Widget orderInfo(context) {
+  var cartModel = Provider.of<CartModel>(context, listen: false);
+  FlutterCart cart = cartModel.cart;
+
+  int sum = cart.getTotalAmount().toInt();
+  int orderNumber = cartModel.orderNumber + 1;
+  return Column(
+    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+    children: [
+      SizedBox(
+        height: MediaQuery.of(context).size.height / 100 * 10,
+        width: MediaQuery.of(context).size.width,
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Text.rich(
+              TextSpan(
+                children: [
+                  TextSpan(
+                    text: 'Заказ № $orderNumber принят ✅\n',
+                    style: titleStyle,
+                  ),
+                  TextSpan(text: 'Вам придет смс с подтверждением заказа'),
+                ],
+              ),
+              textAlign: TextAlign.center,
+            ),
+          ],
+        ),
+      ),
+      orderList(cart, context),
+      SizedBox(
+        width: MediaQuery.of(context).size.width,
+        height: MediaQuery.of(context).size.height / 100 * 20,
+        child: Container(
+          color: Colors.grey.shade300,
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Text.rich(
+                TextSpan(
+                  children: [
+                    TextSpan(text: 'Итого\n', style: totalStyle),
+                    TextSpan(text: '$sum ₽', style: sumStyle),
+                  ],
+                ),
+                textAlign: TextAlign.center,
+              ),
+            ],
+          ),
+        ),
+      ),
+    ],
+  );
+}
+
+TextStyle titleStyle = TextStyle(fontSize: 20, fontWeight: FontWeight.bold);
+TextStyle totalStyle = TextStyle(fontSize: 16, color: Colors.grey);
+TextStyle sumStyle =
+    TextStyle(fontSize: 34, color: Colors.black, fontWeight: FontWeight.bold);
+
+Map cartItems(FlutterCart cart) {
+  Map result = {};
+  int counter = 1;
+  for (final element in cart.cartItem) {
+    result['$counter'] = [
+      element.productName,
+      element.quantity,
+      element.subTotal,
+      element.productDetails,
+    ];
+    counter++;
+  }
+  return result;
+}
+
+Widget orderList(FlutterCart cart, context) {
+  return SizedBox(
+    height: MediaQuery.of(context).size.height / 100 * 40,
+    width: MediaQuery.of(context).size.width,
+    child: ListView.builder(
+        itemCount: cartItems(cart).length,
+        itemBuilder: (BuildContext context, index) {
+          List item = cartItems(cart)['${index + 1}'];
+          String name = item[0];
+          String subtitle = '${item[1]} шт. ${item[2]}₽';
+          String imageUrl = item[3];
+          return ListTile(
+            leading: Image.network(imageUrl),
+            title: Text(name),
+            subtitle: Text(subtitle),
+          );
+        }),
+  );
 }

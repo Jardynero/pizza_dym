@@ -47,6 +47,7 @@ dependencies:
       url: https://github.com/illabo/dadata_suggestions.git
   flutter_typeahead: ^3.2.3
   dart_telegram_bot: ^0.6.1
+  backdrop: ^0.6.2
 
 dev_dependencies:
   flutter_test:

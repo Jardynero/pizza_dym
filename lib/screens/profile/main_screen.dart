@@ -35,7 +35,11 @@ class _ProfileScreenState extends State<ProfileScreen> {
   }
 
   Widget _main() {
-    String currentUserPhoneNumber = Provider.of<FirebaseAuthInstance>(context, listen: false).auth.currentUser!.phoneNumber!;
+    String currentUserPhoneNumber =
+        Provider.of<FirebaseAuthInstance>(context, listen: false)
+            .auth
+            .currentUser!
+            .phoneNumber!;
     return SizedBox(
       height: MediaQuery.of(context).size.height / 100 * 70,
       child: ListView(
@@ -57,8 +61,11 @@ class _ProfileScreenState extends State<ProfileScreen> {
           menuItemUrl('Мы на Я.Картах', 'assets/icons/icons8-маркер-96.png',
               'https://yandex.ru/maps/-/CCUujWtlsA'),
           if (currentUserPhoneNumber == '+79164164179')
-            menuItem('Добавить товар', 'assets/icons/add.png', '/profile/add-item-to-bd',)
-          
+            menuItem(
+              'Добавить товар',
+              'assets/icons/add.png',
+              '/profile/add-item-to-bd',
+            ),
         ],
       ),
     );
@@ -137,7 +144,9 @@ class _ProfileScreenState extends State<ProfileScreen> {
             fontWeight: FontWeight.w600,
           ),
         ),
-        onPressed: () => _auth.signOut(),
+        onPressed: () async {
+          await _auth.signOut();
+        },
         style: ElevatedButton.styleFrom(
           primary: Color(0xff27282A),
           fixedSize: Size(

@@ -362,7 +362,7 @@ class _ProfileUserAdressScreenState extends State<ProfileUserAdressScreen> {
       'Домофон': '${_intercomController.text}',
       'Полный адрес': '$fullAdress',
       'Координаты доставки': '$geoLat.$geoLon',
-    });
+    }, SetOptions(merge: true));
   }
 
   Future<List<AddressSuggestion>> _startSuggesting(String text) async {
