@@ -3,6 +3,7 @@ import Flutter
 import Firebase
 import FirebaseAuth
 import UserNotifications
+import FirebaseMessaging
 
 @UIApplicationMain
 @objc class AppDelegate: FlutterAppDelegate {
@@ -19,10 +20,10 @@ import UserNotifications
         return true
   }
     override func application(_ application: UIApplication, didRegisterForRemoteNotificationsWithDeviceToken deviceToken: Data) {
-        let firebaseAuth = Auth.auth()
-        firebaseAuth.setAPNSToken(deviceToken, type: AuthAPNSTokenType.unknown)
 
-    }
+   Messaging.messaging().apnsToken = deviceToken
+   super.application(application, didRegisterForRemoteNotificationsWithDeviceToken: deviceToken)
+ }
     override func application(_ application: UIApplication, didReceiveRemoteNotification userInfo: [AnyHashable : Any], fetchCompletionHandler completionHandler: @escaping (UIBackgroundFetchResult) -> Void) {
         let firebaseAuth = Auth.auth()
         if (firebaseAuth.canHandleNotification(userInfo)){
