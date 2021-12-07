@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:flutter/material.dart';
 import 'package:pizza_dym/global_widgets/appBar.dart';
 import 'package:pizza_dym/global_widgets/floating-action-btn.dart';
@@ -24,8 +25,7 @@ class ItemListScreen extends StatelessWidget {
       floatingActionButton: FloatingActionBtn(),
       body: StreamBuilder<QuerySnapshot>(
         stream: _menu,
-        builder:
-            (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
+        builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
           if (snapshot.connectionState == ConnectionState.waiting) {
             return Center(child: CircularProgressIndicator());
           }
@@ -33,9 +33,10 @@ class ItemListScreen extends StatelessWidget {
           //     _counter, snapshot, _menuItemsSorted, _menuItemsSortedList);
           return ListView(
             children: snapshot.data!.docs.map((DocumentSnapshot document) {
-              Map<String, dynamic> data = document.data()! as Map<String, dynamic>;
+              Map<String, dynamic> data =
+                  document.data()! as Map<String, dynamic>;
               if (data['категория'] == categorieName) {
-                return ItemCard(data); 
+                return ItemCard(data);
               }
               return SizedBox.shrink();
             }).toList(),
@@ -68,11 +69,13 @@ class ItemCard extends StatefulWidget {
 class _ItemCardState extends State<ItemCard> {
   @override
   Widget build(BuildContext context) {
+    final String categorieName = widget._itemData['категория товара'];
     final String itemName = widget._itemData['название'];
     final String itemPhotoUrl = widget._itemData['фото'];
     final int itemCost = widget._itemData['цена'];
     final bool availableToBuy = widget._itemData['доступность товара'];
     var cart = Provider.of<CartModel>(context, listen: true).cart;
+    final FirebaseAnalytics analytics = FirebaseAnalytics();
     return GestureDetector(
       onTap: () => Navigator.push(
         context,
@@ -118,7 +121,7 @@ class _ItemCardState extends State<ItemCard> {
                             child: ElevatedButton(
                               onPressed: availableToBuy == false
                                   ? null
-                                  : () {
+                                  : () async {
                                       Provider.of<CartModel>(
                                         context,
                                         listen: false,
@@ -128,6 +131,13 @@ class _ItemCardState extends State<ItemCard> {
                                         itemName,
                                         itemPhotoUrl,
                                       );
+                                      await analytics.logAddToCart(
+                                          itemId: itemName,
+                                          itemName: itemName,
+                                          itemCategory: categorieName,
+                                          quantity: 1,
+                                          currency: 'RUB',
+                                          price: itemCost.toDouble());
                                     },
                               style: ElevatedButton.styleFrom(
                                 elevation: 0,
@@ -173,10 +183,18 @@ class _ItemCardState extends State<ItemCard> {
                                     '${cart.getSpecificItemFromCart(itemName)!.quantity}',
                                     style: TextStyle(fontSize: 18)),
                                 TextButton(
-                                  onPressed: () {
+                                  onPressed: () async {
                                     Provider.of<CartModel>(context,
                                             listen: false)
                                         .incrementItemToCart(itemName);
+                                    await analytics
+                                        .logAddToCart(
+                                            itemId: itemName,
+                                            itemName: itemName,
+                                            itemCategory: categorieName,
+                                            quantity: 1,
+                                            currency: 'RUB',
+                                            price: itemCost.toDouble());
                                   },
                                   child:
                                       Text('+', style: TextStyle(fontSize: 18)),

@@ -1,4 +1,6 @@
 // Import screens
+import 'package:firebase_analytics/firebase_analytics.dart';
+import 'package:flutter/foundation.dart';
 import 'package:pizza_dym/screens/about-pizza_screen.dart';
 import 'package:pizza_dym/screens/cart_screen/adress_screen.dart';
 import 'package:pizza_dym/screens/cart_screen/cart_screen.dart';
@@ -36,6 +38,7 @@ import 'package:pizza_dym/functions/firebase_functions.dart';
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
+  FirebaseMessaging.onBackgroundMessage(firebaseMessagingBackgroundHandler);
   runApp(MultiProvider(
     providers: [
       ChangeNotifierProvider(create: (context) => CartModel()),
@@ -60,9 +63,9 @@ class _PizzadymState extends State<Pizzadym> {
 
   @override
   void initState() {
-    messaging.requestPermission();
-    FirebaseMessaging.onBackgroundMessage(firebaseMessagingBackgroundHandler);
     super.initState();
+    initFirebaseMessaging(messaging);
+    FirebaseAnalytics().logAppOpen().then((value) => debugPrint('приложение открыто'));
   }
 
   @override

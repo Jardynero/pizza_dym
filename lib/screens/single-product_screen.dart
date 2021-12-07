@@ -1,5 +1,6 @@
 // Single product page
 
+import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:flutter/material.dart';
 import 'package:pizza_dym/global_widgets/appBar.dart';
 import 'package:pizza_dym/models/cart_model.dart';
@@ -15,7 +16,12 @@ class SingleProductScreen extends StatefulWidget {
 
 class _SingleProductScreenState extends State<SingleProductScreen> {
   int productQnt = 1;
-
+  FirebaseAnalytics analytics = FirebaseAnalytics();
+  @override
+  void initState() {
+    analytics.logViewItem(itemId: widget.data['название'], itemName: widget.data['название'], itemCategory: widget.data['категория товара'], quantity: 1, currency: 'RUB', price: widget.data['цена'].toDouble());
+    super.initState();
+  }
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -213,7 +219,7 @@ class _SingleProductScreenState extends State<SingleProductScreen> {
               minimumSize: Size(140.0, 50.0),
               maximumSize: Size(160.0, 50.0),
             ),
-            onPressed: () {
+            onPressed: () async{
               Provider.of<CartModel>(context, listen: false)
                   .obtainQntOfProduct(widget.data['название']);
               int singleProductQntInCart = 0;
@@ -232,6 +238,7 @@ class _SingleProductScreenState extends State<SingleProductScreen> {
                   widget.data['название'],
                   productQnt + singleProductQntInCart,
                   widget.data['фото'].toString());
+              await analytics.logAddToCart(itemId: widget.data['название'], itemName: widget.data['название'], itemCategory: widget.data['категория товара'], quantity: productQnt + singleProductQntInCart, currency: 'RUB', price: (widget.data['цена'] * productQnt).toDouble());
               
               
               Navigator.pop(context);

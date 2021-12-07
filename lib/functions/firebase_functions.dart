@@ -10,7 +10,6 @@ import 'package:provider/provider.dart';
 
 // request permission for notifications
 Future initFirebaseMessaging(firebaseMessagingInstance) async {
-  Future.delayed(Duration(milliseconds: 2000));
   NotificationSettings settings =
       await firebaseMessagingInstance.requestPermission(
     alert: true,

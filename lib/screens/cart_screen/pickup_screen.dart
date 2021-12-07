@@ -1,3 +1,4 @@
+import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_cart/flutter_cart.dart';
 import 'package:pizza_dym/functions/firebase_functions.dart';
@@ -24,6 +25,7 @@ class _PickupScreenState extends State<PickupScreen> {
   String message = '';
   String soonTimeMessage = '';
   DateTime chosenTime = DateTime.now();
+  FirebaseAnalytics analytics = FirebaseAnalytics();
 
   @override
   Widget build(BuildContext context, {locale: const Locale('ru', 'RU')}) {
@@ -42,16 +44,6 @@ class _PickupScreenState extends State<PickupScreen> {
   Widget title() {
     return Column(
       children: [
-        // Container(
-        //   margin: EdgeInsets.only(top: 20, bottom: 10),
-        //   child: Text(
-        //     'Данные о заказе',
-        //     style: TextStyle(
-        //       fontSize: 24,
-        //       fontWeight: FontWeight.bold,
-        //     ),
-        //   ),
-        // ),
         Container(
             margin: EdgeInsets.only(top: 20),
             child: Text('Выберите время самовывоза')),
@@ -171,14 +163,13 @@ class _PickupScreenState extends State<PickupScreen> {
       child: ElevatedButton(
         child: Text('ОФОРМИТЬ ЗАКАЗ',
             style: TextStyle(fontSize: 14, fontWeight: FontWeight.w600)),
-        onPressed: () {
+        onPressed: () async {
           var cartModel = Provider.of<CartModel>(context, listen: false);
+          double totalAmount = cartModel.cart.getTotalAmount();
           cartModel.getPickupChosenTime(chosenTime);
           if (onChangedTime == false) {
-            ScaffoldMessenger.of(context).showSnackBar(
-              reUsableSnackBar(
-                  'Пожалуйста, выберите время самовывоза', context),
-            );
+            ScaffoldMessenger.of(context).showSnackBar(reUsableSnackBar(
+                'Пожалуйста, выберите время самовывоза', context));
           } else if (isChoseTimeOk == false) {
             ScaffoldMessenger.of(context).showSnackBar(
               reUsableSnackBar(message, context),
@@ -188,10 +179,13 @@ class _PickupScreenState extends State<PickupScreen> {
             sendOrderToTelegram(sendOrder(context));
             sendGeoToTelegram(geo(context));
             cartModel.sendNewOrderNumber();
+            await FirebaseAnalytics().logEcommercePurchase(
+                currency: 'RUB', value: totalAmount).then((value) => debugPrint('Google analytics: Log:Event (e-commerce)'));
             Navigator.pushNamedAndRemoveUntil(context, '/', (route) => false);
-            showOrderConfirmation(context).then((value) => cartModel.cart.deleteAllCart());
+            showOrderConfirmation(context)
+                .then((value) => cartModel.cart.deleteAllCart());
             debugPrint('Заказ на самовывоз оформлен');
-            
+
             // Оформить заказ
             // Отправить в телегу заказ (готово)
             // отправить смс клиенту

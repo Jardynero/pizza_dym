@@ -1,3 +1,4 @@
+import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:flutter/material.dart';
 import 'package:pizza_dym/global_widgets/appBar.dart';
 import 'package:pizza_dym/models/cart_model.dart';
@@ -14,6 +15,7 @@ class PaymentMethodeScreen extends StatefulWidget {
 class _PaymentMethodeScreenState extends State<PaymentMethodeScreen> {
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   TextEditingController _cashController = TextEditingController();
+  FirebaseAnalytics analytics = FirebaseAnalytics();
   int? _groupValue = 1;
   int _payByCardUponReciept = 1;
   int _payByCash = 2;
@@ -213,6 +215,7 @@ class _PaymentMethodeScreenState extends State<PaymentMethodeScreen> {
 
   Widget btn() {
     var cartModel = Provider.of<CartModel>(context, listen: false);
+    double totalAmount = cartModel.cart.getTotalAmount();
     return Container(
       margin:
           EdgeInsets.only(bottom: MediaQuery.of(context).size.height / 100 * 5),
@@ -221,7 +224,7 @@ class _PaymentMethodeScreenState extends State<PaymentMethodeScreen> {
           'ОФОРМИТЬ ЗАКАЗ',
           style: TextStyle(fontSize: 14, fontWeight: FontWeight.w600),
         ),
-        onPressed: () {
+        onPressed: () async{
           cartModel.getPaymentMethode(_groupValue!);
           if (_groupValue == 1) {
             debugPrint('Оплата банковской картой при получение!');
@@ -245,6 +248,7 @@ class _PaymentMethodeScreenState extends State<PaymentMethodeScreen> {
                   .then((value) => cartModel.cart.deleteAllCart());
             }
           }
+          await analytics.logEcommercePurchase(currency: 'RUB', value: totalAmount);
         },
         style: ElevatedButton.styleFrom(
           primary: Color(0xff27282A),
