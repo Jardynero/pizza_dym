@@ -35,7 +35,7 @@ class _CardCategoriesState extends State<CardCategories> {
 
           return ListView(
             children: [
-              Padding(padding: EdgeInsets.only(top: 30.0)),
+              Padding(padding: EdgeInsets.only(top: 10.0)),
               for (final categorie in _menuCategoriesSorted.values)
                 categories(categorie),
               aboutUs(),
@@ -72,7 +72,7 @@ class _CardCategoriesState extends State<CardCategories> {
             fit: BoxFit.cover,
             alignment: Alignment.bottomRight,
             colorFilter: ColorFilter.mode(
-                Color.fromRGBO(0, 0, 0, 0.5), BlendMode.multiply),
+                Color.fromRGBO(0, 0, 0, 0.4), BlendMode.multiply),
           ),
         ),
         child: Container(

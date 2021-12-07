@@ -2,6 +2,7 @@ import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_cart/flutter_cart.dart';
 import 'package:pizza_dym/functions/firebase_functions.dart';
+import 'package:pizza_dym/global_widgets/app-review.dart';
 import 'package:pizza_dym/global_widgets/appBar.dart';
 import 'package:pizza_dym/global_widgets/snackbar.dart';
 import 'package:pizza_dym/models/cart_model.dart';
@@ -179,11 +180,14 @@ class _PickupScreenState extends State<PickupScreen> {
             sendOrderToTelegram(sendOrder(context));
             sendGeoToTelegram(geo(context));
             cartModel.sendNewOrderNumber();
-            await FirebaseAnalytics().logEcommercePurchase(
-                currency: 'RUB', value: totalAmount).then((value) => debugPrint('Google analytics: Log:Event (e-commerce)'));
+            await FirebaseAnalytics()
+                .logEcommercePurchase(currency: 'RUB', value: totalAmount)
+                .then((value) =>
+                    debugPrint('Google analytics: Log:Event (e-commerce)'));
             Navigator.pushNamedAndRemoveUntil(context, '/', (route) => false);
             showOrderConfirmation(context)
-                .then((value) => cartModel.cart.deleteAllCart());
+                .then((value) => cartModel.cart.deleteAllCart())
+                .then((value) => reviewApp());
             debugPrint('Заказ на самовывоз оформлен');
 
             // Оформить заказ

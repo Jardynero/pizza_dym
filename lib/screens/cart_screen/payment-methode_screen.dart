@@ -1,5 +1,6 @@
 import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:flutter/material.dart';
+import 'package:pizza_dym/global_widgets/app-review.dart';
 import 'package:pizza_dym/global_widgets/appBar.dart';
 import 'package:pizza_dym/models/cart_model.dart';
 import 'package:pizza_dym/screens/cart_screen/order_func.dart';
@@ -234,7 +235,7 @@ class _PaymentMethodeScreenState extends State<PaymentMethodeScreen> {
             cartModel.sendNewOrderNumber();
             Navigator.pushNamedAndRemoveUntil(context, '/', (route) => false);
             showOrderConfirmation(context)
-                .then((value) => cartModel.cart.deleteAllCart());
+                .then((value) => cartModel.cart.deleteAllCart()).then((value) => reviewApp());
           } else if (_groupValue == 2) {
             if (_formKey.currentState!.validate()) {
               debugPrint('Оплата наличными');
@@ -245,7 +246,7 @@ class _PaymentMethodeScreenState extends State<PaymentMethodeScreen> {
               cartModel.sendNewOrderNumber();
               Navigator.pushNamedAndRemoveUntil(context, '/', (route) => false);
               showOrderConfirmation(context)
-                  .then((value) => cartModel.cart.deleteAllCart());
+                  .then((value) => cartModel.cart.deleteAllCart()).then((value) => reviewApp());
             }
           }
           await analytics.logEcommercePurchase(currency: 'RUB', value: totalAmount);

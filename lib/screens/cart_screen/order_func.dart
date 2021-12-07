@@ -1,5 +1,4 @@
 // order function
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:dart_telegram_bot/dart_telegram_bot.dart';
 import 'package:dart_telegram_bot/telegram_entities.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -7,7 +6,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_cart/flutter_cart.dart';
 import 'package:pizza_dym/functions/firebase_functions.dart';
 import 'package:pizza_dym/models/cart_model.dart';
-import 'package:pizza_dym/screens/profile/order-history_screen.dart';
 import 'package:provider/provider.dart';
 
 String header(context) {

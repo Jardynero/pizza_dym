@@ -5,6 +5,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:pizza_dym/functions/firebase_functions.dart';
 import 'package:pizza_dym/global_widgets/appBar.dart';
+import 'package:pizza_dym/global_widgets/floating-action-btn.dart';
 import 'package:pizza_dym/models/customer-data_model.dart';
 
 // Import screens
@@ -29,6 +30,7 @@ class IndexScreen extends StatelessWidget {
     });
     return Scaffold(
       appBar: MainAppBar('$_title'),
+      floatingActionButton: FloatingActionBtn(),
       body: MenuScreen(),
     );
   }
