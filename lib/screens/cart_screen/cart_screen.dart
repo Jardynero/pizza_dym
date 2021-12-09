@@ -1,6 +1,7 @@
 // Cart page
 import 'package:flutter/material.dart';
 import 'package:flutter_cart/flutter_cart.dart';
+import 'package:pizza_dym/functions/firebase_functions.dart';
 import 'package:pizza_dym/global_widgets/appBar.dart';
 import 'package:pizza_dym/models/cart_model.dart';
 import 'package:provider/provider.dart';
@@ -25,7 +26,7 @@ class _CartScreenState extends State<CartScreen> {
     var cart = Provider.of<CartModel>(context, listen: true).cart;
 
     return Scaffold(
-      appBar: MainAppBar('Корзина'),
+      appBar: MenuAppBar('Корзина'),
       body: Column(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -46,7 +47,7 @@ class _CartScreenState extends State<CartScreen> {
 
   Widget itemList(FlutterCart cart, index) {
     return Card(
-      elevation: 3,
+      elevation: 1,
       child: Container(
         width: MediaQuery.of(context).size.width,
         padding: EdgeInsets.symmetric(
@@ -136,6 +137,8 @@ class _CartScreenState extends State<CartScreen> {
 
   Widget bottomBar(double totalAmount) {
     var cartModel = Provider.of<CartModel>(context, listen: false);
+    var _auth = Provider.of<FirebaseAuthInstance>(context, listen: false).auth;
+    var firebaseModel = Provider.of<CloudFirestore>(context, listen: false);
     return SafeArea(
       child: Container(
         width: MediaQuery.of(context).size.width,
@@ -185,7 +188,12 @@ class _CartScreenState extends State<CartScreen> {
                   ),
                   onPressed: () {
                     cartModel.getOrderNumber();
-                    Navigator.pushNamed(context, '/delivery-methode');
+                    if (_auth.currentUser == null) {
+                      firebaseModel.saveLastPageBeforeLogin('/cart');
+                      Navigator.pushNamed(context, '/login-phone');
+                    }else {
+                      Navigator.pushNamed(context, '/delivery-methode');
+                    }
                   },
                 ),
               ),

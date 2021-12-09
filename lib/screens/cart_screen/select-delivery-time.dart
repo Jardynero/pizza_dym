@@ -306,7 +306,7 @@ class _SelectDeliveryTimeScreenState extends State<SelectDeliveryTimeScreen> {
             'Как можно скорее',
             _asSoonAsPossible,
             'assets/icons/asSoonAsPossible.png',
-            'Привезем в течение 60 минут. Точнее время пришлем в смс'),
+            'Привезем в течение 60 минут.'),
         deliveryMethode(
             'Доставка ко времени',
             _onTime,

@@ -128,6 +128,8 @@ class _LoginCodeFormState extends State<LoginCodeForm> {
 
   // Авторизировать пользователя - кнопка продолжить
   Future authenticateUser(_userVerificationId, _auth) async {
+    var _firestoreModel = Provider.of<CloudFirestore>(context, listen: false);
+    final String lastPageBeforeLogin = _firestoreModel.lastPageBeforeLogin;
     setState(() {
       activityIndicator = true;
     });
@@ -158,7 +160,7 @@ class _LoginCodeFormState extends State<LoginCodeForm> {
         activityIndicator = false;
       });
       FirebaseAnalytics().logSignUp(signUpMethod: 'Phone Number');
-      Navigator.pushNamedAndRemoveUntil(context, '/', (route) => false);
+      Navigator.pushNamedAndRemoveUntil(context, '$lastPageBeforeLogin', (route) => false);
     } else {
       print('error');
     }
@@ -181,6 +183,8 @@ class _LoginCodeFormState extends State<LoginCodeForm> {
 
   // Запрос нового кода
   Future sendNewCode(_auth, _userPhoneNumber) async {
+    var _firestoreModel = Provider.of<CloudFirestore>(context, listen: false);
+    final String lastPageBeforeLogin = _firestoreModel.lastPageBeforeLogin;
     await _auth.verifyPhoneNumber(
       phoneNumber: _userPhoneNumber,
       verificationCompleted: (PhoneAuthCredential credential) async {
@@ -190,7 +194,7 @@ class _LoginCodeFormState extends State<LoginCodeForm> {
             activityIndicator = false;
           });
           print('Android auth done!');
-          Navigator.pushNamedAndRemoveUntil(context, '/', (route) => false);
+          Navigator.pushNamedAndRemoveUntil(context, '$lastPageBeforeLogin', (route) => false);
         }
       },
       verificationFailed: (FirebaseAuthException e) {

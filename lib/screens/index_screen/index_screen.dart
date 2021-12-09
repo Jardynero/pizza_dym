@@ -18,16 +18,18 @@ class IndexScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     // FirebaseAuth instance
-    final _auth =
+    FirebaseAuth _auth =
         Provider.of<FirebaseAuthInstance>(context, listen: true).auth;
 
     final _title = Provider.of<CustomerData>(context, listen: false).name;
 
-    _auth.authStateChanges().listen((User? user) {
-      if (user == null) {
-        Navigator.pushNamedAndRemoveUntil(context, '/login-phone', (route) => false);
-      }
-    });
+    _auth.setLanguageCode('ru');
+
+    // _auth.authStateChanges().listen((User? user) {
+    //   if (user == null) {
+    //     // Navigator.pushNamedAndRemoveUntil(context, '/login-phone', (route) => false);
+    //   }
+    // });
     return Scaffold(
       appBar: MainAppBar('$_title'),
       floatingActionButton: FloatingActionBtn(),

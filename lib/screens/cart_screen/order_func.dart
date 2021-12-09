@@ -193,8 +193,8 @@ String sendOrder(context) {
 
 // SendOrderToDelegram
 void sendOrderToTelegram(String message) {
-  final String token = '5041704631:AAFvDqd2YzP_u5dwXGoF_Vi-HL0jpYmt1EU';
-  final int chatID = -1001644242694;
+  final String token = '1986877443:AAF_InoNq1RjIRZgURJMbg1U0KAUwKzvfTo';
+  final int chatID = -1001360381141;
   Bot(
     token: token,
     onReady: (bot) => bot.start(),
@@ -204,8 +204,8 @@ void sendOrderToTelegram(String message) {
 }
 
 void sendGeoToTelegram(String geo) {
-  final String token = '5041704631:AAFvDqd2YzP_u5dwXGoF_Vi-HL0jpYmt1EU';
-  final int chatID = -1001644242694;
+  final String token = '1986877443:AAF_InoNq1RjIRZgURJMbg1U0KAUwKzvfTo';
+  final int chatID = -1001360381141;
   Bot(
     token: token,
     onReady: (bot) => bot.start(),

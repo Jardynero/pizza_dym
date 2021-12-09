@@ -29,7 +29,7 @@ class LoginText extends StatelessWidget {
             bottom: MediaQuery.of(context).size.height / 100 * 3,
           ),
           child: Text(
-            'Введите номер телефона и имя, чтобы войти или зарегистрироваться',
+            'Введите номер телефона и имя, чтобы зарегистрироваться и продолжить оформление заказа',
           ),
         ),
       ],

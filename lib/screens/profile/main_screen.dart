@@ -23,7 +23,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: MainAppBar(_title),
+      appBar: MenuAppBar(_title),
       body: Column(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
@@ -145,7 +145,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
           ),
         ),
         onPressed: () async {
-          await _auth.signOut();
+          await _auth.signOut().then((value) => Navigator.pushNamedAndRemoveUntil(context, '/', (route) => false));
         },
         style: ElevatedButton.styleFrom(
           primary: Color(0xff27282A),

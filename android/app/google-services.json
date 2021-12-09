@@ -14,6 +14,14 @@
       },
       "oauth_client": [
         {
+          "client_id": "1014663191058-37usi7bkv0mpe0aio35cqmtkd7tg67k5.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.pizzadym.pizzadym",
+            "certificate_hash": "667f928f489ceb2800a12f31b0095887a8d4d233"
+          }
+        },
+        {
           "client_id": "1014663191058-tarii87ps64i5tce8java56rcd49dnlk.apps.googleusercontent.com",
           "client_type": 3
         }

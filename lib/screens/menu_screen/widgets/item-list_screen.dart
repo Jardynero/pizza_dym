@@ -89,7 +89,7 @@ class _ItemCardState extends State<ItemCard> {
         child: Card(
           shape:
               RoundedRectangleBorder(borderRadius: BorderRadius.circular(10.0)),
-          elevation: 7.0,
+          elevation: 4.0,
           shadowColor: Color(0xffEBEBEB),
           margin: EdgeInsets.symmetric(vertical: 10, horizontal: 15),
           child: Row(

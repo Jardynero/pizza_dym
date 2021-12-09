@@ -2,8 +2,10 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:pizza_dym/functions/firebase_functions.dart';
+import 'package:pizza_dym/global_widgets/snackbar.dart';
 import 'package:pizza_dym/screens/login_screen/theme/Login-phone-theme.dart';
 import 'package:provider/provider.dart';
+import 'package:rflutter_alert/rflutter_alert.dart';
 
 class LoginForm extends StatefulWidget {
   LoginForm({Key? key}) : super(key: key);
@@ -99,57 +101,55 @@ class _LoginFormState extends State<LoginForm> {
   // Аутентификация пользователя (по кнопке продолжить)
   Future authenticateUser(_auth) async {
     // Начало верификации
-    await _auth.verifyPhoneNumber(
-      phoneNumber: _phone.text,
+    try {
+      await _auth.verifyPhoneNumber(
+        phoneNumber: _phone.text,
 
-      // Андроид авто верификация
-      verificationCompleted: (PhoneAuthCredential credential) async {
-        await _auth.signInWithCredential(credential);
-      },
+        // Андроид авто верификация
+        verificationCompleted: (PhoneAuthCredential credential) async {
+          await _auth.signInWithCredential(credential);
+        },
 
-      // Ошибка верификации
-      verificationFailed: (FirebaseAuthException e) {
-        setState(() {
-          activityIndicator = false;
-        });
-        if (e.code == 'invalid-phone-number') {
-          print('The provided phone number is not valid.');
-        } else {
-          print(e.message);
-        }
-      },
+        // Ошибка верификации
+        verificationFailed: (FirebaseAuthException e) {
+          setState(() {
+            activityIndicator = false;
+          });
+          if (e.code == 'invalid-phone-number') {
+            print('The provided phone number is not valid.');
+          } else {
+            Alert(context: context, title: 'ошибка', desc: e.message).show();
+          }
+        },
 
-      // Код отправлен
-      codeSent: (String verificationId, int? resendToken) {
-        context
-            .read<FirebaseAuthInstance>()
-            .obtainVerificationId(verificationId);
-        context.read<FirebaseAuthInstance>().obtainUserPhoneNumber(_phone.text);
-        setState(() {
-          activityIndicator = false;
-        });
-        sendUserNameToFirebase().then((value) {
+        // Код отправлен
+        codeSent: (String verificationId, int? resendToken) async {
+          context
+              .read<FirebaseAuthInstance>()
+              .obtainVerificationId(verificationId);
+          context
+              .read<FirebaseAuthInstance>()
+              .obtainUserPhoneNumber(_phone.text);
+          setState(() {
+            activityIndicator = false;
+          });
+          await sendUserNameToFirebase();
           Navigator.pushNamed(context, '/login-code');
-        });
-        // Navigator.pushNamed(context, '/login-code');
-      },
-      timeout: Duration(seconds: 60),
-      codeAutoRetrievalTimeout: (String verificationId) {},
-    );
+        },
+        timeout: Duration(seconds: 60),
+        codeAutoRetrievalTimeout: (String verificationId) {},
+      );
+    } catch (e) {
+      Alert(context: context, title: 'ошибка', desc: e.toString()).show();
+    }
   }
 
-  Future sendUserNameToFirebase() async{
+  Future sendUserNameToFirebase() async {
     String phoneNumber = _phone.text;
     String userName = _name.text;
-    FirebaseFirestore.instance
-        .collection('users')
-        .doc('$phoneNumber')
-        .set({
-          'Имя': userName,
-        }, SetOptions(merge: true))
-        .then((value) =>
-            debugPrint('Имя: $userName, добавлено в бд к номеру $phoneNumber'))
-        .catchError((error) =>
-            debugPrint('Произошла ошибка записи имени в БД: $error'));
+    FirebaseFirestore.instance.collection('users').doc('$phoneNumber').set({
+      'Имя': userName,
+    }, SetOptions(merge: true)).catchError(
+        (error) => debugPrint('Произошла ошибка записи имени в БД: $error'));
   }
 }

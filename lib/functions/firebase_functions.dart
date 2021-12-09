@@ -72,6 +72,13 @@ class CloudFirestore extends ChangeNotifier {
   int _minDeliveryOrderPrice = 0;
   int get minDeliveryOrderPrice => _minDeliveryOrderPrice;
 
+  String _lastPageBeforeLogin = '';
+  String get lastPageBeforeLogin => _lastPageBeforeLogin;
+
+  void saveLastPageBeforeLogin(String route) {
+    _lastPageBeforeLogin = route;
+  }
+
   Future<void> obtainRestautantSettings() async {
     DocumentReference docReference =
         firestore.collection('restaurant').doc('settings');

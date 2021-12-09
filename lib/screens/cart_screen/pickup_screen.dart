@@ -4,6 +4,7 @@ import 'package:flutter_cart/flutter_cart.dart';
 import 'package:pizza_dym/functions/firebase_functions.dart';
 import 'package:pizza_dym/global_widgets/app-review.dart';
 import 'package:pizza_dym/global_widgets/appBar.dart';
+import 'package:pizza_dym/global_widgets/floating-action-btn.dart';
 import 'package:pizza_dym/global_widgets/snackbar.dart';
 import 'package:pizza_dym/models/cart_model.dart';
 import 'package:pizza_dym/screens/cart_screen/order_func.dart';
@@ -184,10 +185,10 @@ class _PickupScreenState extends State<PickupScreen> {
                 .logEcommercePurchase(currency: 'RUB', value: totalAmount)
                 .then((value) =>
                     debugPrint('Google analytics: Log:Event (e-commerce)'));
-            Navigator.pushNamedAndRemoveUntil(context, '/', (route) => false);
             showOrderConfirmation(context)
                 .then((value) => cartModel.cart.deleteAllCart())
-                .then((value) => reviewApp());
+                .then((value) => Navigator.pushNamedAndRemoveUntil(
+                    context, '/', (route) => false)).then((value) => reviewApp());
             debugPrint('Заказ на самовывоз оформлен');
 
             // Оформить заказ

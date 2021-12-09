@@ -225,7 +225,7 @@ class _PaymentMethodeScreenState extends State<PaymentMethodeScreen> {
           'ОФОРМИТЬ ЗАКАЗ',
           style: TextStyle(fontSize: 14, fontWeight: FontWeight.w600),
         ),
-        onPressed: () async{
+        onPressed: () async {
           cartModel.getPaymentMethode(_groupValue!);
           if (_groupValue == 1) {
             debugPrint('Оплата банковской картой при получение!');
@@ -233,9 +233,11 @@ class _PaymentMethodeScreenState extends State<PaymentMethodeScreen> {
             sendOrderToTelegram(sendOrder(context));
             sendGeoToTelegram(geo(context));
             cartModel.sendNewOrderNumber();
-            Navigator.pushNamedAndRemoveUntil(context, '/', (route) => false);
             showOrderConfirmation(context)
-                .then((value) => cartModel.cart.deleteAllCart()).then((value) => reviewApp());
+                .then((value) => cartModel.cart.deleteAllCart())
+                .then((value) => Navigator.pushNamedAndRemoveUntil(
+                    context, '/', (route) => false))
+                .then((value) => reviewApp());
           } else if (_groupValue == 2) {
             if (_formKey.currentState!.validate()) {
               debugPrint('Оплата наличными');
@@ -244,12 +246,15 @@ class _PaymentMethodeScreenState extends State<PaymentMethodeScreen> {
               sendOrderToTelegram(sendOrder(context));
               sendGeoToTelegram(geo(context));
               cartModel.sendNewOrderNumber();
-              Navigator.pushNamedAndRemoveUntil(context, '/', (route) => false);
               showOrderConfirmation(context)
-                  .then((value) => cartModel.cart.deleteAllCart()).then((value) => reviewApp());
+                  .then((value) => cartModel.cart.deleteAllCart())
+                  .then((value) => Navigator.pushNamedAndRemoveUntil(
+                      context, '/', (route) => false))
+                  .then((value) => reviewApp());
             }
           }
-          await analytics.logEcommercePurchase(currency: 'RUB', value: totalAmount);
+          await analytics.logEcommercePurchase(
+              currency: 'RUB', value: totalAmount);
         },
         style: ElevatedButton.styleFrom(
           primary: Color(0xff27282A),
