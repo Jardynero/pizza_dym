@@ -72,6 +72,19 @@ class _AdressScreenState extends State<AdressScreen> {
     );
   }
 
+  @override
+  void dispose() {
+    super.dispose();
+    _streetController.dispose();
+    _houseController.dispose();
+    _blockController.dispose();
+    _entranceController.dispose();
+    _appartmentController.dispose();
+    _floorController.dispose();
+    _intercomController.dispose();
+    _commentController.dispose();
+  }
+
   Widget _main(_userPhoneNumber) {
     return Padding(
       padding: const EdgeInsets.all(10.0),
@@ -367,20 +380,18 @@ class _AdressScreenState extends State<AdressScreen> {
         onPressed: () {
           cartModel.getUserComment(_commentController.text);
           if (_formKey.currentState!.validate()) {
-            if (isAdressChanged == true) {
-              updateUserDeliveryAdress(_userPhoneNumber);
-              cartModel.getUserAdressData(
-                _streetController.text,
-                _houseController.text,
-                _blockController.text,
-                _entranceController.text,
-                _appartmentController.text,
-                _intercomController.text,
-                _floorController.text,
-                fullAdress,
-                deliveryGeo,
-              );
-            }
+            updateUserDeliveryAdress(_userPhoneNumber);
+            cartModel.getUserAdressData(
+              _streetController.text,
+              _houseController.text,
+              _blockController.text,
+              _entranceController.text,
+              _appartmentController.text,
+              _intercomController.text,
+              _floorController.text,
+              fullAdress == '' ? _streetController.text : fullAdress,
+              deliveryGeo,
+            );
 
             Navigator.pushNamed(context, '/cart/select-delivery-time');
           }
@@ -411,7 +422,7 @@ class _AdressScreenState extends State<AdressScreen> {
       'Квартира': '${_appartmentController.text}',
       'Этаж': '${_floorController.text}',
       'Домофон': '${_intercomController.text}',
-      'Полный адрес': '$fullAdress',
+      'Полный адрес': fullAdress == '' ? _streetController.text : '$fullAdress',
       'Координаты доставки': '$deliveryGeo',
     }, SetOptions(merge: true));
   }
