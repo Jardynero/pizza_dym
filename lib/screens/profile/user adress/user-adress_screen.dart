@@ -65,12 +65,27 @@ class _ProfileUserAdressScreenState extends State<ProfileUserAdressScreen> {
             .currentUser!
             .phoneNumber;
     return GestureDetector(
-      onTap: () {FocusScope.of(context).unfocus();},
+      onTap: () {
+        FocusScope.of(context).unfocus();
+      },
       child: Scaffold(
         appBar: MainAppBar('Адрес доставки'),
         body: _main(_userPhoneNumber),
       ),
     );
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+    _streetController.dispose();
+    _houseController.dispose();
+    _blockController.dispose();
+    _entranceController.dispose();
+    _appartmentController.dispose();
+    _floorController.dispose();
+    _intercomController.dispose();
+    _commentController.dispose();
   }
 
   Widget _main(_userPhoneNumber) {
@@ -121,21 +136,23 @@ class _ProfileUserAdressScreenState extends State<ProfileUserAdressScreen> {
         );
       },
       onSuggestionSelected: (AddressSuggestion a) {
-        setState(() {
-          fullAdress = a.value;
-          geoLat = a.data.geoLat;
-          geoLon = a.data.geoLon;
-          _streetController.text = '${a.value}';
-          if (a.data.house != null) {
-            _houseController.text = a.data.house;
-          }
-          if (a.data.block != null) {
-            _blockController.text = a.data.block;
-          }
-          if (a.data.flat != null) {
-            _appartmentController.text = a.data.flat;
-          }
-        });
+        setState(
+          () {
+            fullAdress = a.value;
+            geoLat = a.data.geoLat;
+            geoLon = a.data.geoLon;
+            _streetController.text = '${a.value}';
+            if (a.data.house != null) {
+              _houseController.text = a.data.house;
+            }
+            if (a.data.block != null) {
+              _blockController.text = a.data.block;
+            }
+            if (a.data.flat != null) {
+              _appartmentController.text = a.data.flat;
+            }
+          },
+        );
       },
     );
   }
@@ -360,7 +377,7 @@ class _ProfileUserAdressScreenState extends State<ProfileUserAdressScreen> {
       'Квартира': '${_appartmentController.text}',
       'Этаж': '${_floorController.text}',
       'Домофон': '${_intercomController.text}',
-      'Полный адрес': '$fullAdress',
+      'Полный адрес': fullAdress == '' ? _streetController.text : '$fullAdress',
       'Координаты доставки': '$geoLat.$geoLon',
     }, SetOptions(merge: true));
   }
