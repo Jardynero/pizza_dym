@@ -132,8 +132,8 @@ class _DeliveryMethodeState extends State<DeliveryMethode> {
                 : () {
                     Provider.of<CartModel>(context, listen: false)
                         .checkDeliveryMethode(_groupValue!);
+                    getUserAdress(context);
                     if (_groupValue == 1) {
-                      getUserAdress(context);
                       Navigator.pushNamed(context, '/adress');
                     } else if (_groupValue == 2) {
                       Navigator.pushNamed(context, '/pickup');
