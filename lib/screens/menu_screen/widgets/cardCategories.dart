@@ -44,7 +44,7 @@ class _CardCategoriesState extends State<CardCategories> {
         });
   }
 
-  // Сортирует и выставляет нахвание категорий в правильном порядке
+  // Сортирует и выставляет название категорий в правильном порядке
   void sortMenuCategories(count, _menuCategories, _menuCategoriesSorted) {
     while (count != _menuCategories.length + 1) {
       _menuCategoriesSorted[count] = _menuCategories['$count'];
