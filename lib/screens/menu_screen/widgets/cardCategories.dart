@@ -1,6 +1,8 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:pizza_dym/functions/firebase_functions.dart';
 import 'package:pizza_dym/screens/menu_screen/widgets/item-list_screen.dart';
+import 'package:provider/provider.dart';
 
 class CardCategories extends StatefulWidget {
   CardCategories({Key? key}) : super(key: key);
@@ -36,6 +38,7 @@ class _CardCategoriesState extends State<CardCategories> {
           return ListView(
             children: [
               Padding(padding: EdgeInsets.only(top: 10.0)),
+              happyHoursContainer(),
               for (final categorie in _menuCategoriesSorted.values)
                 categories(categorie),
               aboutUs(),
@@ -81,6 +84,59 @@ class _CardCategoriesState extends State<CardCategories> {
         ),
       ),
     );
+  }
+
+  Widget promoHappyHours() {
+    return GestureDetector(
+      onTap: () => Navigator.push(
+        context,
+        MaterialPageRoute(
+          builder: (context) => ItemListScreen('Счастливые Часы'),
+        ),
+      ),
+      child: Container(
+        width: MediaQuery.of(context).size.width,
+        height: 140,
+        margin: EdgeInsets.symmetric(horizontal: 10.0, vertical: 5.0),
+        decoration: BoxDecoration(
+          color: Colors.grey,
+          borderRadius: BorderRadius.circular(15),
+          image: DecorationImage(
+            image: NetworkImage(
+                'https://firebasestorage.googleapis.com/v0/b/pizzadym-5ad61.appspot.com/o/categories%2FНеаполитанская%20пицца.png?alt=media&token=e4100b67-2443-4c2a-a67f-228fb2602a2e'),
+            fit: BoxFit.cover,
+            alignment: Alignment.bottomRight,
+            colorFilter: ColorFilter.mode(
+                Color.fromRGBO(0, 0, 0, 0.4), BlendMode.multiply),
+          ),
+        ),
+        child: Container(
+          padding: EdgeInsets.only(left: 30, top: 20, right: 150),
+          child: Text('2 пиццы за 800 рублей', style: _categoriesTitleStyle),
+        ),
+      ),
+    );
+  }
+
+  Widget happyHoursContainer() {
+    return Visibility(visible: happyHoursAvailability(), child: promoHappyHours());
+  }
+
+  bool happyHoursAvailability() {
+    bool availability = false;
+    var promoSettings = Provider.of<CloudFirestore>(context, listen: false);
+    DateTime dt = DateTime.now();
+    int weekday = dt.weekday;
+    if (promoSettings.happyHours == true) {
+      if (promoSettings.happyHoursDays['$weekday'] == true) {
+        if (dt.hour >= promoSettings.happyHoursStartHour && dt.hour < promoSettings.happyHoursEndHour) {
+          availability = true;
+        }
+      }
+    } else {
+      availability = false;
+    }
+    return availability;
   }
 
   Widget aboutUs() {

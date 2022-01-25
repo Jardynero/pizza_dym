@@ -79,6 +79,20 @@ class CloudFirestore extends ChangeNotifier {
     _lastPageBeforeLogin = route;
   }
 
+  // ПЕРЕМЕННЫЕ АКЦИИ СЧАСТЛИВЫЕ ЧАСЫ //
+  bool _happyHours = true;
+  bool get happyHours => _happyHours;
+
+  int _happyHoursStartHour = 12;
+  int get happyHoursStartHour => _happyHoursStartHour;
+
+  int _happyHoursEndHour = 17;
+  int get happyHoursEndHour => _happyHoursEndHour;
+
+  Map _happyHoursDays = {};
+  Map get happyHoursDays => _happyHoursDays;
+  // ПЕРЕМЕННЫЕ АКЦИИ СЧАСТЛИВЫЕ ЧАСЫ //
+
   Future<void> obtainRestautantSettings() async {
     DocumentReference docReference =
         firestore.collection('restaurant').doc('settings');
@@ -99,6 +113,20 @@ class CloudFirestore extends ChangeNotifier {
 
     int minDeliveryOrderPrice = docInstance.get('minDeliveryOrderPrice');
     _minDeliveryOrderPrice = minDeliveryOrderPrice;
+
+    // НАСТРОЙКИ АКЦИИ СЧАСТЛИВЫЕ ЧАСЫ //
+
+    bool happyHours = docInstance.get('happyHours');
+    int happyHoursStartHour = docInstance.get('happyHoursStartHour');
+    int happyHoursEndHour = docInstance.get('happyHoursEndHour');
+    Map happyHoursDays = docInstance.get('HappyHoursDays');
+
+    _happyHours = happyHours;
+    _happyHoursStartHour = happyHoursStartHour;
+    _happyHoursEndHour = happyHoursEndHour;
+    _happyHoursDays = happyHoursDays;
+    
+    // НАСТРОЙКИ АКЦИИ СЧАСТЛИВЫЕ ЧАСЫ //
 
     notifyListeners();
   }
