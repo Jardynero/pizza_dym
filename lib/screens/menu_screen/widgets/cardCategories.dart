@@ -91,7 +91,7 @@ class _CardCategoriesState extends State<CardCategories> {
       onTap: () => Navigator.push(
         context,
         MaterialPageRoute(
-          builder: (context) => ItemListScreen('Счастливые Часы'),
+          builder: (context) => ItemListScreen('Счастливые часы'),
         ),
       ),
       child: Container(
@@ -103,7 +103,7 @@ class _CardCategoriesState extends State<CardCategories> {
           borderRadius: BorderRadius.circular(15),
           image: DecorationImage(
             image: NetworkImage(
-                'https://firebasestorage.googleapis.com/v0/b/pizzadym-5ad61.appspot.com/o/categories%2FНеаполитанская%20пицца.png?alt=media&token=e4100b67-2443-4c2a-a67f-228fb2602a2e'),
+                'https://firebasestorage.googleapis.com/v0/b/pizzadym-5ad61.appspot.com/o/categories%2F11%201.jpg?alt=media&token=475205ab-747f-4f63-9b0c-fe5c7e33e787'),
             fit: BoxFit.cover,
             alignment: Alignment.bottomRight,
             colorFilter: ColorFilter.mode(
@@ -112,7 +112,7 @@ class _CardCategoriesState extends State<CardCategories> {
         ),
         child: Container(
           padding: EdgeInsets.only(left: 30, top: 20, right: 150),
-          child: Text('2 пиццы за 800 рублей', style: _categoriesTitleStyle),
+          child: Text('АКЦИЯ: 2 пиццы за 800 рублей', style: _categoriesTitleStyle),
         ),
       ),
     );

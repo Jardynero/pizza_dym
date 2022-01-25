@@ -91,17 +91,21 @@ class _ItemCardState extends State<ItemCard> {
               RoundedRectangleBorder(borderRadius: BorderRadius.circular(10.0)),
           elevation: 4.0,
           shadowColor: Color(0xffEBEBEB),
-          margin: EdgeInsets.symmetric(vertical: 10, horizontal: 15),
+          margin: EdgeInsets.symmetric(vertical: 15, horizontal: 15),
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceAround,
             children: [
               SizedBox(
-                  width: 170,
-                  height: 170,
-                  child: Image.network('$itemPhotoUrl')),
+                width: 170,
+                height: 170,
+                child: ClipRRect(
+                  borderRadius: BorderRadius.circular(10.0),
+                  child: Image.network('$itemPhotoUrl'),
+                ),
+              ),
               Expanded(
                 child: Padding(
-                  padding: const EdgeInsets.only(left: 10.0, right: 10.0),
+                  padding: const EdgeInsets.only(left: 20.0, right: 10.0),
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.spaceAround,
                     crossAxisAlignment: CrossAxisAlignment.start,
@@ -187,17 +191,18 @@ class _ItemCardState extends State<ItemCard> {
                                     Provider.of<CartModel>(context,
                                             listen: false)
                                         .incrementItemToCart(itemName);
-                                    await analytics
-                                        .logAddToCart(
-                                            itemId: itemName,
-                                            itemName: itemName,
-                                            itemCategory: categorieName,
-                                            quantity: 1,
-                                            currency: 'RUB',
-                                            price: itemCost.toDouble());
+                                    await analytics.logAddToCart(
+                                        itemId: itemName,
+                                        itemName: itemName,
+                                        itemCategory: categorieName,
+                                        quantity: 1,
+                                        currency: 'RUB',
+                                        price: itemCost.toDouble());
                                   },
-                                  child:
-                                      Text('+', style: TextStyle(fontSize: 18)),
+                                  child: Text(
+                                    '+',
+                                    style: TextStyle(fontSize: 18),
+                                  ),
                                 ),
                               ],
                             ),

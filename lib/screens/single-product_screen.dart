@@ -30,7 +30,7 @@ class _SingleProductScreenState extends State<SingleProductScreen> {
         height: MediaQuery.of(context).size.height,
         width: MediaQuery.of(context).size.width,
         child: Column(
-          mainAxisAlignment: MainAxisAlignment.spaceAround,
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             itemImage(context),
@@ -47,8 +47,8 @@ class _SingleProductScreenState extends State<SingleProductScreen> {
       alignment: Alignment.center,
       child: Container(
         child: SizedBox(
-          width: MediaQuery.of(context).size.width / 100 * 80,
-          height: MediaQuery.of(context).size.height / 100 * 30,
+          width: MediaQuery.of(context).size.width / 100 * 100,
+          // height: MediaQuery.of(context).size.height / 100 * 30,
           child: Image.network('${widget.data['фото']}'),
         ),
       ),
@@ -175,80 +175,82 @@ class _SingleProductScreenState extends State<SingleProductScreen> {
   Widget btn() {
     return Visibility(
       visible: widget.data['доступность товара'] == false ? false : true,
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-        crossAxisAlignment: CrossAxisAlignment.center,
-        children: [
-          Container(
-            height: 50,
-            decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(10),
-                border: Border.all(color: Color(0xffFF9F38))),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: [
-                TextButton(
-                  onPressed: decrimentQnt,
-                  child: Text('-',
+      child: SafeArea(
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            Container(
+              height: 50,
+              decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(10),
+                  border: Border.all(color: Color(0xffFF9F38))),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  TextButton(
+                    onPressed: decrimentQnt,
+                    child: Text('-',
+                        style: TextStyle(
+                          fontSize: 24,
+                          fontWeight: FontWeight.w500,
+                        )),
+                  ),
+                  Text('$productQnt', style: descriptionTitleStyle),
+                  TextButton(
+                    onPressed: incrementQnt,
+                    child: Text(
+                      '+',
                       style: TextStyle(
                         fontSize: 24,
                         fontWeight: FontWeight.w500,
-                      )),
-                ),
-                Text('$productQnt', style: descriptionTitleStyle),
-                TextButton(
-                  onPressed: incrementQnt,
-                  child: Text(
-                    '+',
-                    style: TextStyle(
-                      fontSize: 24,
-                      fontWeight: FontWeight.w500,
+                      ),
                     ),
                   ),
-                ),
-              ],
-            ),
-          ),
-          ElevatedButton(
-            style: ElevatedButton.styleFrom(
-              primary: Color(0xff27282A),
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(10),
+                ],
               ),
-              minimumSize: Size(140.0, 50.0),
-              maximumSize: Size(160.0, 50.0),
             ),
-            onPressed: () async{
-              Provider.of<CartModel>(context, listen: false)
-                  .obtainQntOfProduct(widget.data['название']);
-              int singleProductQntInCart = 0;
-
-              try {
-                singleProductQntInCart = Provider.of<CartModel>(context, listen: false).cart.getSpecificItemFromCart(widget.data['название'])!.quantity;
-              } catch (e) {
-                setState(() {
-                  singleProductQntInCart = 0;
-                });
-              }
-    
-              Provider.of<CartModel>(context, listen: false).addProductToCartQnt(
-                  widget.data['название'],
-                  widget.data['цена'],
-                  widget.data['название'],
-                  productQnt + singleProductQntInCart,
-                  widget.data['фото'].toString());
-              await analytics.logAddToCart(itemId: widget.data['название'], itemName: widget.data['название'], itemCategory: widget.data['категория товара'], quantity: productQnt + singleProductQntInCart, currency: 'RUB', price: (widget.data['цена'] * productQnt).toDouble());
-              
-              
-              Navigator.pop(context);
-            },
-            child: Text('${widget.data['цена'] * productQnt}₽',
-                style: TextStyle(
-                  fontSize: 15,
-                )),
-          ),
-        ],
+            ElevatedButton(
+              style: ElevatedButton.styleFrom(
+                primary: Color(0xff27282A),
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(10),
+                ),
+                minimumSize: Size(140.0, 50.0),
+                maximumSize: Size(160.0, 50.0),
+              ),
+              onPressed: () async{
+                Provider.of<CartModel>(context, listen: false)
+                    .obtainQntOfProduct(widget.data['название']);
+                int singleProductQntInCart = 0;
+      
+                try {
+                  singleProductQntInCart = Provider.of<CartModel>(context, listen: false).cart.getSpecificItemFromCart(widget.data['название'])!.quantity;
+                } catch (e) {
+                  setState(() {
+                    singleProductQntInCart = 0;
+                  });
+                }
+          
+                Provider.of<CartModel>(context, listen: false).addProductToCartQnt(
+                    widget.data['название'],
+                    widget.data['цена'],
+                    widget.data['название'],
+                    productQnt + singleProductQntInCart,
+                    widget.data['фото'].toString());
+                await analytics.logAddToCart(itemId: widget.data['название'], itemName: widget.data['название'], itemCategory: widget.data['категория товара'], quantity: productQnt + singleProductQntInCart, currency: 'RUB', price: (widget.data['цена'] * productQnt).toDouble());
+                
+                
+                Navigator.pop(context);
+              },
+              child: Text('${widget.data['цена'] * productQnt}₽',
+                  style: TextStyle(
+                    fontSize: 15,
+                  )),
+            ),
+          ],
+        ),
       ),
     );
   }
