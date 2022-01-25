@@ -186,12 +186,12 @@ class _SelectDeliveryTimeScreenState extends State<SelectDeliveryTimeScreen> {
     );
     // Самая ранняя доставка
     firstPickup(DateTime dt) {
-      return DateTime(dt.year, dt.month, dt.day, openingTime, 30);
+      return DateTime(dt.year, dt.month, dt.day, openingTime, 00);
     }
 
     // Самый поздняя доставка
     finalPickup(DateTime dt) {
-      return DateTime(dt.year, dt.month, dt.day, closingTime - 1, 45);
+      return DateTime(dt.year, dt.month, dt.day, closingTime, 00);
     }
 
     // сегодня рабочий день?
@@ -333,12 +333,12 @@ class _SelectDeliveryTimeScreenState extends State<SelectDeliveryTimeScreen> {
 
     // Самая ранняя доставка
     firstPickup(DateTime dt) {
-      return DateTime(dt.year, dt.month, dt.day, openingTime, 30);
+      return DateTime(dt.year, dt.month, dt.day, openingTime, 00);
     }
 
     // Самый поздняя доставка
     finalPickup(DateTime dt) {
-      return DateTime(dt.year, dt.month, dt.day, closingTime - 1, 45);
+      return DateTime(dt.year, dt.month, dt.day, closingTime, 00);
     }
 
     // сегодня рабочий день?
