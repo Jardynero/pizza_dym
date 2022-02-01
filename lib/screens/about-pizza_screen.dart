@@ -43,6 +43,16 @@ class AboutUs extends StatelessWidget {
         textDescription('Тем самым мы придерживаемся ', 'классического Неаполитанского стиля.'),
         aboutUsPhoto('assets/img/pizzadym abous us 4.png', 20.0, 5.0),
         aboutUsPhoto('assets/img/pizzadym abous us 5.png', 20.0, 5.0),
+        title('Условия доставки', 30.0, 20.0, 0.0, 0.0),
+        textDelivery('Доставляем по г. Зеленоград бесплатно, от ', '1000', ' рублей суммы заказа.'),
+        textDelivery('По ', '5 району', ' доставка бесплатно от 1500 руб.'),
+        textDelivery('За пределы г. Зеленоград -  ', 'Бакеево, Баранцево, Середниково Парк и его окрестности', ', доставка от 1700 руб.'),
+        title('Время доставки', 30.0, 20.0, 0.0, 0.0),
+        textDelivery('Новый город и его окрестности, доставка от ', '20 - 60 минут', ' кроме часов пик.'),
+        textDelivery('Старый город и его окрестности, доставка от ', '30 - 90 минут', ' кроме часов пик.'),
+        textDelivery('За пределы г. Зеленоград доставка от ', '30 - 90 минут', ' кроме часов пик.'),
+        textDelivery('Точную сумму в зависимости от места доставки и доставки в ', 'часы пик', ' можно будет уточнить после совершения заказа.'),
+        textDescription('Мы стараемся доставлять ваши заказы как ', 'можно быстрее!')
       ],
     );
   }
@@ -101,6 +111,39 @@ class AboutUs extends StatelessWidget {
                 color: Colors.white,
                 fontSize: 18,
                 fontWeight: FontWeight.bold,
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+  Widget textDelivery(firstText, boldText, secondText) {
+    return Padding(
+      padding: EdgeInsets.only(left: 15.0, right: 10.0, bottom: 10.0),
+      child: Text.rich(
+        TextSpan(
+          children: [
+            TextSpan(
+              text: '$firstText',
+              style: TextStyle(
+                color: Colors.white,
+                fontSize: 18,
+              ),
+            ),
+            TextSpan(
+              text: '$boldText',
+              style: TextStyle(
+                color: Colors.white,
+                fontSize: 18,
+                fontWeight: FontWeight.bold,
+              ),
+            ),
+            TextSpan(
+              text: '$secondText',
+              style: TextStyle(
+                color: Colors.white,
+                fontSize: 18,
               ),
             ),
           ],
