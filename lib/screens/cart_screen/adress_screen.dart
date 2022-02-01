@@ -5,7 +5,10 @@ import 'package:flutter_typeahead/flutter_typeahead.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:pizza_dym/functions/firebase_functions.dart';
 import 'package:pizza_dym/global_widgets/appBar.dart';
+import 'package:pizza_dym/global_widgets/material_banner.dart';
+import 'package:pizza_dym/global_widgets/snackbar.dart';
 import 'package:pizza_dym/models/cart_model.dart';
+import 'package:pizza_dym/models/delivery_adress.dart';
 import 'package:provider/provider.dart';
 
 class AdressScreen extends StatefulWidget {
@@ -37,8 +40,12 @@ class _AdressScreenState extends State<AdressScreen> {
     _suggestions = DadataSuggestions(widget.token);
     super.initState();
     Future.delayed(Duration(milliseconds: 700), () {
-      _streetController.text =
-          Provider.of<CartModel>(context, listen: false).userStreet;
+      if (Provider.of<CartModel>(context, listen: false).userStreet == '') {
+        _streetController.text = 'Зеленоград ';
+      } else {
+        _streetController.text =
+            Provider.of<CartModel>(context, listen: false).userStreet;
+      }
       _houseController.text =
           Provider.of<CartModel>(context, listen: false).userHouse;
       _blockController.text =
@@ -169,6 +176,7 @@ class _AdressScreenState extends State<AdressScreen> {
           isAdressChanged = true;
           deliveryGeo = '${a.data.geoLat}.${a.data.geoLon}';
           _streetController.text = '${a.value}';
+
           if (a.data.house != null) {
             _houseController.text = a.data.house;
           }
@@ -379,21 +387,30 @@ class _AdressScreenState extends State<AdressScreen> {
             style: TextStyle(fontSize: 14, fontWeight: FontWeight.w600)),
         onPressed: () {
           cartModel.getUserComment(_commentController.text);
-          if (_formKey.currentState!.validate()) {
-            updateUserDeliveryAdress(_userPhoneNumber);
-            cartModel.getUserAdressData(
-              _streetController.text,
-              _houseController.text,
-              _blockController.text,
-              _entranceController.text,
-              _appartmentController.text,
-              _intercomController.text,
-              _floorController.text,
-              fullAdress == '' ? _streetController.text : fullAdress,
-              deliveryGeo,
-            );
 
-            Navigator.pushNamed(context, '/cart/select-delivery-time');
+          if (_checkAdress() == 1500) {
+            debugPrint('Сумма слишком маленькая - 1500');
+            showDialog(context: context, builder: (BuildContext context) => DeliveryAdressAlert(1500));
+          } else if (_checkAdress() == 1700) {
+            debugPrint('Сумма слишком маленькая - 1700');
+            showDialog(context: context, builder: (BuildContext context) => DeliveryAdressAlert(1700));
+          } else if (_checkAdress() == 1000){
+            if (_formKey.currentState!.validate()) {
+              updateUserDeliveryAdress(_userPhoneNumber);
+              cartModel.getUserAdressData(
+                _streetController.text,
+                _houseController.text,
+                _blockController.text,
+                _entranceController.text,
+                _appartmentController.text,
+                _intercomController.text,
+                _floorController.text,
+                fullAdress == '' ? _streetController.text : fullAdress,
+                deliveryGeo,
+              );
+
+              Navigator.pushNamed(context, '/cart/select-delivery-time');
+            }
           }
         },
         style: ElevatedButton.styleFrom(
@@ -408,6 +425,27 @@ class _AdressScreenState extends State<AdressScreen> {
         ),
       ),
     );
+  }
+
+  _checkAdress() {
+    DeliveryAdresses deliveryAdresses = DeliveryAdresses();
+    var cartModel = Provider.of<CartModel>(context, listen: false);
+    int totalAmount = cartModel.cart.getTotalAmount().toInt();
+
+    for (final adress in deliveryAdresses.fifthDistrict) {
+      if (_streetController.text.toLowerCase().contains(adress.toLowerCase()) &&
+          totalAmount < 1500) {
+        return 1500;
+      }
+    }
+    for (final adress in deliveryAdresses.regions) {
+      if (_streetController.text.toLowerCase().contains(adress.toLowerCase()) &&
+          totalAmount < 1700) {
+        return 1700;
+      }
+    }
+    return 1000;
+
   }
 
   Future updateUserDeliveryAdress(_userPhoneNumber) async {
