@@ -15,7 +15,6 @@ class _MenuScreenState extends State<MenuScreen> {
   @override
   void initState() {
     CloudFirestore().isRestaurantOpen(context);
-    AppTrackingTransparency.requestTrackingAuthorization();
     Provider.of<CloudFirestore>(context, listen: false)
         .obtainRestautantSettings();
     super.initState();
