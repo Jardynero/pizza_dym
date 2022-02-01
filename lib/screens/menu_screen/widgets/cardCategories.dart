@@ -123,17 +123,9 @@ class _CardCategoriesState extends State<CardCategories> {
   }
 
   happyHoursAvailability() {
-    var promoSettings = Provider.of<CloudFirestore>(context, listen: false);
     bool availability;
     DateTime dt = DateTime.now();
     int weekday = dt.weekday;
-    // if (promoSettings.happyHours == true) {
-    //   if (promoSettings.happyHoursDays['$weekday'] == true) {
-    //     if (dt.hour >= promoSettings.happyHoursStartHour && dt.hour < promoSettings.happyHoursEndHour) {
-    //       availability = true;
-    //       return availability;
-    //     }
-    //   }
     if (weekday == 2 || weekday == 3 || weekday == 4) {
       if (dt.hour >= 12 && dt.hour < 17) {
         availability = true;
