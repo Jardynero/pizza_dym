@@ -119,24 +119,27 @@ class _CardCategoriesState extends State<CardCategories> {
   }
 
   Widget happyHoursContainer() {
-    return Visibility(visible: happyHoursAvailability(), child: promoHappyHours());
+    return Visibility(visible: happyHoursAvailability() == true ? true : false, child: promoHappyHours());
   }
 
-  bool happyHoursAvailability() {
-    bool availability = false;
+  happyHoursAvailability() {
     var promoSettings = Provider.of<CloudFirestore>(context, listen: false);
+    bool availability;
     DateTime dt = DateTime.now();
     int weekday = dt.weekday;
     if (promoSettings.happyHours == true) {
       if (promoSettings.happyHoursDays['$weekday'] == true) {
         if (dt.hour >= promoSettings.happyHoursStartHour && dt.hour < promoSettings.happyHoursEndHour) {
           availability = true;
+          return availability;
         }
       }
     } else {
       availability = false;
+      return availability;
+
     }
-    return availability;
+  
   }
 
   Widget aboutUs() {
