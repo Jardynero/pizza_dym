@@ -1,6 +1,4 @@
 // Contacts page
-
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:pizza_dym/global_widgets/appBar.dart';
 import 'package:pizza_dym/models/cart_model.dart';

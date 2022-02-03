@@ -1,7 +1,6 @@
 // Import screens
 import 'package:app_tracking_transparency/app_tracking_transparency.dart';
 import 'package:firebase_analytics/firebase_analytics.dart';
-import 'package:flutter/foundation.dart';
 import 'package:pizza_dym/screens/about-pizza_screen.dart';
 import 'package:pizza_dym/screens/cart_screen/adress_screen.dart';
 import 'package:pizza_dym/screens/cart_screen/cart_screen.dart';
@@ -29,7 +28,6 @@ import 'package:pizza_dym/screens/profile/user%20adress/user-adress_screen.dart'
 import 'package:pizza_dym/theme/main_theme.dart';
 import 'package:provider/provider.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 
 // Import functions

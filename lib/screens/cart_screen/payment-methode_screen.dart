@@ -2,6 +2,7 @@ import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:flutter/material.dart';
 import 'package:pizza_dym/global_widgets/app-review.dart';
 import 'package:pizza_dym/global_widgets/appBar.dart';
+import 'package:pizza_dym/global_widgets/notification_api.dart';
 import 'package:pizza_dym/models/cart_model.dart';
 import 'package:pizza_dym/screens/cart_screen/order_func.dart';
 import 'package:provider/provider.dart';
@@ -233,6 +234,11 @@ class _PaymentMethodeScreenState extends State<PaymentMethodeScreen> {
             sendOrderToTelegram(sendOrder(context));
             sendGeoToTelegram(geo(context));
             cartModel.sendNewOrderNumber();
+            await NotificationApi.showNotification(
+                title: 'Пицца Дым',
+                body: 'Спасибо за заказ🍕 Через 5 минут пришлем смс-ку с подтверждением заказа!',
+                payload: 'pizza dym'
+              );
             showOrderConfirmation(context)
                 .then((value) => cartModel.cart.deleteAllCart())
                 .then((value) => Navigator.pushNamedAndRemoveUntil(
@@ -246,6 +252,11 @@ class _PaymentMethodeScreenState extends State<PaymentMethodeScreen> {
               sendOrderToTelegram(sendOrder(context));
               sendGeoToTelegram(geo(context));
               cartModel.sendNewOrderNumber();
+              await NotificationApi.showNotification(
+                title: 'Пицца Дым',
+                body: 'Спасибо за заказ🍕 Через 5 минут пришлем смс-ку с подтверждением заказа!',
+                payload: 'pizza dym'
+              );
               showOrderConfirmation(context)
                   .then((value) => cartModel.cart.deleteAllCart())
                   .then((value) => Navigator.pushNamedAndRemoveUntil(

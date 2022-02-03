@@ -1,8 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-import 'package:pizza_dym/functions/firebase_functions.dart';
 import 'package:pizza_dym/screens/menu_screen/widgets/item-list_screen.dart';
-import 'package:provider/provider.dart';
 
 class CardCategories extends StatefulWidget {
   CardCategories({Key? key}) : super(key: key);
