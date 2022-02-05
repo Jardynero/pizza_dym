@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:pizza_dym/global_widgets/appBar-actions.dart';
 
 class MainAppBar extends StatelessWidget implements PreferredSizeWidget {
   final String appBarTitle;
@@ -18,10 +17,8 @@ class MainAppBar extends StatelessWidget implements PreferredSizeWidget {
         ),
       ),
       centerTitle: appBarTitle.length > 18 ? false : true,
-      elevation: 1,
-      actions: [
-        profileAppBarAction(context),
-      ],
+      elevation: 4,
+      shadowColor: Colors.grey[100],
     );
   }
 
@@ -45,11 +42,12 @@ class MenuAppBar extends StatelessWidget implements PreferredSizeWidget {
           overflow: TextOverflow.visible,
         ),
       ),
+      automaticallyImplyLeading: true,
+      leading: IconButton(onPressed: () => Navigator.pushNamedAndRemoveUntil(context, '/', (route) => false), icon: Icon(Icons.arrow_back_ios,)),
       centerTitle: appBarTitle.length > 18 ? false : true,
-      elevation: 1,
-      actions: [
-        menuAppBarAction(context),
-      ],
+      elevation: 4,
+      shadowColor: Colors.grey[100],
+
     );
   }
 
