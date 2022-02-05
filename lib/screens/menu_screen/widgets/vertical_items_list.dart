@@ -15,27 +15,30 @@ class VerticalItemsList extends StatelessWidget {
     Future<QuerySnapshot> _menu = FirebaseFirestore.instance
         .collection('newMenu')
         .where('категория', isEqualTo: categorieName)
-        .orderBy('цена', descending: false,)
+        .orderBy(
+          'цена',
+          descending: false,
+        )
         .get();
     return FutureBuilder<QuerySnapshot>(
       future: _menu,
       builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
-        if (snapshot.connectionState == ConnectionState.waiting) {
-          return SliverToBoxAdapter(
-            child: Center(
-              child: CircularProgressIndicator.adaptive(),
+        if (snapshot.connectionState == ConnectionState.done && snapshot.hasData) {
+          return SliverList(
+            delegate: SliverChildListDelegate.fixed(
+              snapshot.data!.docs.map(
+                (DocumentSnapshot document) {
+                  Map<String, dynamic> data =
+                      document.data()! as Map<String, dynamic>;
+                  return ItemCard(data);
+                },
+              ).toList(),
             ),
           );
         }
         return SliverList(
           delegate: SliverChildListDelegate.fixed(
-            snapshot.data!.docs.map(
-              (DocumentSnapshot document) {
-                Map<String, dynamic> data =
-                    document.data()! as Map<String, dynamic>;
-                return ItemCard(data);
-              },
-            ).toList(),
+            List.generate(30, (index) => ItemCardShimmer()),
           ),
         );
       },
