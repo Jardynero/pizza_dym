@@ -1,4 +1,5 @@
 // Cart page
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_cart/flutter_cart.dart';
 import 'package:pizza_dym/functions/firebase_functions.dart';
@@ -27,44 +28,53 @@ class _CartScreenState extends State<CartScreen> {
 
     return Scaffold(
       appBar: MenuAppBar('Корзина'),
-      body: Column(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          SizedBox(
-            height: MediaQuery.of(context).size.height / 100 * 70,
-            child: ListView.builder(
-                itemCount: cart.message.cartItemList.length,
-                itemBuilder: (BuildContext context, int index) {
-                  return itemList(cart, index);
-                }),
-          ),
-          bottomBar(totalAmount),
-        ],
-      ),
+      body: cart.getCartItemCount() == 0
+          ? Center(
+              child: Text('Корзина пуста!',
+                  style: Theme.of(context).textTheme.headline6),
+            )
+          : Column(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Expanded(
+                  child: ListView.builder(
+                    shrinkWrap: true,
+                    itemCount: cart.message.cartItemList.length,
+                    itemBuilder: (BuildContext context, int index) {
+                      return itemList(cart, index);
+                    },
+                  ),
+                ),
+                bottomBar(totalAmount),
+              ],
+            ),
     );
   }
 
   Widget itemList(FlutterCart cart, index) {
     return Card(
-      elevation: 1,
+      clipBehavior: Clip.antiAlias,
+      margin: EdgeInsets.fromLTRB(16, 8, 16, 8),
+      elevation: 4,
+      shadowColor: Colors.grey[100],
       child: Container(
         width: MediaQuery.of(context).size.width,
-        padding: EdgeInsets.symmetric(
-          horizontal: MediaQuery.of(context).size.width / 100 * 3,
-          vertical: MediaQuery.of(context).size.height / 100 * 1,
+        padding: EdgeInsets.only(
+          right: 10.0
         ),
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Image.network(
-              '${cart.message.cartItemList[index].productDetails.toString()}',
+            Image(
+              image: CachedNetworkImageProvider(
+                cart.message.cartItemList[index].productDetails.toString(),
+              ),
               width: 100,
-              height: 100,
+              height: 100
             ),
             Column(
               crossAxisAlignment: CrossAxisAlignment.start,
+              mainAxisAlignment: MainAxisAlignment.spaceAround,
               children: [
                 SizedBox(
                   width: MediaQuery.of(context).size.width / 100 * 40,
@@ -97,7 +107,7 @@ class _CartScreenState extends State<CartScreen> {
                             Provider.of<CartModel>(context, listen: false)
                                 .decrementItemFromCart(
                                     cart.message.cartItemList[index].productId);
-                            Navigator.pop(context);
+                            Navigator.pushNamedAndRemoveUntil(context, '/', (route) => false);
                           } else {
                             Provider.of<CartModel>(context, listen: false)
                                 .decrementItemFromCart(
@@ -146,7 +156,6 @@ class _CartScreenState extends State<CartScreen> {
         padding: EdgeInsets.symmetric(
           horizontal: MediaQuery.of(context).size.width / 100 * 4,
         ),
-        // color: Colors.amber,
         child: Row(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
@@ -191,7 +200,7 @@ class _CartScreenState extends State<CartScreen> {
                     if (_auth.currentUser == null) {
                       firebaseModel.saveLastPageBeforeLogin('/cart');
                       Navigator.pushNamed(context, '/login-phone');
-                    }else {
+                    } else {
                       Navigator.pushNamed(context, '/delivery-methode');
                     }
                   },
