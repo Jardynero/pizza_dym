@@ -1,7 +1,9 @@
 // Profile page
 import 'package:flutter/material.dart';
+import 'package:in_app_review/in_app_review.dart';
 import 'package:pizza_dym/functions/firebase_functions.dart';
 import 'package:pizza_dym/global_widgets/appBar.dart';
+import 'package:pizza_dym/screens/login_screen/login-phone-screen/login-phone_screen.dart';
 import 'package:provider/provider.dart';
 import 'package:url_launcher/url_launcher.dart';
 
@@ -14,21 +16,29 @@ class ProfileScreen extends StatefulWidget {
 
 class _ProfileScreenState extends State<ProfileScreen> {
   final String _title = 'Профиль';
+  final InAppReview inAppReview = InAppReview.instance;
+
   late final _auth =
       Provider.of<FirebaseAuthInstance>(context, listen: false).auth;
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: MenuAppBar(_title),
-      body: Column(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: [
-          _main(),
-          btn(),
-        ],
-      ),
-    );
+    var _firestoreModel = Provider.of<CloudFirestore>(context, listen: false);
+
+    if (_auth.currentUser != null) {
+      return Scaffold(
+        appBar: MenuAppBar(_title),
+        body: Column(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            _main(),
+            btn(),
+          ],
+        ),
+      );
+    }
+    _firestoreModel.saveLastPageBeforeLogin('/profile');
+    return LoginPhoneScreen();
   }
 
   Widget _main() {
@@ -37,10 +47,15 @@ class _ProfileScreenState extends State<ProfileScreen> {
             .auth
             .currentUser!
             .phoneNumber!;
-    return SizedBox(
-      height: MediaQuery.of(context).size.height / 100 * 70,
+    return Expanded(
       child: ListView(
+        shrinkWrap: true,
         children: [
+          menuItem(
+            'О пиццерии Дым',
+            'assets/img/pizzadym AppIcon.png',
+            '/about-pizza',
+          ),
           menuItem(
             'Адрес доставки',
             'assets/icons/icons8-доставка-пиццы-100.png',
@@ -51,6 +66,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
             'assets/icons/icons8-заказ-на-покупку-100.png',
             '/order-history',
           ),
+          requestReview(),
           menuItemUrl('Наш сайт', 'assets/icons/icons8-домен-100.png',
               'https://pizzadym.ru'),
           menuItemUrl('Наш Инстаграм', 'assets/icons/icons8-instagram-384.png',
@@ -129,10 +145,37 @@ class _ProfileScreenState extends State<ProfileScreen> {
     );
   }
 
+  Widget requestReview() {
+    return GestureDetector(
+      onTap: () => inAppReview.openStoreListing(appStoreId: '1585336500'),
+      child: Container(
+        height: 80,
+        child: Card(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              ListTile(
+                title: Text(
+                  'Оценить пиццу',
+                  style: TextStyle(
+                    color: Color(0xff27282A),
+                    fontSize: 16,
+                  ),
+                ),
+                horizontalTitleGap: 50,
+                leading: Icon(Icons.reviews_outlined, size: 40),
+                trailing: Icon(Icons.arrow_right_rounded),
+              ),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
   Widget btn() {
     return Container(
       margin:
-          EdgeInsets.only(bottom: MediaQuery.of(context).size.height / 100 * 5),
+          EdgeInsets.only(bottom: 10),
       child: ElevatedButton(
         child: Text(
           'ВЫЙТИ',
@@ -142,13 +185,15 @@ class _ProfileScreenState extends State<ProfileScreen> {
           ),
         ),
         onPressed: () async {
-          await _auth.signOut().then((value) => Navigator.pushNamedAndRemoveUntil(context, '/', (route) => false));
+          await _auth.signOut().then((value) =>
+              Navigator.pushNamedAndRemoveUntil(
+                  context, '/', (route) => false));
         },
         style: ElevatedButton.styleFrom(
           primary: Color(0xff27282A),
           fixedSize: Size(
             MediaQuery.of(context).size.width / 100 * 80,
-            MediaQuery.of(context).size.height / 100 * 8,
+            MediaQuery.of(context).size.height / 100 * 6,
           ),
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(10),
