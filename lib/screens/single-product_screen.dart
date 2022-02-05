@@ -1,5 +1,6 @@
 // Single product page
 
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:flutter/material.dart';
 import 'package:pizza_dym/global_widgets/appBar.dart';
@@ -48,8 +49,7 @@ class _SingleProductScreenState extends State<SingleProductScreen> {
       child: Container(
         child: SizedBox(
           width: MediaQuery.of(context).size.width / 100 * 100,
-          // height: MediaQuery.of(context).size.height / 100 * 30,
-          child: Image.network('${widget.data['фото']}'),
+          child: Image(image: CachedNetworkImageProvider(widget.data['фото'],),),
         ),
       ),
     );
@@ -175,7 +175,8 @@ class _SingleProductScreenState extends State<SingleProductScreen> {
   Widget btn() {
     return Visibility(
       visible: widget.data['доступность товара'] == false ? false : true,
-      child: SafeArea(
+      child: Container(
+        margin: EdgeInsets.only(bottom: 20),
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           crossAxisAlignment: CrossAxisAlignment.center,
