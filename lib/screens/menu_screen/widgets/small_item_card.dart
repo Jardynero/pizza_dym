@@ -1,6 +1,7 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:pizza_dym/screens/single-product_screen.dart';
+import 'package:shimmer/shimmer.dart';
 
 class SmallItemCard extends StatelessWidget {
   final String image;
@@ -18,6 +19,7 @@ class SmallItemCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    String image = this.image;
     return GestureDetector(
       onTap: () => Navigator.push(
         context,
@@ -35,8 +37,15 @@ class SmallItemCard extends StatelessWidget {
           shadowColor: Colors.grey[300],
           child: Row(
             children: [
-              Image(
-                image: CachedNetworkImageProvider(this.image),
+              CachedNetworkImage(
+                imageUrl: this.image,
+                placeholder: (BuildContext context, image) {
+                  return Shimmer.fromColors(
+                    child: Image.asset('assets/img/pizzadym AppIcon.png'),
+                    baseColor: Color(0xffE6E8EB),
+                    highlightColor: Color(0xffF9F9FB),
+                  );
+                },
               ),
               Container(
                 padding: EdgeInsets.symmetric(horizontal: 15),
