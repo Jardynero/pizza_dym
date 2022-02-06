@@ -1,6 +1,6 @@
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
-import 'package:pizza_dym/global_widgets/global_widgets.dart';
+import 'package:pizza_dym/global_widgets/widgets.dart';
 
 class MenuAppBar extends StatefulWidget {
   final List categories;
