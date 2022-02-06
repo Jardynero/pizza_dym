@@ -1,6 +1,6 @@
 // Import screens
 import 'package:app_tracking_transparency/app_tracking_transparency.dart';
-import 'package:firebase_analytics/firebase_analytics.dart';
+import 'package:pizza_dym/global_widgets/widgets.dart';
 import 'package:pizza_dym/screens/about-pizza_screen.dart';
 import 'package:pizza_dym/screens/cart_screen/adress_screen.dart';
 import 'package:pizza_dym/screens/cart_screen/cart_screen.dart';
@@ -25,6 +25,7 @@ import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:pizza_dym/screens/profile/main_screen.dart';
 import 'package:pizza_dym/screens/profile/order-history_screen.dart';
 import 'package:pizza_dym/screens/profile/user%20adress/user-adress_screen.dart';
+import 'package:pizza_dym/screens/update_screen/update_screen.dart';
 import 'package:pizza_dym/theme/main_theme.dart';
 import 'package:provider/provider.dart';
 import 'package:flutter/material.dart';
@@ -64,7 +65,9 @@ class _PizzadymState extends State<Pizzadym> {
     super.initState();
     initFirebaseMessaging(messaging);
     AppTrackingTransparency.requestTrackingAuthorization();
-    FirebaseAnalytics().logAppOpen().then((value) => debugPrint('приложение открыто'));
+    Analytics().logAppOpen().then(
+          (value) => debugPrint('log app open successfully'),
+        );
   }
 
   @override
@@ -79,7 +82,7 @@ class _PizzadymState extends State<Pizzadym> {
         '/login-code': (context) => LoginCodeScreen(),
         '/about-pizza': (context) => AboutPizzaScreen(),
         '/contacts': (context) => ContactsScreen(),
-        '/cart': (context) => CartScreen(),
+        '/cart': (context) => CartScreen(totalAmount: null),
         '/delivery-methode': (context) => DeliveryMethode(),
         '/pickup': (context) => PickupScreen(),
         '/cart/select-delivery-time': (context) => SelectDeliveryTimeScreen(),
@@ -88,7 +91,8 @@ class _PizzadymState extends State<Pizzadym> {
         '/profile': (context) => ProfileScreen(),
         '/order-history': (context) => OrderHistoryScreen(),
         '/profile/adress': (context) => ProfileUserAdressScreen(),
-        '/profile/add-item-to-bd': (context) => AddItemToBdScreen()
+        '/profile/add-item-to-bd': (context) => AddItemToBdScreen(),
+        '/update-app': (context) => UpdateAppScreen(),
       },
       theme: MainColorTheme().mainTheme,
       localizationsDelegates: [

@@ -1,6 +1,6 @@
 import 'package:cached_network_image/cached_network_image.dart';
-import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:flutter/material.dart';
+import 'package:pizza_dym/global_widgets/widgets.dart';
 import 'package:pizza_dym/models/cart_model.dart';
 import 'package:pizza_dym/screens/single-product_screen.dart';
 import 'package:provider/provider.dart';
@@ -24,7 +24,7 @@ class _ItemCardState extends State<ItemCard> {
     final int itemCost = widget._itemData['цена'];
     final bool availableToBuy = widget._itemData['доступность товара'];
     var cart = Provider.of<CartModel>(context, listen: true).cart;
-    final FirebaseAnalytics analytics = FirebaseAnalytics();
+    
     return GestureDetector(
       onTap: () => Navigator.push(
         context,
@@ -62,8 +62,14 @@ class _ItemCardState extends State<ItemCard> {
                     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Text(itemName, style: Theme.of(context).textTheme.subtitle1),
-                      Text(itemDescription, style: Theme.of(context).textTheme.bodyText1, maxLines: 2, overflow: TextOverflow.ellipsis,),
+                      Text(itemName,
+                          style: Theme.of(context).textTheme.subtitle1),
+                      Text(
+                        itemDescription,
+                        style: Theme.of(context).textTheme.bodyText1,
+                        maxLines: 2,
+                        overflow: TextOverflow.ellipsis,
+                      ),
                       if (cart.findItemIndexFromCart(itemName) == null)
                         SizedBox(
                           width: 165,
@@ -82,13 +88,16 @@ class _ItemCardState extends State<ItemCard> {
                                         itemName,
                                         itemPhotoUrl,
                                       );
-                                      await analytics.logAddToCart(
-                                          itemId: itemName,
-                                          itemName: itemName,
-                                          itemCategory: categorieName,
-                                          quantity: 1,
-                                          currency: 'RUB',
-                                          price: itemCost.toDouble());
+                                      Analytics()
+                                          .logAddToCart(
+                                            itemName,
+                                            categorieName,
+                                            itemName,
+                                            1,
+                                            itemCost.toDouble(),
+                                          )
+                                          .then((value) => debugPrint(
+                                              'Log event - item $itemName added to cart'));
                                     },
                               style: ElevatedButton.styleFrom(
                                 elevation: 0,
@@ -138,18 +147,19 @@ class _ItemCardState extends State<ItemCard> {
                                     Provider.of<CartModel>(context,
                                             listen: false)
                                         .incrementItemToCart(itemName);
-                                    await analytics.logAddToCart(
-                                        itemId: itemName,
-                                        itemName: itemName,
-                                        itemCategory: categorieName,
-                                        quantity: 1,
-                                        currency: 'RUB',
-                                        price: itemCost.toDouble());
+                                    Analytics()
+                                        .logAddToCart(
+                                          itemName,
+                                          categorieName,
+                                          itemName,
+                                          1,
+                                          itemCost.toDouble(),
+                                        )
+                                        .then((value) => debugPrint(
+                                            'Log event - item $itemName added to cart'));
                                   },
-                                  child: Text(
-                                    '+',
-                                    style: TextStyle(fontSize: 18),
-                                  ),
+                                  child:
+                                      Text('+', style: TextStyle(fontSize: 18)),
                                 ),
                               ],
                             ),

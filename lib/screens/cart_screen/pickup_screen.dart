@@ -1,10 +1,7 @@
 import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:flutter/material.dart';
 import 'package:pizza_dym/functions/firebase_functions.dart';
-import 'package:pizza_dym/global_widgets/app-review.dart';
-import 'package:pizza_dym/global_widgets/appBar.dart';
-import 'package:pizza_dym/global_widgets/notification_api.dart';
-import 'package:pizza_dym/global_widgets/snackbar.dart';
+import 'package:pizza_dym/global_widgets/widgets.dart';
 import 'package:pizza_dym/models/cart_model.dart';
 import 'package:pizza_dym/screens/cart_screen/order_func.dart';
 import 'package:provider/provider.dart';
@@ -182,17 +179,16 @@ class _PickupScreenState extends State<PickupScreen> {
             cartModel.sendNewOrderNumber();
             await NotificationApi.showNotification(
                 title: 'Пицца Дым',
-                body: 'Спасибо за заказ🍕 Через 5 минут пришлем смс-ку с подтверждением заказа!',
-                payload: 'pizza dym'
-              );
-            await FirebaseAnalytics()
-                .logEcommercePurchase(currency: 'RUB', value: totalAmount)
-                .then((value) =>
-                    debugPrint('Google analytics: Log:Event (e-commerce)'));
+                body:
+                    'Спасибо за заказ🍕 Через 5 минут пришлем смс-ку с подтверждением заказа!',
+                payload: 'pizza dym');
+            Analytics().logPurchase(totalAmount).then((value) =>
+                debugPrint('log event - Новый заказ на $totalAmount'));
             showOrderConfirmation(context)
                 .then((value) => cartModel.cart.deleteAllCart())
                 .then((value) => Navigator.pushNamedAndRemoveUntil(
-                    context, '/', (route) => false)).then((value) => reviewApp());
+                    context, '/', (route) => false))
+                .then((value) => reviewApp());
             debugPrint('Заказ на самовывоз оформлен');
 
             // Оформить заказ
