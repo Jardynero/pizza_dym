@@ -28,9 +28,14 @@
 			<key>CFBundleURLSchemes</key>
 			<array>
 				<string>com.googleusercontent.apps.1014663191058-gl3d4vf29ktol22mm2dq278k7ae6ffpf</string>
+				<string>fb859841348064805</string>
 			</array>
 		</dict>
 	</array>
+	<key>FacebookAppID</key>
+	<string>859841348064805</string>
+	<key>FacebookDisplayName</key>
+	<string>Пицца Дым</string>
 	<key>CFBundleVersion</key>
 	<string>$(CURRENT_PROJECT_VERSION)</string>
 	<key>FirebaseAppDelegateProxyEnabled</key>
