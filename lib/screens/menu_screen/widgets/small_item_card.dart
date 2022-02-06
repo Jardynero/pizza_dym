@@ -19,7 +19,6 @@ class SmallItemCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    String image = this.image;
     return GestureDetector(
       onTap: () => Navigator.push(
         context,
