@@ -1,9 +1,8 @@
 // Single product page
 
 import 'package:cached_network_image/cached_network_image.dart';
-import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:flutter/material.dart';
-import 'package:pizza_dym/global_widgets/appBar.dart';
+import 'package:pizza_dym/global_widgets/widgets.dart';
 import 'package:pizza_dym/models/cart_model.dart';
 import 'package:provider/provider.dart';
 
@@ -17,12 +16,21 @@ class SingleProductScreen extends StatefulWidget {
 
 class _SingleProductScreenState extends State<SingleProductScreen> {
   int productQnt = 1;
-  FirebaseAnalytics analytics = FirebaseAnalytics();
+
   @override
   void initState() {
-    analytics.logViewItem(itemId: widget.data['название'], itemName: widget.data['название'], itemCategory: widget.data['категория товара'], quantity: 1, currency: 'RUB', price: widget.data['цена'].toDouble());
+    Analytics()
+        .logViewItem(
+          widget.data['название'],
+          widget.data['цена'].toDouble(),
+          widget.data['название'],
+          widget.data['категория товара'],
+        )
+        .then((value) =>
+            debugPrint('Log event - view item: ${widget.data['название']}'));
     super.initState();
   }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -49,7 +57,11 @@ class _SingleProductScreenState extends State<SingleProductScreen> {
       child: Container(
         child: SizedBox(
           width: MediaQuery.of(context).size.width / 100 * 100,
-          child: Image(image: CachedNetworkImageProvider(widget.data['фото'],),),
+          child: Image(
+            image: CachedNetworkImageProvider(
+              widget.data['фото'],
+            ),
+          ),
         ),
       ),
     );
@@ -221,34 +233,47 @@ class _SingleProductScreenState extends State<SingleProductScreen> {
                 minimumSize: Size(140.0, 50.0),
                 maximumSize: Size(160.0, 50.0),
               ),
-              onPressed: () async{
+              onPressed: () async {
                 Provider.of<CartModel>(context, listen: false)
                     .obtainQntOfProduct(widget.data['название']);
                 int singleProductQntInCart = 0;
-      
+
                 try {
-                  singleProductQntInCart = Provider.of<CartModel>(context, listen: false).cart.getSpecificItemFromCart(widget.data['название'])!.quantity;
+                  singleProductQntInCart =
+                      Provider.of<CartModel>(context, listen: false)
+                          .cart
+                          .getSpecificItemFromCart(widget.data['название'])!
+                          .quantity;
                 } catch (e) {
                   setState(() {
                     singleProductQntInCart = 0;
                   });
                 }
-          
-                Provider.of<CartModel>(context, listen: false).addProductToCartQnt(
-                    widget.data['название'],
-                    widget.data['цена'],
-                    widget.data['название'],
-                    productQnt + singleProductQntInCart,
-                    widget.data['фото'].toString());
-                await analytics.logAddToCart(itemId: widget.data['название'], itemName: widget.data['название'], itemCategory: widget.data['категория товара'], quantity: productQnt + singleProductQntInCart, currency: 'RUB', price: (widget.data['цена'] * productQnt).toDouble());
-                
-                
+
+                Provider.of<CartModel>(context, listen: false)
+                    .addProductToCartQnt(
+                        widget.data['название'],
+                        widget.data['цена'],
+                        widget.data['название'],
+                        productQnt + singleProductQntInCart,
+                        widget.data['фото'].toString());
+                Analytics()
+                    .logAddToCart(
+                      widget.data['название'],
+                      widget.data['категория товара'],
+                      widget.data['название'],
+                      productQnt + singleProductQntInCart,
+                      (widget.data['цена'] * productQnt).toDouble(),
+                    )
+                    .then((value) => debugPrint(
+                        'Log event - item ${widget.data['название']} added to cart'));
+
                 Navigator.pop(context);
               },
-              child: Text('${widget.data['цена'] * productQnt}₽',
-                  style: TextStyle(
-                    fontSize: 15,
-                  )),
+              child: Text(
+                '${widget.data['цена'] * productQnt}₽',
+                style: TextStyle(fontSize: 15),
+              ),
             ),
           ],
         ),
