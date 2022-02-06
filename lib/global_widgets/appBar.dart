@@ -13,10 +13,10 @@ class MainAppBar extends StatelessWidget implements PreferredSizeWidget {
         style: TextStyle(
           fontSize: 20,
           fontWeight: FontWeight.bold,
-          overflow: TextOverflow.visible,
+          overflow: TextOverflow.ellipsis,
         ),
       ),
-      centerTitle: appBarTitle.length > 18 ? false : true,
+      centerTitle: true,
       elevation: 4,
       shadowColor: Colors.grey[100],
     );
