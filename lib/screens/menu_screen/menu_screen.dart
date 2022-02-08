@@ -95,7 +95,7 @@ class _MenuScreenState extends State<MenuScreen> {
     DateTime dt = DateTime.now();
     int weekday = DateTime.now().weekday;
     if (weekday == 2 || weekday == 3 || weekday == 4) {
-      if (dt.hour >= 12 && dt.hour < 25) {
+      if (dt.hour >= 12 && dt.hour < 17) {
         result = true;
         return result;
       }
