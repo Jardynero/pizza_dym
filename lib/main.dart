@@ -77,7 +77,7 @@ class _PizzadymState extends State<Pizzadym> {
       title: context.read<CustomerData>().name,
       initialRoute: '/',
       routes: {
-        '/': (context) => (NavigationScreen()),
+        '/': (context) => (NavigationScreen(index: 0,)),
         '/login-phone': (context) => LoginPhoneScreen(),
         '/login-code': (context) => LoginCodeScreen(),
         '/about-pizza': (context) => AboutPizzaScreen(),

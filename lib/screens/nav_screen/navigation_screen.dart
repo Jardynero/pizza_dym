@@ -16,7 +16,11 @@ import 'package:pizza_dym/screens/nav_screen/widgets/widgets.dart';
 import 'package:update_available/update_available.dart';
 
 class NavigationScreen extends StatefulWidget {
-  NavigationScreen({Key? key}) : super(key: key);
+  final int? index;
+  NavigationScreen({
+    required this.index,
+    Key? key,
+  }) : super(key: key);
   final FlutterCart cart = FlutterCart();
 
   @override
@@ -25,9 +29,13 @@ class NavigationScreen extends StatefulWidget {
 
 class _NavigationScreenState extends State<NavigationScreen> {
   List<Widget> _screens() {
-    return [MenuScreen(),
-    CartScreen(totalAmount: widget.cart.getTotalAmount().toInt(),),
-    ProfileScreen(),];
+    return [
+      MenuScreen(),
+      CartScreen(
+        totalAmount: widget.cart.getTotalAmount().toInt(),
+      ),
+      ProfileScreen(),
+    ];
   }
 
   final List<List> _navBarItems = [
@@ -36,7 +44,6 @@ class _NavigationScreenState extends State<NavigationScreen> {
     [Icons.person, 'Профиль']
   ];
 
-  int _currentIndex = 0;
 
   void updateApp() async {
     final updateAvailability = await getUpdateAvailability();
@@ -53,11 +60,15 @@ class _NavigationScreenState extends State<NavigationScreen> {
     );
   }
 
+  int _currentIndex = 0;
+
   @override
   void initState() {
     super.initState();
     updateApp();
+    _currentIndex = widget.index!;
   }
+
 
   @override
   Widget build(BuildContext context) {
