@@ -32,12 +32,12 @@
 			</array>
 		</dict>
 	</array>
+	<key>CFBundleVersion</key>
+	<string>$(CURRENT_PROJECT_VERSION)</string>
 	<key>FacebookAppID</key>
 	<string>859841348064805</string>
 	<key>FacebookDisplayName</key>
 	<string>Пицца Дым</string>
-	<key>CFBundleVersion</key>
-	<string>$(CURRENT_PROJECT_VERSION)</string>
 	<key>FirebaseAppDelegateProxyEnabled</key>
 	<false/>
 	<key>LSApplicationQueriesSchemes</key>
@@ -48,7 +48,7 @@
 	<key>LSRequiresIPhoneOS</key>
 	<true/>
 	<key>NSUserTrackingUsageDescription</key>
-	<string>Нам необходимо это, для дальнейшего улучшения приложения:)</string>
+	<string>Так мы узнаем, после какой рекламы вы решили скачать наше приложение.</string>
 	<key>UIBackgroundModes</key>
 	<array>
 		<string>fetch</string>
