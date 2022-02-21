@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:pizza_dym/functions/firebase_functions.dart';
@@ -209,7 +210,9 @@ Widget orderList(data, context) {
             String subtitle = '${item[1]} шт. ${item[2]}₽';
             String imageUrl = item[3];
             return ListTile(
-              leading: Image.network(imageUrl),
+              leading: Image(
+                image: CachedNetworkImageProvider(imageUrl),
+              ),
               title: Text(name),
               subtitle: Text(subtitle),
             );
