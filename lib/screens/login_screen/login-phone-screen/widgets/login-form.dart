@@ -46,6 +46,7 @@ class _LoginFormState extends State<LoginForm> {
                       if (value == null || value.isEmpty) {
                         return 'Пожалуйста, введите ваше имя';
                       }
+                      return null;
                     },
                     decoration: LoginPhoneFormTheme().fieldTheme('Имя'),
                   ),
@@ -64,6 +65,7 @@ class _LoginFormState extends State<LoginForm> {
                       if (value.startsWith('+7') != true) {
                         return 'Номер телефона должен начинаться с +7';
                       }
+                      return null;
                     },
                     decoration:
                         LoginPhoneFormTheme().fieldTheme('Номер телефона'),

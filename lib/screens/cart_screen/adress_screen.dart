@@ -157,6 +157,7 @@ class _AdressScreenState extends State<AdressScreen> {
         if (value == null || value.isEmpty) {
           return 'Это поле обязательное!';
         }
+        return null;
       },
       debounceDuration: Duration(milliseconds: 600),
       suggestionsCallback: _startSuggesting,
@@ -210,6 +211,7 @@ class _AdressScreenState extends State<AdressScreen> {
           if (value == null || value.isEmpty) {
             return 'Это поле обязательное!';
           }
+          return null;
         },
         decoration: fieldTheme('Дом'),
       ),
