@@ -209,7 +209,7 @@ class CartModel extends ChangeNotifier {
         .collection('orders');
 
     userOrders
-        .doc('Заказ от $timeNow')
+        .doc('$currentOrderNumber')
         .set(
           {
             'Номер заказа': currentOrderNumber,
