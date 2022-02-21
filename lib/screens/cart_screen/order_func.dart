@@ -1,4 +1,5 @@
 // order function
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:dart_telegram_bot/dart_telegram_bot.dart';
 import 'package:dart_telegram_bot/telegram_entities.dart';
@@ -385,7 +386,7 @@ Widget orderList(FlutterCart cart, context) {
           String subtitle = '${item[1]} шт. ${item[2]}₽';
           String imageUrl = item[3];
           return ListTile(
-            leading: Image.network(imageUrl),
+            leading: Image(image: CachedNetworkImageProvider(imageUrl)),
             title: Text(name),
             subtitle: Text(subtitle),
           );
