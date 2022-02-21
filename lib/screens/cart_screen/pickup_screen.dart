@@ -176,6 +176,7 @@ class _PickupScreenState extends State<PickupScreen> {
             cartModel.saveOrderToHistory(context);
             sendOrderToTelegram(sendOrder(context));
             sendGeoToTelegram(geo(context));
+            sendOrderToDeliveryMans(context);
             cartModel.sendNewOrderNumber();
             await NotificationApi.showNotification(
                 title: 'Пицца Дым',

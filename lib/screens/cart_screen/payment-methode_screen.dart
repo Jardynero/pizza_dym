@@ -229,6 +229,7 @@ class _PaymentMethodeScreenState extends State<PaymentMethodeScreen> {
           if (_groupValue == 1) {
             debugPrint('Оплата банковской картой при получение!');
             cartModel.saveOrderToHistory(context);
+            sendOrderToDeliveryMans(context);
             sendOrderToTelegram(sendOrder(context));
             sendGeoToTelegram(geo(context));
             cartModel.sendNewOrderNumber();
@@ -247,6 +248,7 @@ class _PaymentMethodeScreenState extends State<PaymentMethodeScreen> {
               debugPrint('Оплата наличными');
               cartModel.getChangeFrom(_cashController.text);
               cartModel.saveOrderToHistory(context);
+              sendOrderToDeliveryMans(context);
               sendOrderToTelegram(sendOrder(context));
               sendGeoToTelegram(geo(context));
               cartModel.sendNewOrderNumber();
@@ -260,6 +262,7 @@ class _PaymentMethodeScreenState extends State<PaymentMethodeScreen> {
                   .then((value) => Navigator.pushNamedAndRemoveUntil(
                       context, '/', (route) => false))
                   .then((value) => reviewApp());
+              cartModel.getChangeFrom('');
             }
           }
           Analytics().logPurchase(totalAmount).then(
