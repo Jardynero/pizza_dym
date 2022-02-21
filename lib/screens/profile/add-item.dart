@@ -137,6 +137,8 @@ Widget field(controller, label) {
       validator: (value) {
         if (value == null || value.isEmpty) {
           return 'Обязательное поле!';
+        } else {
+          return null;
         }
       },
       controller: controller,

@@ -97,6 +97,7 @@ class _PaymentMethodeScreenState extends State<PaymentMethodeScreen> {
                 return 'Число не может быть меньше ${totalAmount.toInt()}';
               }
             }
+            return null;
           },
           onChanged: (value) {
             setState(() {
