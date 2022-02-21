@@ -181,7 +181,7 @@ class _PickupScreenState extends State<PickupScreen> {
             await NotificationApi.showNotification(
                 title: 'Пицца Дым',
                 body:
-                    'Спасибо за заказ🍕 Через 5 минут пришлем смс-ку с подтверждением заказа!',
+                    'Спасибо за заказ🍕 Через 5 минут пришлем уведомление с подтверждением заказа!',
                 payload: 'pizza dym');
             Analytics().logPurchase(totalAmount).then((value) =>
                 debugPrint('log event - Новый заказ на $totalAmount'));

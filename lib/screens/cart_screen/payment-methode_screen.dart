@@ -237,7 +237,7 @@ class _PaymentMethodeScreenState extends State<PaymentMethodeScreen> {
             await NotificationApi.showNotification(
                 title: 'Пицца Дым',
                 body:
-                    'Спасибо за заказ🍕 Через 5 минут пришлем смс-ку с подтверждением заказа!',
+                    'Спасибо за заказ🍕 Через 5 минут пришлем уведомление с подтверждением заказа!',
                 payload: 'pizza dym');
             showOrderConfirmation(context)
                 .then((value) => cartModel.cart.deleteAllCart())
@@ -256,7 +256,7 @@ class _PaymentMethodeScreenState extends State<PaymentMethodeScreen> {
               await NotificationApi.showNotification(
                   title: 'Пицца Дым',
                   body:
-                      'Спасибо за заказ🍕 Через 5 минут пришлем смс-ку с подтверждением заказа!',
+                      'Спасибо за заказ🍕 Через 5 минут пришлем уведомление с подтверждением заказа!',
                   payload: 'pizza dym');
               showOrderConfirmation(context)
                   .then((value) => cartModel.cart.deleteAllCart())
