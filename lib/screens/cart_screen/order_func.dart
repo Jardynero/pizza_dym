@@ -1,7 +1,9 @@
 // order function
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:dart_telegram_bot/dart_telegram_bot.dart';
 import 'package:dart_telegram_bot/telegram_entities.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_cart/flutter_cart.dart';
 import 'package:pizza_dym/functions/firebase_functions.dart';
@@ -191,6 +193,62 @@ String sendOrder(context) {
   return order;
 }
 
+// send order for deliveryMan in Cloud Firestore
+Future<void> sendOrderToDeliveryMans(context) async {
+  var cartModel = Provider.of<CartModel>(context, listen: false);
+  final CollectionReference deliveryMansCollection =
+      FirebaseFirestore.instance.collection('deliveryManOrders');
+  String userFullAdress = cartModel.userFullAdress;
+  String userHouse = cartModel.userHouse;
+  String userBlock = cartModel.userBlock;
+  String userEntrance = cartModel.userEntrance;
+  String userFloor = cartModel.userFloor;
+  String userAppartment = cartModel.userAppartment;
+  String userIntercom = cartModel.userIntercom;
+  int orderNumber = cartModel.orderNumber + 1;
+  int totalAmount = cartModel.cart.getTotalAmount().toInt();
+  String? token = await FirebaseMessaging.instance.getToken();
+  String clientName = cartModel.userName;
+  String? phoneNumber = FirebaseAuth.instance.currentUser!.phoneNumber;
+  String deliveryMethode = cartModel.deliveryMethode == 1
+      ? 'Доставка'
+      : cartModel.deliveryMethode == 2
+          ? 'Самовывоз'
+          : 'Вариант доставки не распознан!';
+  String comment = cartModel.userComment;
+  String adressDetailsFull =
+      'дом: $userHouse/корпус: $userBlock/$userEntrance/$userIntercom/$userFloor/$userAppartment';
+  dynamic adress = deliveryMethode == 'Доставка' ? userFullAdress : null;
+
+  dynamic adressDetails =
+      deliveryMethode == 'Доставка' ? adressDetailsFull : null;
+  List itemList = cartModel.cart.cartItem
+      .map((item) => '${item.productName} (${item.quantity} шт.)')
+      .toList();
+  dynamic changeFrom = cartModel.changeFrom == '' ? null : cartModel.changeFrom;
+  String paymentMethod = cartModel.paymentMethode == 1 ? 'картой' : 'наличные';
+  return deliveryMansCollection.doc('$orderNumber').set(
+    {
+      'orderNumber': orderNumber,
+      'deliveryMethod': deliveryMethode,
+      'deliveryTime': deliveryTime(context),
+      'orderItems': itemList,
+      'totalAmount': totalAmount,
+      'paymentMethod': paymentMethod,
+      'changeFrom': changeFrom,
+      'comment': comment,
+      'token': token,
+      'clientName': clientName,
+      'clientPhoneNumber': phoneNumber,
+      'adress': adress,
+      'adressDetails': adressDetails,
+      'push_order_confirmed': false,
+      'push_order_in_delivery': false,
+      'push_order_delivered': false,
+    },
+  );
+}
+
 // SendOrderToDelegram
 void sendOrderToTelegram(String message) {
   final String token = '1986877443:AAF_InoNq1RjIRZgURJMbg1U0KAUwKzvfTo';
@@ -261,7 +319,7 @@ Widget orderInfo(context) {
                     text: 'Заказ № $orderNumber принят ✅\n',
                     style: titleStyle,
                   ),
-                  TextSpan(text: 'Вам придет смс с подтверждением заказа'),
+                  TextSpan(text: 'Вам придет пуш с подтверждением заказа'),
                 ],
               ),
               textAlign: TextAlign.center,
