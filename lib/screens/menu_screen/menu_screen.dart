@@ -1,117 +1,107 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-import 'package:sortedmap/sortedmap.dart';
+import 'package:pizza_dym/functions/firebase_functions.dart';
+import 'widgets/widgets.dart';
+import 'package:provider/provider.dart';
 
 class MenuScreen extends StatefulWidget {
+  const MenuScreen({Key? key}) : super(key: key);
+
   @override
   State<MenuScreen> createState() => _MenuScreenState();
 }
 
 class _MenuScreenState extends State<MenuScreen> {
+  GlobalKey bbqKey = GlobalKey();
+  GlobalKey neapolitanaKey = GlobalKey();
+  GlobalKey sitsiliyaKey = GlobalKey();
+  GlobalKey soupsKey = GlobalKey();
+  GlobalKey extrasKey = GlobalKey();
+  GlobalKey drinksKey = GlobalKey();
+  late List<GlobalKey> _categoriesKeys;
+
+  @override
   void initState() {
+    CloudFirestore().isRestaurantOpen(context);
+    Provider.of<CloudFirestore>(context, listen: false)
+        .obtainRestautantSettings();
     super.initState();
+    _categoriesKeys = _categoriesKeys = [
+      bbqKey,
+      neapolitanaKey,
+      sitsiliyaKey,
+      soupsKey,
+      extrasKey,
+      drinksKey,
+    ];
   }
 
-  final Stream<QuerySnapshot> restaurantDb =
-      FirebaseFirestore.instance.collection('restaurant').snapshots();
+  final List<String> _categories = [
+    'BBQ',
+    'Неаполитанская пицца',
+    'Сицилийская пицца',
+    'Супы',
+    'Закуски',
+    'Напитки'
+  ];
+
   @override
   Widget build(BuildContext context) {
-    return StreamBuilder<QuerySnapshot>(
-        stream: restaurantDb,
-        builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
-          if (snapshot.connectionState == ConnectionState.waiting) {
-            return Center(child: CircularProgressIndicator());
-          }
-          final restaurantDb = snapshot.data!.docs;
-          Map restaurantMenu = restaurantDb[1].get('menu');
-          Map restaurantMenuSorted = {};
-          int counter = 1;
-          while (counter != restaurantMenu.length + 1) {
-            restaurantMenuSorted[counter] = restaurantMenu['$counter'];
-            counter++;
-          }
-          return TabBarView(
-            children: [
-              for (String categorie in restaurantDb[0].get('categories'))
-                Container(
-                  // margin: EdgeInsets.symmetric(horizontal: 7.0, vertical: 7.0),
-                  child: GridView.count(
-                    crossAxisCount: 1,
-                    childAspectRatio: 1.9,
-                    mainAxisSpacing: 7,
-                    children: [
-                      for (final itemData in restaurantMenuSorted.values)
-                        if (categorie == itemData[3])
-                          Container(
-                            margin: EdgeInsets.symmetric(horizontal: 10),
-                            child: SizedBox(
-                              width: MediaQuery.of(context).size.width,
-                              child: Card(
-                                shadowColor: Color(0xffE1E0E0),
-                                shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(15.0),
-                                ),
-                                elevation: 4,
-                                color: Colors.white,
-                                child: Padding(
-                                  padding:
-                                      const EdgeInsets.symmetric(vertical: 10),
-                                  child: Row(
-                                    mainAxisAlignment:
-                                        MainAxisAlignment.spaceBetween,
-                                    children: [
-                                      Container(
-                                        child: Image.network(
-                                          '${itemData[4]}',
-                                          height: 150,
-                                          width: 150,
-                                        ),
-                                      ),
-                                      Flexible(
-                                        child: Container(
-                                            margin: EdgeInsets.symmetric(
-                                                horizontal: 7),
-                                            // width: 250,
-                                            // height: 150,
-                                            // color: Colors.amberAccent,
-                                            child: Column(
-                                              crossAxisAlignment:
-                                                  CrossAxisAlignment.start,
-                                              mainAxisAlignment:
-                                                  MainAxisAlignment.center,
-                                              children: [
-                                                Text('${itemData[0]}',
-                                                    style: TextStyle(
-                                                        fontSize: 19)),
-                                                Padding(
-                                                  padding: EdgeInsets.symmetric(
-                                                      vertical: 15),
-                                                  child: Text(
-                                                    '${itemData[1]}',
-                                                  ),
-                                                ),
-                                                SizedBox(
-                                                  width: 130,
-                                                  height: 35,
-                                                  child: ElevatedButton(
-                                                    onPressed: () {},
-                                                    child: Text('${itemData[2]}₽'),
-                                                  ),
-                                                ),
-                                              ],
-                                            )),
-                                      ),
-                                    ],
-                                  ),
-                                ),
-                              ),
-                            ),
-                          ),
-                    ],
-                  ),
-                )
-            ],
-          );
-        });
+    return Scaffold(
+      body: CustomScrollView(
+        slivers: [
+          MenuAppBar(
+            categories: _categories,
+            categoriesKeys: _categoriesKeys,
+          ),
+          SliverVisibility(
+            visible: _happyHours() == true ? true : false,
+            sliver: CategorieHeading(
+              title: 'Акция 2 пиццы за 800 руб',
+              categorieName: 'Счастливые часы'
+            ),
+          ),
+          SliverVisibility(
+            visible: _happyHours() == true ? true : false,
+            sliver: HorizontalItemsList(
+              categorieName: 'Счастливые часы',
+            ),
+          ),
+          CategorieHeading(title: 'Самые популярные', categorieName: 'Хиты',),
+          HorizontalItemsList(categorieName: 'Хиты'),
+
+          CategorieHeading(title: _categories[0], gKey: _categoriesKeys[0], categorieName: 'bbq'),
+          VerticalItemsList(categorieName: 'bbq'),
+
+          CategorieHeading(title: _categories[1], gKey: _categoriesKeys[1], categorieName: 'Неаполитанская пицца'),
+          VerticalItemsList(categorieName: 'Неаполитанская пицца'),
+
+          CategorieHeading(title: _categories[2], gKey: _categoriesKeys[2], categorieName: 'Сицилийская пицца'),
+          VerticalItemsList(categorieName: 'Сицилийская пицца'),
+
+          CategorieHeading(title: _categories[3], gKey: _categoriesKeys[3], categorieName: 'Супы'),
+          VerticalItemsList(categorieName: 'Супы'),
+
+          CategorieHeading(title: _categories[4], gKey: _categoriesKeys[4], categorieName: 'Закуски'),
+          VerticalItemsList(categorieName: 'Закуски'),
+
+          CategorieHeading(title: _categories[5], gKey: _categoriesKeys[5],categorieName: 'Напитки'),
+          VerticalItemsList(categorieName: 'Напитки'),
+        ],
+      ),
+    );
+  }
+  _happyHours() {
+    bool result;
+    DateTime dt = DateTime.now();
+    int weekday = DateTime.now().weekday;
+    if (weekday == 2 || weekday == 3 || weekday == 4) {
+      if (dt.hour >= 12 && dt.hour < 17) {
+        result = true;
+        return result;
+      }
+    } else {
+      result = false;
+      return result;
+    }
   }
 }

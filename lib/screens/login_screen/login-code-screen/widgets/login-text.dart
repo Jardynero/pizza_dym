@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:pizza_dym/functions/firebase_functions.dart';
-import 'package:pizza_dym/theme/main_theme.dart';
 import 'package:provider/provider.dart';
 
 class LoginCodeText extends StatelessWidget {
@@ -19,7 +18,8 @@ class LoginCodeText extends StatelessWidget {
           child: Text(
             'Подтверждение телефона',
             style: TextStyle(
-              fontSize: MainColorTheme().paragraphFontSize,
+              fontSize: 20,
+              fontWeight: FontWeight.w500,
             ),
           ),
         ),
@@ -36,16 +36,10 @@ class LoginCodeText extends StatelessWidget {
                 padding: EdgeInsets.only(bottom: 5.0),
                 child: Text(
                   'На номер ${context.watch<FirebaseAuthInstance>().getUserPhoneNumber} отправлено СМС с кодом',
-                  style: TextStyle(
-                    fontSize: MainColorTheme().secondaryFontSize,
-                  ),
                 ),
               ),
               Text(
                 'Телефон важен, чтобы курьер мог с вами связаться',
-                style: TextStyle(
-                  fontSize: MainColorTheme().secondaryFontSize,
-                ),
               ),
             ],
           ),

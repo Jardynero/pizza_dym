@@ -9,11 +9,17 @@ class ChangePhone extends StatelessWidget {
       margin:
           EdgeInsets.only(top: MediaQuery.of(context).size.height / 100 * 5),
       child: TextButton(
-          onPressed: () => Navigator.pushNamed(context, '/login-phone'),
-          child: Text('Изменить номер телефона',
-              style: TextStyle(
-                  color: Color(0xffFFFFFF),
-                  decoration: TextDecoration.underline))),
+        onPressed: () => Navigator.pushNamed(
+          context,
+          '/login-phone',
+        ),
+        child: Text(
+          'Изменить номер телефона',
+          style: TextStyle(
+            decoration: TextDecoration.underline,
+          ),
+        ),
+      ),
     );
   }
 }

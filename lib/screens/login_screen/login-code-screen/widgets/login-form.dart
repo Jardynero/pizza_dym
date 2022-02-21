@@ -1,11 +1,15 @@
+import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_cart/flutter_cart.dart';
 import 'package:pizza_dym/functions/firebase_functions.dart';
 import 'package:pizza_dym/screens/login_screen/theme/Login-code-theme.dart';
+import 'package:pizza_dym/screens/nav_screen/navigation_screen.dart';
 import 'package:provider/provider.dart';
 
 class LoginCodeForm extends StatefulWidget {
   LoginCodeForm({Key? key}) : super(key: key);
+  final FlutterCart cart = FlutterCart();
 
   @override
   _LoginCodeFormState createState() => _LoginCodeFormState();
@@ -127,6 +131,8 @@ class _LoginCodeFormState extends State<LoginCodeForm> {
 
   // Авторизировать пользователя - кнопка продолжить
   Future authenticateUser(_userVerificationId, _auth) async {
+    var _firestoreModel = Provider.of<CloudFirestore>(context, listen: false);
+    final String lastPageBeforeLogin = _firestoreModel.lastPageBeforeLogin;
     setState(() {
       activityIndicator = true;
     });
@@ -156,7 +162,18 @@ class _LoginCodeFormState extends State<LoginCodeForm> {
       setState(() {
         activityIndicator = false;
       });
-      Navigator.pushReplacementNamed(context, '/');
+      FirebaseAnalytics().logSignUp(signUpMethod: 'Phone Number');
+      if (lastPageBeforeLogin == '/cart') {
+        Navigator.pushAndRemoveUntil(context,
+            MaterialPageRoute(builder: (BuildContext context) {
+          return NavigationScreen(index: 1);
+        }), (route) => false);
+      } else if (lastPageBeforeLogin == '/profile') {
+        Navigator.pushAndRemoveUntil(context,
+            MaterialPageRoute(builder: (BuildContext context) {
+          return NavigationScreen(index: 2);
+        }), (route) => false);
+      }
     } else {
       print('error');
     }
@@ -179,6 +196,8 @@ class _LoginCodeFormState extends State<LoginCodeForm> {
 
   // Запрос нового кода
   Future sendNewCode(_auth, _userPhoneNumber) async {
+    var _firestoreModel = Provider.of<CloudFirestore>(context, listen: false);
+    final String lastPageBeforeLogin = _firestoreModel.lastPageBeforeLogin;
     await _auth.verifyPhoneNumber(
       phoneNumber: _userPhoneNumber,
       verificationCompleted: (PhoneAuthCredential credential) async {
@@ -188,7 +207,8 @@ class _LoginCodeFormState extends State<LoginCodeForm> {
             activityIndicator = false;
           });
           print('Android auth done!');
-          Navigator.pushReplacementNamed(context, '/');
+          Navigator.pushNamedAndRemoveUntil(
+              context, '$lastPageBeforeLogin', (route) => false);
         }
       },
       verificationFailed: (FirebaseAuthException e) {

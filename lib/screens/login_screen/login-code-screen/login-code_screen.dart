@@ -11,6 +11,7 @@ class LoginCodeScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       body: SingleChildScrollView(
+        reverse: true,
         child: GestureDetector(
           onTap: () => FocusScope.of(context).unfocus(),
           child: SafeArea(
