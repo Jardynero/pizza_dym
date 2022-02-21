@@ -1,8 +1,12 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:pizza_dym/functions/firebase_functions.dart';
 import 'package:pizza_dym/global_widgets/appBar.dart';
+import 'package:pizza_dym/global_widgets/widgets.dart';
 import 'package:provider/provider.dart';
+import 'package:im_stepper/stepper.dart';
 
 class OrderHistoryScreen extends StatefulWidget {
   OrderHistoryScreen({Key? key}) : super(key: key);
@@ -47,11 +51,14 @@ class _OrderHistoryScreenState extends State<OrderHistoryScreen> {
           return Center(child: CircularProgressIndicator());
         }
         return ListView(
-          children: snapshot.data!.docs.map((DocumentSnapshot document) {
-            Map<String, dynamic> data =
-                document.data()! as Map<String, dynamic>;
-            return orderItem(data);
-          }).toList(),
+          children: snapshot.data!.docs.map(
+            (DocumentSnapshot document) {
+              Map<String, dynamic> data =
+                  document.data()! as Map<String, dynamic>;
+
+              return orderItem(data);
+            },
+          ).toList(),
         );
       },
     );
@@ -78,15 +85,13 @@ class _OrderHistoryScreenState extends State<OrderHistoryScreen> {
       return GestureDetector(
         onTap: () {
           showModalBottomSheet(
-              isScrollControlled: true,
-              context: context,
-              builder: (context) {
-                return Container(
-                  width: MediaQuery.of(context).size.width,
-                  height: MediaQuery.of(context).size.height / 100 * 70,
-                  child: orderInfo(data, context),
-                );
-              });
+            isScrollControlled: true,
+            backgroundColor: Colors.transparent,
+            context: context,
+            builder: (context) {
+              return orderInfo(data, context);
+            },
+          );
         },
         child: Card(
           child: ListTile(
@@ -148,44 +153,66 @@ Widget orderInfo(data, context) {
   int orderMonth = orderDt.month;
   int orderYear = orderDt.year;
   String orderMonthName = monthName(orderMonth);
-  return Column(
-    children: [
-      SizedBox(
-        width: MediaQuery.of(context).size.width,
-        height: MediaQuery.of(context).size.height / 100 * 10,
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Text(
+  return Container(
+    margin: EdgeInsets.only(top: MediaQuery.of(context).size.height * 0.20),
+    decoration: BoxDecoration(
+      color: Colors.white,
+      borderRadius: BorderRadius.only(
+        topLeft: Radius.circular(25),
+        topRight: Radius.circular(25),
+      ),
+    ),
+    child: SingleChildScrollView(
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: [
+          Align(
+            alignment: Alignment.topRight,
+            child: IconButton(
+              onPressed: () => Navigator.pop(context),
+              icon: Icon(Icons.close),
+            ),
+          ),
+          Padding(
+            padding: const EdgeInsets.only(top: 16.0),
+            child: Text(
               'Заказ № $orderNumber от $orderDay $orderMonthName $orderYear',
               style: titleStyle,
             ),
-          ],
-        ),
-      ),
-      orderList(data, context),
-      SizedBox(
-        width: MediaQuery.of(context).size.width,
-        height: MediaQuery.of(context).size.height / 100 * 20,
-        child: Container(
-          color: Colors.grey.shade300,
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Text.rich(
-                TextSpan(
-                  children: [
-                    TextSpan(text: 'Итого\n', style: totalStyle),
-                    TextSpan(text: '$sum ₽', style: sumStyle),
-                  ],
-                ),
-                textAlign: TextAlign.center,
-              ),
-            ],
           ),
-        ),
+          OrderStapIndicator(data: data),
+          Padding(
+            padding: const EdgeInsets.only(top: 16.0),
+            child: Text(
+              'Состав заказа',
+              style: titleStyle,
+            ),
+          ),
+          orderList(data, context),
+          SizedBox(
+            height: 16.0,
+          ),
+          Container(
+            padding: EdgeInsets.symmetric(vertical: 30),
+            color: Colors.grey.shade300,
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Text.rich(
+                  TextSpan(
+                    children: [
+                      TextSpan(text: 'Итого\n', style: totalStyle),
+                      TextSpan(text: '$sum ₽', style: sumStyle),
+                    ],
+                  ),
+                  textAlign: TextAlign.center,
+                ),
+              ],
+            ),
+          ),
+        ],
       ),
-    ],
+    ),
   );
 }
 
@@ -197,23 +224,89 @@ TextStyle sumStyle =
 Widget orderList(data, context) {
   Map orderList = data['Состав заказа'];
 
-  return SizedBox(
-    width: MediaQuery.of(context).size.width,
-    height: MediaQuery.of(context).size.height / 100 * 40,
-    child: Container(
-      child: ListView.builder(
-          itemCount: orderList.length,
-          itemBuilder: (BuildContext context, index) {
-            List item = orderList['${index + 1}'];
-            String name = item[0];
-            String subtitle = '${item[1]} шт. ${item[2]}₽';
-            String imageUrl = item[3];
-            return ListTile(
-              leading: Image.network(imageUrl),
-              title: Text(name),
-              subtitle: Text(subtitle),
-            );
-          }),
-    ),
+  return ListView.builder(
+    shrinkWrap: true,
+    physics: NeverScrollableScrollPhysics(),
+    itemCount: orderList.length,
+    itemBuilder: (BuildContext context, index) {
+      List item = orderList['${index + 1}'];
+      String name = item[0];
+      String subtitle = '${item[1]} шт. ${item[2]}₽';
+      String imageUrl = item[3];
+      return ListTile(
+        leading: Image(
+          image: CachedNetworkImageProvider(imageUrl),
+        ),
+        title: Text(name),
+        subtitle: Text(subtitle),
+      );
+    },
   );
+}
+
+class OrderStapIndicator extends StatefulWidget {
+  final data;
+  OrderStapIndicator({
+    required this.data,
+    Key? key,
+  }) : super(key: key);
+
+  @override
+  State<OrderStapIndicator> createState() => _OrderStapIndicatorState();
+}
+
+class _OrderStapIndicatorState extends State<OrderStapIndicator> {
+  int _activeStep = 0;
+  final List<ImageProvider<dynamic>> images = [
+    AssetImage('assets/img/company-logo black.png'),
+    AssetImage('assets/img/pizzadym abous us 4.png'),
+    AssetImage('assets/img/photo_2022-02-21 19.15.37.jpeg'),
+    AssetImage('assets/img/photo_2022-02-21 19.22.58.jpeg'),
+  ];
+
+  final List<Icon> icons = [
+    Icon(Icons.check_circle),
+    Icon(Icons.local_pizza_outlined),
+    Icon(Icons.local_shipping_outlined),
+    Icon(Icons.sports_score_outlined),
+  ];
+
+  final String? phone = FirebaseAuth.instance.currentUser!.phoneNumber;
+
+  @override
+  Widget build(BuildContext context) {
+    FirebaseFirestore.instance
+        .collection('users')
+        .doc(phone)
+        .collection('orders')
+        .doc('${widget.data['Номер заказа']}')
+        .snapshots()
+        .listen((event) {
+      setState(() {
+        _activeStep = event.get('Статус заказа');
+      });
+    });
+    return Column(
+      children: [
+        SizedBox(
+          height: 16.0,
+        ),
+        Text('Статус заказа',
+            style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold)),
+        IconStepper(
+          activeStep: _activeStep,
+          icons: icons,
+          enableNextPreviousButtons: false,
+          enableStepTapping: false,
+          scrollingDisabled: true,
+          stepColor: Colors.grey[400],
+          activeStepColor: Colors.green,
+          activeStepBorderColor: Colors.green,
+          activeStepBorderPadding: 3,
+          activeStepBorderWidth: 3,
+          lineColor: Colors.grey,
+        ),
+      ],
+    );
+  }
 }

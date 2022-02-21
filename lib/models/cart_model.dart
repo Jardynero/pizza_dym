@@ -198,6 +198,7 @@ class CartModel extends ChangeNotifier {
     double totalOrderAmount = cart.getTotalAmount();
     int totalOrderAmountInt = totalOrderAmount.toInt();
     int currentOrderNumber = _orderNumber + 1;
+    int deliveryMethode = CartModel()._deliveryMethode;
     String userPhoneNumber =
         Provider.of<FirebaseAuthInstance>(context, listen: false)
             .auth
@@ -216,6 +217,7 @@ class CartModel extends ChangeNotifier {
             'Дата заказа': timeNow,
             'Сумма заказа': totalOrderAmountInt,
             'Состав заказа': orderList(),
+            'Способ доставки': deliveryMethode == 1 ? 'Доставка' : 'Самовывоз'
           },
         )
         .then((value) => debugPrint(
