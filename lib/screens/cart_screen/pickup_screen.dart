@@ -191,6 +191,7 @@ class _PickupScreenState extends State<PickupScreen> {
                     context, '/', (route) => false))
                 .then((value) => reviewApp());
             debugPrint('Заказ на самовывоз оформлен');
+            await NotificationApi.sendPushToAdmin();
 
             // Оформить заказ
             // Отправить в телегу заказ (готово)
