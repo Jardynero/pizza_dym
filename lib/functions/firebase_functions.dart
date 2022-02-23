@@ -1,6 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:pizza_dym/global_widgets/snackbar.dart';
@@ -23,11 +22,6 @@ Future initFirebaseMessaging(firebaseMessagingInstance) async {
   debugPrint('User granted permission: ${settings.authorizationStatus}');
 }
 
-// cloud messaging
-Future<void> firebaseMessagingBackgroundHandler(RemoteMessage message) async {
-  await Firebase.initializeApp();
-  debugPrint("Handling a background message: ${message.messageId}");
-}
 
 // Firebase AUTH
 class FirebaseAuthInstance extends ChangeNotifier {

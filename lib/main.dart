@@ -34,6 +34,12 @@ import 'package:flutter_localizations/flutter_localizations.dart';
 // Import functions
 import 'package:pizza_dym/functions/firebase_functions.dart';
 
+// cloud messaging
+Future<void> firebaseMessagingBackgroundHandler(RemoteMessage message) async {
+  await Firebase.initializeApp();
+  debugPrint("Handling a background message: ${message.messageId}");
+}
+
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
@@ -60,6 +66,9 @@ class Pizzadym extends StatefulWidget {
 class _PizzadymState extends State<Pizzadym> {
   FirebaseMessaging messaging = FirebaseMessaging.instance;
 
+  void fcmOnmessage() async {
+    await NotificationApi().foregroundNotifications();
+  }
   @override
   void initState() {
     super.initState();
@@ -68,6 +77,7 @@ class _PizzadymState extends State<Pizzadym> {
     Analytics().logAppOpen().then(
           (value) => debugPrint('log app open successfully'),
         );
+    fcmOnmessage();
   }
 
   @override
