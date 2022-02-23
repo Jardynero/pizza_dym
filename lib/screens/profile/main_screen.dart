@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:in_app_review/in_app_review.dart';
 import 'package:pizza_dym/functions/firebase_functions.dart';
 import 'package:pizza_dym/global_widgets/appBar.dart';
+import 'package:pizza_dym/global_widgets/widgets.dart';
 import 'package:pizza_dym/screens/login_screen/login-phone-screen/login-phone_screen.dart';
 import 'package:provider/provider.dart';
 import 'package:url_launcher/url_launcher.dart';
@@ -172,10 +173,10 @@ class _ProfileScreenState extends State<ProfileScreen> {
       ),
     );
   }
+
   Widget btn() {
     return Container(
-      margin:
-          EdgeInsets.only(bottom: 10),
+      margin: EdgeInsets.only(bottom: 10),
       child: ElevatedButton(
         child: Text(
           'ВЫЙТИ',
