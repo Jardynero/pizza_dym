@@ -266,6 +266,7 @@ class _PaymentMethodeScreenState extends State<PaymentMethodeScreen> {
               cartModel.getChangeFrom('');
             }
           }
+          await NotificationApi.sendPushToAdmin();
           Analytics().logPurchase(totalAmount).then(
               (value) => debugPrint('log event - Новый заказ на $totalAmount'));
         },
