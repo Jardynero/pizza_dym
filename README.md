@@ -1,4 +1,4 @@
-# pizza_dym
+# Mobile App for pizza delivery - "Pizzadym"
 
 A new Flutter project.
 
